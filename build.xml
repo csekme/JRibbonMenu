@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="JRibbonBar" default="all" basedir=".">
+
+	<!-- Set up application values -->
+	<property name="app.name"       value="JRibbonBar" />
+	<property name="app.author"     value="Csekme Krisztián" />
+	<property name="app.package"    value="src" />
+	<property name="app.version"    value="1.0.0" />
+	<property name="app.year"       value="2019" />
+	<property name="app.copyright"	value="
+      Copyright ${app.year} ${app.author}
+      Licensed under the Apache License, Version 2.0 (the 'License');
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+         http://www.apache.org/licenses/LICENSE-2.0
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an 'AS IS' BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+	" />
+
+	<!-- directory locations -->
+	<property name="dir.classes"    location="classes" />
+	<property name="dir.dist"       location="deploy" />
+	<property name="dir.lib" 		location="lib" />
+	<property name="dir.javadocs"   location="docs" />
+	<property name="dir.project"    location="." />
+	<property name="dir.src"        location="." />
+	<property name="dir.package" 	value="**/*" />
+
+    <!-- debug setting -->
+    <property name="debug" value="on"/>
+
+    <!-- javadoc package -->
+    <property name="packages" value="hu.csekme.RibbonMenu"/>
+
+    <path id="libraries">
+        <fileset dir="lib">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+
+    <!-- Create necessary directories -->
+    <target name="prepare">
+        <tstamp />
+        <mkdir dir="${dir.classes}" />
+        <mkdir dir="${dir.dist}" />
+        <mkdir dir="${dir.lib}" />
+    </target>
+
+    <!-- Compiles the java source files -->
+    <target name="compile" depends="prepare">
+        <javac
+                destdir="${dir.classes}"
+                classpathref="libraries"
+                debug="${debug}"
+                encoding="UTF-8"
+                includeantruntime="false"
+                deprecation="true"
+                srcdir="${dir.src}"
+                classpath="${dir.src}"
+                failonerror="no" >
+            <include name="**/*"/>
+            <!-- unit tesztek nem kerülnek be -->
+            <exclude name="**/test/*"/>
+        </javac>
+    </target>
+
+
+    <!-- Deletes the build and dist directories -->
+    <target name="clean" >
+        <delete dir="${dir.dist}" />
+        <delete dir="${dir.classes}" />
+        <delete dir="${dir.javadocs}" />
+    </target>
+
+    <!-- Compile and build a distribution -->
+    <target name="main" depends="compile, dist" >
+        <echo>Create JMenuBar</echo>
+    </target>
+
+    <!-- Create the API documentation -->
+    <target name="javadocs" depends="prepare">
+        <mkdir dir="${dir.javadocs}"/>
+        <javadoc packagenames="${packages}"
+                 encoding="UTF-8"
+                 charset="UTF-8"
+                 docencoding="UTF-8"
+                 sourcepath="${dir.src}/src"
+                 destdir="${dir.javadocs}"
+                 classpath="${dir.src}"
+                 classpathref="libraries"
+                 author="true"
+                 version="true"
+                 use="true"
+                 windowtitle="${app.name} API"
+                 doctitle="&lt;h1&gt;${app.name}&lt;/h1&gt;">
+            <doctitle><![CDATA[${app.name}]]></doctitle>
+            <bottom>
+                <![CDATA[${app.copyright}]]>
+            </bottom>
+            <group title = "Ribbon Menu" packages = "hu.csekme.RibbonMenu"/>
+        </javadoc>
+        <echo>JavaDoc generated to ${dir.javadoc}</echo>
+    </target>
+
+	<target name="copy_others" description="copy additional files to output directory (optional)">
+		<patternset id="copy.patterns">
+			<include name="**/*.jpg" />
+	        <include name="**/*.gif" />
+	        <include name="**/*.png" />
+	        <include name="**/*.properties" />
+		</patternset>
+		<copy todir="classes">
+			<fileset dir="src">
+				<patternset refid="copy.patterns" />
+			</fileset>
+		</copy>
+	</target>
+
+    <target name="create_run_jar">        
+            <jar destfile="${dir.dist}/RibbonMenuRunnable.jar">
+                <manifest>
+                    <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                    <attribute name="Rsrc-Main-Class" value="hu.csekme.RibbonMenu.Sample"/>
+                    <attribute name="Implementation-Title" value="${app.name}"/>
+                    <attribute name="Implementation-Vendor" value="${app.author}"/>
+                    <attribute name="Implementation-Version" value="${app.version}"/>
+                    <attribute name="Class-Path" value="."/>
+                    <attribute name="Rsrc-Class-Path" value="./"/>
+                </manifest>
+                <zipfileset src="jar-in-jar-loader.zip"/>
+                <fileset dir="${dir.project}/classes"/>
+            	<zipfileset dir="${dir.project}/src/resources/" includes="**"/>
+                <zipfileset dir="${dir.project}/src/resources/images/" includes="*"/>
+                <zipfileset dir="${dir.project}/src/resources/images/" includes="**"/>
+            </jar>
+     </target>
+
+	<target name="dist" description="compile">
+	 	 <jar destfile="deploy/RibbonMenu.jar" basedir="classes" compress="true">
+			<manifest>
+				<attribute name="Main-Class" value="RibbonMenu.application" />
+				<attribute name="Class-Path" value="" />
+				<attribute name="Implementation-Title" value="${app.name}" />
+				<attribute name="Implementation-Vendor" value="${app.author}" />
+				<attribute name="Implementation-Version" value="${app.version}"/>
+				<attribute name="Application-Library-Allowable-Codebase" value="*"/>
+				<attribute name="Caller-Allowable-Codebase" value="*"/>
+				<attribute name="Permissions" value="all-permissions"/>
+				<attribute name="Codebase" value="*"/>
+			</manifest>
+		</jar>
+	</target>
+
+    <!-- run application -->
+    <target name="app-run" depends="main" >
+        <java classname="application.Program"
+              classpath="${dir.dist}/${app.name}.jar"
+              fork="yes">
+        </java>
+    </target>
+
+	<target name="all" description="build the project" depends="clean,compile,dist,javadocs,copy_others" />
+
+</project>
