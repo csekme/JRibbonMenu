@@ -58,10 +58,10 @@ public class Util {
 	 */
 	public static InputStream accessStream(String filename) {
         // this is the path within the jar file
-        InputStream input = Util.class.getResourceAsStream("/resources/" + filename);
+        InputStream input = Util.class.getResourceAsStream("/" + filename);
         if (input == null) {
             // this is how we load file within editor (eg eclipse)
-            input = Util.class.getClassLoader().getResourceAsStream("/resources/" + filename);
+            input = Util.class.getClassLoader().getResourceAsStream("/" + filename);
         }
         return input;
     }
