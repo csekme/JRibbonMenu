@@ -35,26 +35,26 @@ public class RibbonBar extends JComponent {
     private final static String VERSION = "1.0.0";
 
     // colors
-    static final int COLOR_RIBBON_BACKGROUND = 1;
-    static final int COLOR_RIBBON_TAB_CONTAINER_BACKGROUND = 2;
-    static final int COLOR_RIBBON_TAB_CONTAINER_STRIP = 3;
-    static final int COLOR_RIBBON_TAB_BACKGROUND = 4;
-    static final int COLOR_RIBBON_TAB_FOREGROUND = 5;
-    static final int COLOR_RIBBON_TAB_HOVER_BACKGROUND = 6;
-    static final int COLOR_RIBBON_TAB_HOVER_FOREGROUND = 7;
-    static final int COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND = 8;
-    static final int COLOR_RIBBON_TAB_SELECTED_FOREGROUND = 9;
-    static final int COLOR_RIBBON_BUTTON_BACKGROUND = 10;
-    static final int COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND = 11;
-    static final int COLOR_RIBBON_BUTTON_HOVER_BACKGROUND = 12;
-    static final int COLOR_RIBBON_BUTTON_FOREGROUND = 13;
-    static final int COLOR_RIBBON_SEPARATOR_FOREGROUND = 14;
-    static final int COLOR_RIBBON_GROUP_COLOR = 15;
-    static final int COLOR_RIBBON_SHADOW_DARK = 16;
-    static final int COLOR_RIBBON_SHADOW_LIGHT = 17;
-    static final int COLOR_RIBBON_MENUITEM_HOVER = 18;
-    static final int COLOR_RIBBON_MENUITEM_PRESSED = 19;
-    static final int COLOR_RIBBON_MENUITEM_BACKGROUND = 20;
+    public static final int COLOR_RIBBON_BACKGROUND = 1;
+    public static final int COLOR_RIBBON_TAB_CONTAINER_BACKGROUND = 2;
+    public static final int COLOR_RIBBON_TAB_CONTAINER_STRIP = 3;
+    public static final int COLOR_RIBBON_TAB_BACKGROUND = 4;
+    public static final int COLOR_RIBBON_TAB_FOREGROUND = 5;
+    public static final int COLOR_RIBBON_TAB_HOVER_BACKGROUND = 6;
+    public static final int COLOR_RIBBON_TAB_HOVER_FOREGROUND = 7;
+    public static final int COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND = 8;
+    public static final int COLOR_RIBBON_TAB_SELECTED_FOREGROUND = 9;
+    public static final int COLOR_RIBBON_BUTTON_BACKGROUND = 10;
+    public static final int COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND = 11;
+    public static final int COLOR_RIBBON_BUTTON_HOVER_BACKGROUND = 12;
+    public static final int COLOR_RIBBON_BUTTON_FOREGROUND = 13;
+    public static final int COLOR_RIBBON_SEPARATOR_FOREGROUND = 14;
+    public static final int COLOR_RIBBON_GROUP_COLOR = 15;
+    public static final int COLOR_RIBBON_SHADOW_DARK = 16;
+    public static final int COLOR_RIBBON_SHADOW_LIGHT = 17;
+    public static final int COLOR_RIBBON_MENUITEM_HOVER = 18;
+    public static final int COLOR_RIBBON_MENUITEM_PRESSED = 19;
+    public static final int COLOR_RIBBON_MENUITEM_BACKGROUND = 20;
 
     // dimesnions
     static int ribbonTabHeight = 28;
