@@ -29,8 +29,8 @@ public class RibbonMenuItem extends JMenuItem {
     private boolean hover;
     private boolean pressed;
     private ImageIcon icon;
-    private final static ImageIcon CHECKED_ICON = Util.accessImageFile("checked.png");
-    private final static ImageIcon UNCHECKED_ICON = Util.accessImageFile("unchecked.png");
+    private final static ImageIcon CHECKED_ICON = Util.accessImageFile("images/checked.png");
+    private final static ImageIcon UNCHECKED_ICON = Util.accessImageFile("images/unchecked.png");
     private boolean checkMenu = false;
     private static Color colorHover = new Color(200, 198, 196);
     private static Color colorPressed = new Color(179, 176, 173);

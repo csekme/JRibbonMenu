@@ -29,7 +29,7 @@ public class Util {
 	 * @return desired image
 	 */
     public static ImageIcon accessImageFile(String filename) {
-    	InputStream in = accessStream("images/" + filename);
+    	InputStream in = accessStream(filename);
     	BufferedImage im = null;
     	try {
 			im = ImageIO.read(in);
