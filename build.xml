@@ -5,8 +5,8 @@
 	<property name="app.name"       value="JRibbonBar" />
 	<property name="app.author"     value="Csekme Krisztián" />
 	<property name="app.package"    value="src" />
-	<property name="app.version"    value="1.0.0" />
-	<property name="app.year"       value="2019" />
+	<property name="app.version"    value="1.0.1" />
+	<property name="app.year"       value="2020" />
 	<property name="app.copyright"	value="
       Copyright ${app.year} ${app.author}
       Licensed under the Apache License, Version 2.0 (the 'License');
@@ -62,6 +62,7 @@
                 classpath="${dir.src}"
                 failonerror="no" >
             <include name="**/*"/>
+        	<src path="res" />
             <!-- unit tesztek nem kerülnek be -->
             <exclude name="**/test/*"/>
         </javac>
@@ -116,6 +117,9 @@
 			<fileset dir="src">
 				<patternset refid="copy.patterns" />
 			</fileset>
+			<fileset dir="res">
+				<patternset refid="copy.patterns" />
+			</fileset>
 		</copy>
 	</target>
 
@@ -132,9 +136,7 @@
                 </manifest>
                 <zipfileset src="jar-in-jar-loader.zip"/>
                 <fileset dir="${dir.project}/classes"/>
-            	<zipfileset dir="${dir.project}/src/resources/" includes="**"/>
-                <zipfileset dir="${dir.project}/src/resources/images/" includes="*"/>
-                <zipfileset dir="${dir.project}/src/resources/images/" includes="**"/>
+            	<zipfileset dir="${dir.project}/res/" includes="**"/>
             </jar>
      </target>
 
@@ -151,9 +153,7 @@
 				<attribute name="Permissions" value="all-permissions"/>
 				<attribute name="Codebase" value="*"/>
 			</manifest>
-             <zipfileset dir="${dir.project}/src/resources/" includes="**"/>
-             <zipfileset dir="${dir.project}/src/resources/images/" includes="*"/>
-             <zipfileset dir="${dir.project}/src/resources/images/" includes="**"/>
+	 	 	<zipfileset dir="${dir.project}/res/" includes="**"/>
 		</jar>
 	</target>
 

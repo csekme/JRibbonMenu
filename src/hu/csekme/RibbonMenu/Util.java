@@ -30,6 +30,8 @@ public class Util {
 	 */
     public static ImageIcon accessImageFile(String filename) {
     	InputStream in = accessStream(filename);
+    	ImageIcon imageIcon = null;
+    	if (in!=null) {
     	BufferedImage im = null;
     	try {
 			im = ImageIO.read(in);
@@ -46,8 +48,8 @@ public class Util {
 				e.printStackTrace();
 			}
 		}
-    	ImageIcon imageIcon = new ImageIcon(im);
-    	 
+    	imageIcon = new ImageIcon(im);
+    	}
     	return imageIcon;
     }
 

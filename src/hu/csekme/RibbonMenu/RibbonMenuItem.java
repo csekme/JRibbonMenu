@@ -99,9 +99,11 @@ public class RibbonMenuItem extends JMenuItem {
 
         if (isCheckMenu()) {
             if (isSelected()) {
+            	if (CHECKED_ICON!=null)
                 g.drawImage(CHECKED_ICON.getImage(), 4, 3, 16, 16, this);
 
             } else {
+            	if (UNCHECKED_ICON!=null)
                 g.drawImage(UNCHECKED_ICON.getImage(), 4, 3, 16, 16, this);
             }
         }
@@ -128,6 +130,7 @@ public class RibbonMenuItem extends JMenuItem {
         public void mouseReleased(MouseEvent e) {
             hover = false;
             pressed = false;
+            RibbonBar.fired();
         }
 
         @Override
