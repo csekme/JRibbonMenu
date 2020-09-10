@@ -22,6 +22,12 @@ import java.util.*;
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+/**
+ * Office styled RibbonBar main component
+ * @author Csekme Krisztián
+ *
+ */
 public class RibbonBar extends JComponent {
 
 	private static final long serialVersionUID = -2268640468339894311L;
@@ -287,13 +293,11 @@ public class RibbonBar extends JComponent {
 
 	/**
 	 * Graphics function
-	 *
-	 * @param gg
+	 * @param gg the Graphics context in which to paint
 	 */
 	@Override
 	public void paint(Graphics gg) {
-		Graphics2D g = (Graphics2D) gg;
-
+		Graphics2D g = (Graphics2D) gg;		 
 		// set quality
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -571,7 +575,7 @@ public class RibbonBar extends JComponent {
 							but.setPressed(false);
 							if (but.inBounds(e.getPoint(), but.getToken())) {
 								if (!but.hasDropDown() || but.hoverTop) {
-									but.fireAction(new ActionEvent(RibbonBar.this, (int) ActionEvent.MOUSE_EVENT_MASK,
+									but.fireAction(new ActionEvent(RibbonBar.this, (int) AWTEvent.MOUSE_EVENT_MASK,
 											"onClick"));
 								}
 								if (but.hasDropDown() && !but.hoverTop) {

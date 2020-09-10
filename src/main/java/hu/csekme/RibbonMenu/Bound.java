@@ -32,7 +32,7 @@ public class Bound {
 
     /**
      * The x coordinate of the object
-     * @return x
+     * @return x as integer
      */
     public int getX() {
         return x;
@@ -48,7 +48,7 @@ public class Bound {
 
     /**
      * The y coordinate of the object
-     * @return y
+     * @return y as insteger
      */
     public int getY() {
         return y;
@@ -56,7 +56,7 @@ public class Bound {
 
     /**
      * Set the y coordinate of the object
-     * @param y as integer
+     * @param y as integer 
      */
     public void setY(int y) {
         this.y = y;
@@ -64,7 +64,7 @@ public class Bound {
 
     /**
      * Return the width of the object
-     * @return width
+     * @return width of this object in pixels
      */
     public int getWidth() {
         return width;
@@ -72,7 +72,7 @@ public class Bound {
 
     /**
      * Set the width of the object, it also sets the value of x2
-     * @param width
+     * @param width the new width of this object in pixels
      */
     public void setWidth(int width) {
         this.x2 = x + width;
@@ -81,7 +81,7 @@ public class Bound {
 
     /**
      * Return the height of the object
-     * @return height
+     * @return height height of this object in pixels
      */
     public int getHeight() {
         return height;
@@ -89,7 +89,7 @@ public class Bound {
 
     /**
      * Set the height of the object, it also sets the value of y2
-     * @param height
+     * @param height  the new Height of this object in pixels
      */
     public void setHeight(int height) {
         this.y2 = y + height;
@@ -99,7 +99,7 @@ public class Bound {
     /**
      * Return the x2 coordinate of the object, based on x and width
      * typically the upper right corner
-     * @return x2
+     * @return x2 right edge
      */
     public int getX2() {
         return x2;
@@ -108,7 +108,7 @@ public class Bound {
     /**
      * Set the x2 coordinate of the object, it also sets
      * the value of width from equation (x2-x)
-     * @param x2
+     * @param x2 right edge
      */
     public void setX2(int x2) {
         this.width = x2 - x;
@@ -118,7 +118,7 @@ public class Bound {
     /**
      * Return the y2 coordinate of the object, based on y and height
      * typically the lower left corner
-     * @return y2
+     * @return y2 bottom edge
      */
     public int getY2() {
         return y2;
@@ -127,7 +127,7 @@ public class Bound {
     /**
      * Set the y2 coordinate of the object, it also sets
      * the value of height from equation (y2-y)
-     * @param y2
+     * @param y2 bottom edge
      */
     public void setY2(int y2) {
         this.height = y2 - y;

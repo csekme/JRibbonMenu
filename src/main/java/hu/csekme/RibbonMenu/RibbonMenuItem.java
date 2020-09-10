@@ -24,13 +24,16 @@ import javax.swing.JMenuItem;
 
 public class RibbonMenuItem extends JMenuItem {
 
-    final JMenuItem ref = new JMenuItem();
+ 	private static final long serialVersionUID = 1L;
 
-    private boolean hover;
-    private boolean pressed;
-    private ImageIcon icon;
+	final JMenuItem ref = new JMenuItem();
     private final static ImageIcon CHECKED_ICON = Util.accessImageFile("images/checked.png");
     private final static ImageIcon UNCHECKED_ICON = Util.accessImageFile("images/unchecked.png");
+	
+    boolean hover;
+    boolean pressed;
+    private ImageIcon icon;
+
     private boolean checkMenu = false;
     private static Color colorHover = new Color(200, 198, 196);
     private static Color colorPressed = new Color(179, 176, 173);

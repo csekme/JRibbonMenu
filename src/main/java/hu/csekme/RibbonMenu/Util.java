@@ -25,11 +25,11 @@ public class Util {
 
 	/**
 	 * Get image from resource/image folder via filename
-	 * @param filename
+	 * @param filename desired file path to image
 	 * @return desired image
 	 */
     public static ImageIcon accessImageFile(String filename) {
-    	InputStream in = accessStream(filename);
+		InputStream in = accessStream(filename);
     	ImageIcon imageIcon = null;
     	if (in!=null) {
     	BufferedImage im = null;
@@ -55,7 +55,7 @@ public class Util {
 
 	/**
 	 * Get input stream from resource folder
-	 * @param filename
+	 * @param filename name of the desired resource
 	 * @return desired file stream
 	 */
 	public static InputStream accessStream(String filename) {
@@ -70,8 +70,8 @@ public class Util {
 
 	/**
 	 * Get Font from file
-	 * @param fontPath
-	 * @param size
+	 * @param fontPath path of the desired font
+	 * @param size size of the font
 	 * @return desired Font instance
 	 */
 	public static Font loadFont(String fontPath, float size) {
