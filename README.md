@@ -7,18 +7,19 @@
 [https://csekme.github.io/](https://csekme.github.io/index.html)
 
 ## Installation
-The project can be build using Ant. The result will be appear in deploy directory as the name of **RibbonMenu.jar**.
+The project can be build using Maven. The result will be appear in target directory as the name of **RibbonMenu-<version>.jar**.
 ```sh
 #usage
-ant all
+mvn clean package
 ```
 
 ## Usage
 
 Here is an example how to use library.
-You can find entire code in **src/hu/csekme/RibbonMenu/Sample.java** file.
-```java
 
+```java
+// Create RibbonBar instance (singleton)
+        RibbonBar ribbonBar = RibbonBar.create();
 // Add our first tab
         Tab tab1 = ribbonBar.addTab("Home");
         tab1.setGroupName("Group one");
