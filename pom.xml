@@ -61,7 +61,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- for sign -->
+			<!-- for sign 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
@@ -79,6 +79,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 			<!-- Java source -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
