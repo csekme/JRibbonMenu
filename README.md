@@ -3,9 +3,6 @@
 
 ![](md/img1.png)
 
-## Releases
-[https://csekme.github.io/](https://csekme.github.io/index.html)
-
 ## Installation
 The project can be build using Maven. The result will be appear in target directory as the name of **RibbonMenu-<version>.jar**.
 ```sh
