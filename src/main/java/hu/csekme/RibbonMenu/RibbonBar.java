@@ -59,19 +59,21 @@ public class RibbonBar extends JComponent {
 	public static final int COLOR_RIBBON_MENUITEM_PRESSED = 19;
 	public static final int COLOR_RIBBON_MENUITEM_BACKGROUND = 20;
 
+	public static final double SCALING_FACTOR =((double)java.awt.Toolkit.getDefaultToolkit().getScreenResolution()) / 96 ;
+	 
 	// dimesnions
-	static int ribbonTabHeight = 28;
+	static int ribbonTabHeight = (int)(28 * SCALING_FACTOR);
 	static int eastWestTabInset = 20;
 	static int northTabInset = 0;
 	static int ribbonButtonTopBase = ribbonTabHeight + 4;
-	static int buttonWidth = 75;
-	static int buttonHeight = 75;
-	static int buttonPartialHeight = 34;
-	static int slimButtonHeight = 25;
+	static int buttonWidth = (int)(75 * SCALING_FACTOR);
+	static int buttonHeight = (int)(75 * SCALING_FACTOR);
+	static int buttonPartialHeight = (int)(45 * SCALING_FACTOR);
+	static int slimButtonHeight = (int)(25 * SCALING_FACTOR);
 	static int separatorWidth = 7;
-	static int separatorHeight = 88;
+	static int separatorHeight = (int)(88 * SCALING_FACTOR);
 	static int shadowHeight = 10;
-	static int ribbonHeight = 126 + shadowHeight;
+	static int ribbonHeight = (int)(126 * SCALING_FACTOR) + shadowHeight;
 
 	boolean minimized = false;
 	boolean reminimized = false;
@@ -125,11 +127,11 @@ public class RibbonBar extends JComponent {
 		COLORS.put(COLOR_RIBBON_TAB_CONTAINER_BACKGROUND, new Color(243, 242, 241));
 		COLORS.put(COLOR_RIBBON_TAB_CONTAINER_STRIP, new Color(230, 229, 228));
 		COLORS.put(COLOR_RIBBON_TAB_BACKGROUND, new Color(243, 242, 241));
-		COLORS.put(COLOR_RIBBON_TAB_FOREGROUND, new Color(72, 70, 68));
+		COLORS.put(COLOR_RIBBON_TAB_FOREGROUND, new Color(64, 131, 201));
 		COLORS.put(COLOR_RIBBON_TAB_HOVER_BACKGROUND, new Color(250, 249, 248));
-		COLORS.put(COLOR_RIBBON_TAB_HOVER_FOREGROUND, new Color(0, 0, 0));
-		COLORS.put(COLOR_RIBBON_TAB_SELECTED_FOREGROUND, new Color(0, 191, 255));
-		COLORS.put(COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND, new Color(0, 191, 255));
+		COLORS.put(COLOR_RIBBON_TAB_HOVER_FOREGROUND, new Color(64, 131, 201));
+		COLORS.put(COLOR_RIBBON_TAB_SELECTED_FOREGROUND, new Color(64, 131, 201));
+		COLORS.put(COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND, new Color(64, 131, 201));
 		COLORS.put(COLOR_RIBBON_BUTTON_BACKGROUND, new Color(243, 242, 241));
 		COLORS.put(COLOR_RIBBON_BUTTON_HOVER_BACKGROUND, new Color(200, 198, 196));
 		COLORS.put(COLOR_RIBBON_SEPARATOR_FOREGROUND, new Color(179, 176, 173));
@@ -209,9 +211,9 @@ public class RibbonBar extends JComponent {
 				if (button.isSlim()) {
 					int sw;
 					if (button.getTitle() != null && button.getTitle().length() > 0) {
-						sw = getGraphics().getFontMetrics(font).stringWidth(button.title) + 26;
+						sw = getGraphics().getFontMetrics(font).stringWidth(button.title) + (int)(26 * SCALING_FACTOR);
 					} else {
-						sw = 22;
+						sw = (int)(22 * SCALING_FACTOR);
 					}
 
 					if (slim_max < sw) {
@@ -355,14 +357,14 @@ public class RibbonBar extends JComponent {
 			}
 			g.drawString(tab.getTitle(),
 					tab.getX() + tab.getWidth() / 2 - g.getFontMetrics().stringWidth(tab.getTitle()) / 2,
-					tab.getY() + 20);
+					tab.getY() +  (int)(20 * SCALING_FACTOR)  );
 
 			int horizontal_offset = 0;
 
 			// render selected tab
 			if (tab.isSelected() && !minimized) {
 				{ // Group title
-					g.setFont(font.deriveFont(9f));
+					g.setFont(font.deriveFont(9f * (float)SCALING_FACTOR));
 					for (int s = 0; s < tab.getGroups().size(); s++) {
 						String groupname = tab.getGroups().get(s);
 						g.setColor(COLORS.get(COLOR_RIBBON_GROUP_COLOR));
@@ -375,7 +377,7 @@ public class RibbonBar extends JComponent {
 						}
 						g.drawString(groupname,
 								horizontal_offset + (west - horizontal_offset) / 2 - groupname_length / 2,
-								getHeight() - 8 - shadowHeight);
+								getHeight() - 6 - shadowHeight);
 						horizontal_offset += west;
 					}
 					g.setFont(font);
@@ -420,22 +422,37 @@ public class RibbonBar extends JComponent {
 							if (button.getImage() == null) {
 								g.drawString(button.title, button.getX() + 4, button.getY() + button.getHeight() - 8);
 							} else {
-								g.drawImage(button.getImage().getImage(), button.getX() + 2, button.getY() + 4, 16, 16,
+								
+								g.drawImage(button.getImage().getImage(), button.getX() + 2, button.getY() + 4,
+										(int)(16 * SCALING_FACTOR), 
+										(int)(16 * SCALING_FACTOR),
 										this);
-								g.drawString(button.title, button.getX() + 4 + 16,
-										button.getY() + button.getHeight() - 8);
+								
+								g.drawString(button.title, button.getX() + 4 + (int)(16 * SCALING_FACTOR),
+										button.getY() + button.getHeight() - (int)(8 * SCALING_FACTOR));
 							}
 						} else {
 							if (button.hasDropDown()) {
 								if (button.getImage() != null) {
-									g.drawImage(button.getImage().getImage(), button.getX() + 26, button.getY() + 6, 24,
-											24, this);
+									
+									int image_size = (int)(24 * SCALING_FACTOR);
+									 
+									g.drawImage(button.getImage().getImage(), 
+											button.getX() + (button.getWidth() / 2) - image_size / 2 , 
+											button.getY() + (button.getHeight() / 2) - image_size , 
+											image_size,
+											image_size, 
+											this);
+									
+									
+									//g.drawImage(button.getImage().getImage(), button.getX() + 26, button.getY() + 6, 24,
+									//		24, this);
 								}
 								String[] lines = button.title.split(" ");
 								for (int l = 0; l < lines.length; l++) {
 									int w = g.getFontMetrics().stringWidth(lines[l]);
 									g.drawString(lines[l], button.getX() + button.getWidth() / 2 - w / 2, button.getY()
-											+ button.getHeight() - 18 + (l * 14) - (lines.length > 1 ? 10 : 0));
+											+ button.getHeight() - 16 + (l * 14) - (lines.length > 1 ? 10 : 0));
 								}
 								g.setColor(Color.GRAY);
 								g.setStroke(new BasicStroke(1.3f));
@@ -449,14 +466,21 @@ public class RibbonBar extends JComponent {
 								// Normal classic button
 							} else {
 								if (button.getImage() != null) {
-									g.drawImage(button.getImage().getImage(), button.getX() + 26, button.getY() + 6, 24,
-											24, this);
+									int image_size = (int)(24 * SCALING_FACTOR);
+								 
+									g.drawImage(button.getImage().getImage(), 
+											button.getX() + (button.getWidth() / 2) - image_size / 2 , 
+											button.getY() + (button.getHeight() / 2) - image_size , 
+											image_size,
+											image_size, 
+											this);
 								}
 								String[] lines = button.title.split(" ");
 								for (int l = 0; l < lines.length; l++) {
 									int w = g.getFontMetrics().stringWidth(lines[l]);
-									g.drawString(lines[l], button.getX() + button.getWidth() / 2 - w / 2, button.getY()
-											+ button.getHeight() - 18 + (l * 14) - (lines.length > 1 ? 10 : 0));
+									g.drawString(lines[l], button.getX() + button.getWidth() / 2 - w / 2, 
+											button.getY()
+											+ button.getHeight() - (int)(16*SCALING_FACTOR) + (l * (int)(14 * SCALING_FACTOR)) - (lines.length > 1 ? 10 : 0)  );
 								}
 
 							}

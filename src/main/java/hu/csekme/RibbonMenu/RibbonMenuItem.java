@@ -25,6 +25,8 @@ import javax.swing.JMenuItem;
 public class RibbonMenuItem extends JMenuItem {
 
  	private static final long serialVersionUID = 1L;
+ 	
+ 	public static final double SCALING_FACTOR =((double)java.awt.Toolkit.getDefaultToolkit().getScreenResolution()) / 96 ;
 
 	final JMenuItem ref = new JMenuItem();
     private final static ImageIcon CHECKED_ICON = Util.accessImageFile("images/checked.png");
@@ -95,19 +97,20 @@ public class RibbonMenuItem extends JMenuItem {
             g.fillRect(0, 0, getWidth(), getHeight());
         }
         g.setColor(ref.getForeground());
-        g.drawString(getText(), getIconTextGap() + 27, 16);
+        g.drawString(getText(), getIconTextGap() + 27, (int)(16 * SCALING_FACTOR));
+        
         if (!isCheckMenu() && icon != null) {
-            g.drawImage(icon.getImage(), 4, 3, 16, 16, this);
+            g.drawImage(icon.getImage(), 4, 3, (int)(16 * SCALING_FACTOR), (int)(16 * SCALING_FACTOR), this);
         }
 
         if (isCheckMenu()) {
             if (isSelected()) {
             	if (CHECKED_ICON!=null)
-                g.drawImage(CHECKED_ICON.getImage(), 4, 3, 16, 16, this);
+                g.drawImage(CHECKED_ICON.getImage(), 4, 3, (int)(16 * SCALING_FACTOR), (int)(16 * SCALING_FACTOR), this);
 
             } else {
             	if (UNCHECKED_ICON!=null)
-                g.drawImage(UNCHECKED_ICON.getImage(), 4, 3, 16, 16, this);
+                g.drawImage(UNCHECKED_ICON.getImage(), 4, 3, (int)(16 * SCALING_FACTOR), (int)(16 * SCALING_FACTOR), this);
             }
         }
 
