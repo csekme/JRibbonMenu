@@ -60,14 +60,18 @@ public class RibbonBar extends JComponent {
 	public static final int COLOR_RIBBON_MENUITEM_BACKGROUND = 20;
 
 	public static final double SCALING_FACTOR =((double)java.awt.Toolkit.getDefaultToolkit().getScreenResolution()) / 96 ;
-	 
+	
+	public static int SIZE_BUTTON_WIDTH = 75;
+	private static int SIZE_BUTTON_HEIGHT = 75;
+	
+	
 	// dimesnions
 	static int ribbonTabHeight = (int)(28 * SCALING_FACTOR);
 	static int eastWestTabInset = 20;
 	static int northTabInset = 0;
 	static int ribbonButtonTopBase = ribbonTabHeight + 4;
-	static int buttonWidth = (int)(75 * SCALING_FACTOR);
-	static int buttonHeight = (int)(75 * SCALING_FACTOR);
+	static int buttonWidth = (int)(SIZE_BUTTON_WIDTH * SCALING_FACTOR);
+	static int buttonHeight = (int)(SIZE_BUTTON_HEIGHT * SCALING_FACTOR);
 	static int buttonPartialHeight = (int)(45 * SCALING_FACTOR);
 	static int slimButtonHeight = (int)(25 * SCALING_FACTOR);
 	static int separatorWidth = 7;
@@ -98,6 +102,7 @@ public class RibbonBar extends JComponent {
 	 */
 	public static RibbonBar create() {
 		instance = new RibbonBar();
+		buttonWidth = (int)(SIZE_BUTTON_WIDTH * SCALING_FACTOR);
 		return instance;
 	}
 
