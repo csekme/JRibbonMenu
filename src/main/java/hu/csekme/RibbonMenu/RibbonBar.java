@@ -72,7 +72,7 @@ public class RibbonBar extends JComponent {
 	static int ribbonButtonTopBase = ribbonTabHeight + 4;
 	static int buttonWidth = (int)(SIZE_BUTTON_WIDTH * SCALING_FACTOR);
 	static int buttonHeight = (int)(SIZE_BUTTON_HEIGHT * SCALING_FACTOR);
-	static int buttonPartialHeight = (int)(45 * SCALING_FACTOR);
+	static int buttonPartialHeight = (int)(38 * SCALING_FACTOR);
 	static int slimButtonHeight = (int)(25 * SCALING_FACTOR);
 	static int separatorWidth = 7;
 	static int separatorHeight = (int)(88 * SCALING_FACTOR);
@@ -444,7 +444,7 @@ public class RibbonBar extends JComponent {
 									 
 									g.drawImage(button.getImage().getImage(), 
 											button.getX() + (button.getWidth() / 2) - image_size / 2 , 
-											button.getY() + (button.getHeight() / 2) - image_size , 
+											button.getY() + (button.getHeight() / 2) - image_size - 2 , 
 											image_size,
 											image_size, 
 											this);
