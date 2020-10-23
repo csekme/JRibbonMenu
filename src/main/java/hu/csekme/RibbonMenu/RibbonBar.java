@@ -58,7 +58,8 @@ public class RibbonBar extends JComponent {
 	public static final int COLOR_RIBBON_MENUITEM_HOVER = 18;
 	public static final int COLOR_RIBBON_MENUITEM_PRESSED = 19;
 	public static final int COLOR_RIBBON_MENUITEM_BACKGROUND = 20;
-
+	public static final int COLOR_RIBBON_TAB_SELECTED_BACKGROUND = 21;
+	
 	public static final double SCALING_FACTOR =((double)java.awt.Toolkit.getDefaultToolkit().getScreenResolution()) / 96 ;
 	
 	public static int SIZE_BUTTON_WIDTH = 75;
@@ -337,7 +338,11 @@ public class RibbonBar extends JComponent {
 			if (tab.isHover()) {
 				g.setColor(COLORS.get(COLOR_RIBBON_TAB_HOVER_BACKGROUND));
 			} else {
-				g.setColor(COLORS.get(COLOR_RIBBON_TAB_BACKGROUND));
+				if (tab.isSelected()) {
+					g.setColor(COLORS.get(COLOR_RIBBON_TAB_SELECTED_BACKGROUND));
+				} else {
+					g.setColor(COLORS.get(COLOR_RIBBON_TAB_BACKGROUND));
+				}
 			}
 			g.fillRect(tab.getX(), tab.getY(), tab.getWidth(), tab.getHeight());
 
@@ -345,10 +350,10 @@ public class RibbonBar extends JComponent {
 			if (tab.isSelected()) {
 				g.setColor(COLORS.get(COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND));
 				if (tab.isHover()) {
-					g.fillRect(tab.getX(), tab.getY() + tab.getHeight() - 4, tab.getWidth(), 4);
+					g.fillRect(tab.getX(), tab.getY() + tab.getHeight() - 2, tab.getWidth(), 2);
 				} else {
-					int half = (tab.getWidth() - g.getFontMetrics().stringWidth(tab.getTitle())) / 2;
-					g.fillRect(tab.getX() + half, tab.getY() + tab.getHeight() - 4, tab.getWidth() - half * 2, 4);
+					int half = (tab.getWidth() - g.getFontMetrics().stringWidth(tab.getTitle())) / 3;
+					g.fillRect(tab.getX() + half, tab.getY() + tab.getHeight() - 2, tab.getWidth() - half * 2, 2);
 				}
 			}
 
@@ -462,11 +467,11 @@ public class RibbonBar extends JComponent {
 								g.setColor(Color.GRAY);
 								g.setStroke(new BasicStroke(1.3f));
 								g.drawLine(button.getX() + button.getWidth() / 2 - 3,
-										button.getY() + button.getHeight() - 8, button.getX() + button.getWidth() / 2,
-										button.getY() + button.getHeight() - 6);
+										button.getY() + button.getHeight() - 6, button.getX() + button.getWidth() / 2,
+										button.getY() + button.getHeight() - 4);
 								g.drawLine(button.getX() + button.getWidth() / 2 + 3,
-										button.getY() + button.getHeight() - 8, button.getX() + button.getWidth() / 2,
-										button.getY() + button.getHeight() - 6);
+										button.getY() + button.getHeight() - 6, button.getX() + button.getWidth() / 2,
+										button.getY() + button.getHeight() - 4);
 
 								// Normal classic button
 							} else {
