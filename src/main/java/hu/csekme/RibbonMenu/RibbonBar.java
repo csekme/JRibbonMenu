@@ -72,11 +72,12 @@ public class RibbonBar extends JComponent {
 	
 	
 	// dimesnions
+	static int tabLayoutWestEastMargin = 8;
 	static int ribbonTabHeight = (int)(28 * SCALING_FACTOR);
 	static int stripHeight = 0;
 	static int eastWestTabInset = 20;
 	static int northTabInset = 0;
-	static int buttonLeftRightMargin = 2;
+	static int buttonLeftRightMargin = 4;
 	static int ribbonButtonTopBase = ribbonTabHeight + 4;
 	static int buttonWidth = (int)(SIZE_BUTTON_WIDTH * SCALING_FACTOR);
 	static int buttonHeight = (int)(SIZE_BUTTON_HEIGHT * SCALING_FACTOR);
@@ -223,7 +224,7 @@ public class RibbonBar extends JComponent {
 			tab.setX(offset_t);
 			tab.setY(northTabInset);
 			offset_t += w;
-			int offset_bx = 2;
+			int offset_bx = tabLayoutWestEastMargin; 
 			int offset_by = 0;
 			int slim_count = 0;
 			int slim_max = 0;
@@ -610,7 +611,7 @@ public class RibbonBar extends JComponent {
 			}
 		}
 		{
-			toggle.setX(getWidth() - 18 - 8);
+			toggle.setX(getWidth() - 20 - tabLayoutWestEastMargin);
 			toggle.setY(getHeight() - 18 - shadowHeight);
 			toggle.setWidth(16);
 			toggle.setHeight(16);
