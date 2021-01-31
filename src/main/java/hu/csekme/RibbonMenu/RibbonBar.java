@@ -177,11 +177,11 @@ public class RibbonBar extends JComponent {
 	void toggle() {
 		if (minimized) {
 			setMinimumSize(new Dimension(100, ribbonTabHeight + shadowHeight));
-			setPreferredSize(new Dimension(100, ribbonTabHeight + shadowHeight));
+			setPreferredSize(new Dimension(getWidth(), ribbonTabHeight + shadowHeight));
 			setSize(new Dimension(getWidth(), ribbonTabHeight + shadowHeight));
 		} else {
 			setMinimumSize(new Dimension(0, ribbonHeight));
-			setPreferredSize(new Dimension(100, ribbonHeight));
+			setPreferredSize(new Dimension(getWidth(), ribbonHeight));
 			setSize(new Dimension(getWidth(), ribbonHeight));
 		}
 		getParent().revalidate();
@@ -700,8 +700,8 @@ public class RibbonBar extends JComponent {
 					for (int i = 0; i < TABS.size(); i++) {
 						TABS.get(i).setSelected(TABS.get(i).inBounds(e.getPoint(), TABS.get(i).getToken()));
 					}
-					minimized = false;
-					toggle();
+          minimized = false;
+  			  toggle();
 				}  
 			}
 			if (e.getPoint().y > ribbonTabHeight) {
