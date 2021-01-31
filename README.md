@@ -9,6 +9,12 @@ The project can be build using Maven. The result will be appear in target direct
 #usage
 mvn clean package
 ```
+Create runnable sample program
+```sh
+#usage
+mvn clean install
+```
+
 
 ## Usage
 
@@ -16,7 +22,9 @@ Here is an example how to use library.
 
 ```java
 // Create RibbonBar instance (singleton)
-        RibbonBar ribbonBar = RibbonBar.create();
+        RibbonBar ribbonBar = new RibbonBar();
+// Add it to NORTH   
+        getContentPane().add(ribbonBar, BorderLayout.NORTH);
 // Add our first tab
         Tab tab1 = ribbonBar.addTab("Home");
         tab1.setGroupName("Group one");
@@ -77,7 +85,7 @@ Here is an example how to use library.
         Tab developing = ribbonBar.addTab("Developing");
         Button server = developing.addButton("Servers");
         server.setImage(Util.accessImageFile("server-1.png"));
-        tab1.setSelected(true);
+   
 
 
 ```
