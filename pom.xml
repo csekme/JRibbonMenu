@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>hu.csekme</groupId>
 	<artifactId>RibbonMenu</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.5</version>
 
 	<name>Java Swing RibbonMenu</name>
 	<description>Office styled ribbon menu for java swing</description>
@@ -35,7 +35,7 @@
 
 	<!-- project settings -->
 	<properties>
-		<main.class>application.Program</main.class>
+		<main.class>hu.csekme.RibbonMenu.Program</main.class>
 		<java.version>8</java.version>
 		<encoding>UTF-8</encoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>		
@@ -142,8 +142,8 @@
 				<configuration>
 					<appendAssemblyId>false</appendAssemblyId>
 					<finalName> ${project.artifactId}-${project.version}-runnable</finalName>
-					<!-- <archive> <manifest> <mainClass>${main.class}</mainClass> </manifest> 
-						</archive> -->
+					 <archive> <manifest> <mainClass>${main.class}</mainClass> </manifest> 
+						</archive>  
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>

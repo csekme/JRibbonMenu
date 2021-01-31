@@ -1,7 +1,9 @@
 package hu.csekme.RibbonMenu;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
@@ -22,6 +24,18 @@ import javax.swing.ImageIcon;
 // limitations under the License.
 
 public class Util {
+
+	/**
+	 * Get image from resource/image folder via filename
+	 * @param filename desired file path to image
+	 * @param width specify width
+	 * @param height specify height
+	 * @return desired image
+	 */
+    public static ImageIcon accessImageFile(String filename, int width, int height) {
+    	ImageIcon i = new ImageIcon(accessImageFile(filename).getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
+    	return i;
+    }
 
 	/**
 	 * Get image from resource/image folder via filename

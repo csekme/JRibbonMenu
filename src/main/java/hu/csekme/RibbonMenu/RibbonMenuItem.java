@@ -1,5 +1,7 @@
 package hu.csekme.RibbonMenu;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -37,9 +39,14 @@ public class RibbonMenuItem extends JMenuItem {
     private ImageIcon icon;
 
     private boolean checkMenu = false;
-    private static Color colorHover = new Color(200, 198, 196);
-    private static Color colorPressed = new Color(179, 176, 173);
+    private static Color colorHover = new Color(232, 239, 247);
+    private static Color colorPressed = new Color(201, 224, 247);
     private static Color colorBackground = new Color(255, 255, 255);
+ 
+    
+    public void setIcon(ImageIcon icon) {
+    	this.icon = icon;
+    }
 
     public RibbonMenuItem(String title, boolean defaultSelection) {
         super(title);
@@ -85,7 +92,7 @@ public class RibbonMenuItem extends JMenuItem {
         Graphics2D g = (Graphics2D) gl;
 
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-        g.setFont(ref.getFont());
+        g.setFont(ref.getFont().deriveFont(Font.PLAIN));
         g.setColor(colorBackground);
         g.fillRect(0, 0, getWidth(), getHeight());
         if (hover) {
@@ -97,7 +104,7 @@ public class RibbonMenuItem extends JMenuItem {
             g.fillRect(0, 0, getWidth(), getHeight());
         }
         g.setColor(ref.getForeground());
-        g.drawString(getText(), getIconTextGap() + 27, (int)(16 * SCALING_FACTOR));
+        g.drawString(getText(), getIconTextGap() + 26, (int)(16 * SCALING_FACTOR));
         
         if (!isCheckMenu() && icon != null) {
             g.drawImage(icon.getImage(), 4, 3, (int)(16 * SCALING_FACTOR), (int)(16 * SCALING_FACTOR), this);
