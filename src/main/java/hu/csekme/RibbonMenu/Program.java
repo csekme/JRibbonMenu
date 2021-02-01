@@ -27,6 +27,7 @@ public class Program {
 			public void run() {
 				try {
 				 	MainWindow frame = new MainWindow();
+			    frame.setLocationRelativeTo(null);
 				 	frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
