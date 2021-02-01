@@ -25,8 +25,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.*;
 /**
- * Office styled RibbonBar main component
+ * Windows styled RibbonBar main component
  * @author Csekme Krisztián
+ * @see Tab
+ * @see Button
+ * @see RibbonMenuItem
  */
 public class RibbonBar extends JComponent {
 
@@ -37,8 +40,11 @@ public class RibbonBar extends JComponent {
 
 	private static RibbonBar instance = null;
 
+	
 	// colors
 	public static final int COLOR_RIBBON_BACKGROUND = 1;
+	
+	
 	public static final int COLOR_RIBBON_TAB_CONTAINER_BACKGROUND = 2;
 	public static final int COLOR_RIBBON_TAB_CONTAINER_STRIP = 3;
 	public static final int COLOR_RIBBON_TAB_BACKGROUND = 4;
@@ -47,6 +53,7 @@ public class RibbonBar extends JComponent {
 	public static final int COLOR_RIBBON_TAB_HOVER_FOREGROUND = 7;
 	public static final int COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND = 8;
 	public static final int COLOR_RIBBON_TAB_SELECTED_FOREGROUND = 9;
+	
 	public static final int COLOR_RIBBON_BUTTON_BACKGROUND = 10;
 	public static final int COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND = 11;
 	public static final int COLOR_RIBBON_BUTTON_HOVER_BACKGROUND = 12;
