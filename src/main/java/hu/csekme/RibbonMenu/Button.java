@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 
@@ -29,8 +31,16 @@ public class Button extends VirtualObject {
     private List<ActionListener> actions;
     private List<Object> subMenu;
     private boolean pressed;
-    
+    private boolean enabled;
+     
+    /** The tooltip, if any */
     private ToolTip tooltip;
+
+   /** Optional image to display of button not enabled */
+    private ImageIcon disabledImage;
+    
+    /** The action command string fired by the button. */
+    private String actionCommand = null;
 
     public Button(String token) {
         super(token);
@@ -40,6 +50,8 @@ public class Button extends VirtualObject {
         this.subMenu = new ArrayList<>();
         this.pressed = false;
         this.tooltip = null;
+        this.disabledImage = null;
+        this.enabled = true;
     }
 
     public void createSeparator() {
@@ -67,8 +79,32 @@ public class Button extends VirtualObject {
         this.pressed = pressed;
     }
 
+    public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
+    }
+
+    public void setDisabledImage(ImageIcon disabledImage) {
+      this.disabledImage = disabledImage;
+    }
+
+   @Override
+    public ImageIcon getImage() {
+      if (!enabled) {
+        return disabledImage;
+      }
+      return super.getImage();
+    }
+
     public void addActionListener(ActionListener a) {
         actions.add(a);
+    }
+
+    public void setActionCommand(String actionCommand) {
+      this.actionCommand = actionCommand;
+    }
+
+    public String getActionCommand() {
+      return actionCommand;
     }
 
     public void addSubMenu(JMenuItem a) {
@@ -105,10 +141,20 @@ public class Button extends VirtualObject {
         return subMenu.size() == 0 ? false : true;
     }
 
-    public void fireAction(ActionEvent e) {
-        for (ActionListener a : actions) {
-            a.actionPerformed(e);
+    public void fireAction(ActionEvent event) {
+      if (enabled) {
+        ActionEvent e = event;
+        if (actionCommand != null) {
+          e = new ActionEvent(this,
+              ActionEvent.ACTION_PERFORMED,
+              actionCommand,
+              event.getWhen(),
+              event.getModifiers());
         }
+        for (ActionListener a : actions) {
+           a.actionPerformed(e);
+        }
+      }
     }
 
 }
