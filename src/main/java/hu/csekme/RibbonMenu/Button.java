@@ -29,20 +29,34 @@ public class Button extends VirtualObject {
     private List<ActionListener> actions;
     private List<Object> subMenu;
     private boolean pressed;
+    private ToolTip tooltip;
 
     public Button(String token) {
         super(token);
+        
         this.slim = false;
         this.separator = false;
         this.actions = new ArrayList<>();
         this.subMenu = new ArrayList<>();
         this.pressed = false;
+        this.tooltip = null;
     }
 
 
     public void createSeparator() {
         this.separator = true;
     }
+    
+    public void addToolTip(String text) {
+        this.tooltip = new ToolTip(text);
+      }
+
+      public String getToolTip() {
+        if (tooltip==null)
+          return null;
+        return this.tooltip.getText();
+      }
+
 
     public boolean isSlim() {
         return slim;

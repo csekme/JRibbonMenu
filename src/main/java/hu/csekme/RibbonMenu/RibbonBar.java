@@ -160,6 +160,8 @@ public class RibbonBar extends JComponent {
 		// add listeners
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
+		// register for tooltips
+	    ToolTipManager.sharedInstance().registerComponent(this);		
 	}
 
 	/**
@@ -654,6 +656,25 @@ public class RibbonBar extends JComponent {
 			}
 		}
 	}
+	
+	  @Override
+	  public String getToolTipText(MouseEvent e) {
+	    for (int i = 0; i < TABS.size(); i++) {
+	      Tab t = TABS.get(i);
+	      if (t.isSelected()) {
+	        for (int j = 0; j < t.getButtons().size(); j++) {
+	          Button b = t.getButtons().get(j);
+	          if (!b.isSeparator()) {
+	            if (b.inBounds(e.getPoint(), b.getToken())) {
+	              return b.getToolTip();
+	            }
+	          }
+	        } // end for button search
+	      } // end t.isSelected()
+	    } // end for tab search
+	    // no tooltip
+	    return null;
+	  }
  
 	
 	/**
