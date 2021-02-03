@@ -3,6 +3,7 @@ package hu.csekme.RibbonMenu;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +86,49 @@ public class Button extends VirtualObject {
 
     public void setDisabledImage(ImageIcon disabledImage) {
       this.disabledImage = disabledImage;
+    }
+    
+    /**
+     * Convert ImageIcon to grayscale keep alpha chanel
+     * @param image as original ImageIcon
+     * @return image as grayscaled ImageIcon
+     */
+    private static ImageIcon convertToGrayScale(ImageIcon image) {
+    	BufferedImage source = (BufferedImage)image.getImage();
+    	BufferedImage img = new BufferedImage(image.getIconWidth(), image.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+    	for (int x=0; x<img.getWidth(); x++) {
+    		for (int y=0; y<img.getHeight(); y++) {
+    	
+    			int p = source.getRGB(x,y); //get pixel
+    			int a = (p>>24)&0xff; //alpha chanel
+    			int r = (p>>16)&0xff; //red chanel
+    			int g = (p>>8)&0xff; //green chanel
+    			int b = p&0xff; // blue chanel
+    			// https://en.wikipedia.org/wiki/Grayscale
+    			// use luma coding
+    			int avg = (int)(r * 0.299) + (int)(g * 0.587) + (int)(b * 0.114);
+    			p = (a<<24) | (avg<<16) | (avg<<8) | avg;
+    			// set new pixel
+    			img.setRGB(x, y, p);	
+    	
+    		} //end for button width
+    	} //end for button height
+    	
+    	return new ImageIcon(img);
+    }
+    
+    /**
+     * Button image
+     * @param image as ImageIcon
+     */
+    @Override
+    public void setImage(ImageIcon image) {
+        super.setImage(image);
+        
+        //If no default disabled image create it from original image
+        if (disabledImage==null) {
+        	disabledImage = convertToGrayScale(image);
+        }
     }
 
    @Override
