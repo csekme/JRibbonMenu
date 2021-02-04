@@ -41,6 +41,7 @@ public class MainWindow extends JFrame implements IRibbonBar {
 			}
 			{
 				Button btnSettings = tbHome.addButton("Settings\nConfigurations"); // \n <- line break 
+				btnSettings.setEnabled(false);
 				btnSettings.setImage(Util.accessImageFile("dist/settings.png"));
 				btnSettings.addToolTip("Customize your settings.");
 				{
@@ -60,6 +61,7 @@ public class MainWindow extends JFrame implements IRibbonBar {
 			tbHome.addSeperator();
 			{
 				Button btnCopy = tbHome.addButton("Copy");
+				btnCopy.setEnabled(false);
 				btnCopy.setImage(Util.accessImageFile("dist/copy.png"));
 				btnCopy.addToolTip("Copy to Clipboard.");
 			}

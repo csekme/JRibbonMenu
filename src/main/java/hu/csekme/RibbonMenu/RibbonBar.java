@@ -15,6 +15,7 @@
  */
 package hu.csekme.RibbonMenu;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -39,7 +40,6 @@ public class RibbonBar extends JComponent {
 	private final static String SERIES = "ABCDEFGHIJKLMNOPQRSTWZXYabcdefghijklmneopqrstzyxwv0123456789#&@{}*";
 
 	private static RibbonBar instance = null;
-
 	
 	// colors
 	public static final int COLOR_RIBBON_BACKGROUND = 1;
@@ -58,15 +58,16 @@ public class RibbonBar extends JComponent {
 	public static final int COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND = 11;
 	public static final int COLOR_RIBBON_BUTTON_HOVER_BACKGROUND = 12;
 	public static final int COLOR_RIBBON_BUTTON_FOREGROUND = 13;
-	public static final int COLOR_RIBBON_SEPARATOR_FOREGROUND = 14;
-	public static final int COLOR_RIBBON_GROUP_COLOR = 15;
-	public static final int COLOR_RIBBON_SHADOW_DARK = 16;
-	public static final int COLOR_RIBBON_SHADOW_LIGHT = 17;
-	public static final int COLOR_RIBBON_MENUITEM_HOVER = 18;
-	public static final int COLOR_RIBBON_MENUITEM_PRESSED = 19;
-	public static final int COLOR_RIBBON_MENUITEM_BACKGROUND = 20;
-	public static final int COLOR_RIBBON_TAB_SELECTED_BACKGROUND = 21;
-	public static final int COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR = 22;
+	public static final int COLOR_RIBBON_BUTTON_DISABLED_FOREGROUND = 14;
+	public static final int COLOR_RIBBON_SEPARATOR_FOREGROUND = 15;
+	public static final int COLOR_RIBBON_GROUP_COLOR = 16;
+	public static final int COLOR_RIBBON_SHADOW_DARK = 17;
+	public static final int COLOR_RIBBON_SHADOW_LIGHT = 18;
+	public static final int COLOR_RIBBON_MENUITEM_HOVER = 19;
+	public static final int COLOR_RIBBON_MENUITEM_PRESSED = 20;
+	public static final int COLOR_RIBBON_MENUITEM_BACKGROUND = 21;
+	public static final int COLOR_RIBBON_TAB_SELECTED_BACKGROUND = 22;
+	public static final int COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR = 23;
 	
 	public static final double SCALING_FACTOR  =((double)java.awt.Toolkit.getDefaultToolkit().getScreenResolution()) / 96 ;
 	static {
@@ -111,8 +112,6 @@ public class RibbonBar extends JComponent {
 
 	boolean buildMenu = true;
 
- 
-
 	/**
 	 * Constructor
 	 */
@@ -132,12 +131,10 @@ public class RibbonBar extends JComponent {
 		}
 		toggle.setImage(Util.accessImageFile("images/minimize.png"));
 
-		// create default appearance
+		// load default appearance
 		COLORS.put(COLOR_RIBBON_BACKGROUND, new Color(245, 246, 247));
 		COLORS.put(COLOR_RIBBON_TAB_CONTAINER_BACKGROUND, new Color(255, 255, 255));
 		COLORS.put(COLOR_RIBBON_TAB_CONTAINER_STRIP, new Color(230, 229, 228));
-	
-		//tab backgrounds
 		COLORS.put(COLOR_RIBBON_TAB_BACKGROUND, new Color(255, 255, 255));
 		COLORS.put(COLOR_RIBBON_TAB_HOVER_BACKGROUND, new Color(250, 251, 252));
 		COLORS.put(COLOR_RIBBON_TAB_SELECTED_BACKGROUND,   new Color(245, 246, 247));
@@ -145,13 +142,12 @@ public class RibbonBar extends JComponent {
 		COLORS.put(COLOR_RIBBON_TAB_HOVER_FOREGROUND,  new Color(70, 70, 70));
 		COLORS.put(COLOR_RIBBON_TAB_SELECTED_FOREGROUND,  new Color(70, 70, 70));
 		COLORS.put(COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND, new Color(245, 246, 247));
-		
 		COLORS.put(COLOR_RIBBON_BUTTON_BACKGROUND, new Color(245, 246, 247));
 		COLORS.put(COLOR_RIBBON_BUTTON_HOVER_BACKGROUND, new Color(232, 239, 247));
-		COLORS.put( COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR, new Color(164, 206, 249));
-		
+		COLORS.put(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR, new Color(164, 206, 249));
 		COLORS.put(COLOR_RIBBON_SEPARATOR_FOREGROUND, new Color(179, 176, 173));
 		COLORS.put(COLOR_RIBBON_BUTTON_FOREGROUND, new Color(72, 70, 68));
+		COLORS.put(COLOR_RIBBON_BUTTON_DISABLED_FOREGROUND, new Color(142, 142, 142));
 		COLORS.put(COLOR_RIBBON_GROUP_COLOR, new Color(130, 130, 130));
 		COLORS.put(COLOR_RIBBON_SHADOW_DARK, new Color(211, 211, 211));
 		COLORS.put(COLOR_RIBBON_SHADOW_LIGHT, new Color(230, 230, 230));
@@ -160,13 +156,14 @@ public class RibbonBar extends JComponent {
 		// add listeners
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
+		
 		// register for tooltips
-	    ToolTipManager.sharedInstance().registerComponent(this);		
+		ToolTipManager.sharedInstance().registerComponent(this);
+
 	}
 
 	/**
 	 * Set color of an UI elements
-	 *
 	 * @param key   Class constant
 	 * @param value as Color
 	 */
@@ -282,7 +279,7 @@ public class RibbonBar extends JComponent {
 						offset_bx += slim_max;
 					}
 
-					//Megváltoztatjuk a szélességet a szöveg alapján
+					// set new width based on text
 					int bw = getMaxLineWidth(button.getTitle()) + buttonLeftRightMargin * 2 ;
 					button.setWidth(bw);
 					button.setHeight(buttonHeight);
@@ -294,7 +291,6 @@ public class RibbonBar extends JComponent {
 				}
 			}
 		}
-
 		repaint();
 	}
 
@@ -437,35 +433,12 @@ public class RibbonBar extends JComponent {
 							} else  {
 								g.drawString( groupname, lastSeparatorposition +(((west - lastSeparatorposition)/2) - groupname_length/2), getHeight() - 6 - shadowHeight );
 							} 
-							
 						}
-						
 						 
 						lastSeparatorposition = separator.getX();
 						index++;
 					}
-					
-					
-					
-					
-					/*
-					for (int s = 0; s < tab.getNumberOfSeparators(); s++) {
-						String groupname = tab.getGroupName(s);
-						if (groupname != null) {
-							g.setColor(COLORS.get(COLOR_RIBBON_GROUP_COLOR));
-							int groupname_length = g.getFontMetrics().stringWidth(groupname);
-							int west = getWidth();
-							Button sep = tab.getSeparator(s);
-							if (sep != null) {
-								west = sep.getX();
-							}
-							g.drawString(groupname,
-									horizontal_offset + (west - horizontal_offset) / 2 - groupname_length / 2,
-									getHeight() - 6 - shadowHeight);
-							horizontal_offset += west;
-						}
-					}
-					*/
+				
 					g.setFont(font);
 				}
 
@@ -529,12 +502,13 @@ public class RibbonBar extends JComponent {
 							}
 						}
 
-						g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_FOREGROUND));
+						//button text color
+						g.setColor( button.isEnabled()?COLORS.get(COLOR_RIBBON_BUTTON_FOREGROUND):COLORS.get(COLOR_RIBBON_BUTTON_DISABLED_FOREGROUND) );
+						//slim button
 						if (button.isSlim()) {
 							if (button.getImage() == null) {
 								g.drawString(button.getTitle(), button.getX() + 4, button.getY() + button.getHeight() - 8);
 							} else {
-								
 								g.drawImage(scale(button.getImage().getImage(), (int)(16*SCALING_FACTOR), (int)(16*SCALING_FACTOR)) , button.getX() + 2, button.getY() + 4,
 										(int)(16 * SCALING_FACTOR), 
 										(int)(16 * SCALING_FACTOR),
@@ -553,8 +527,7 @@ public class RibbonBar extends JComponent {
 									if (button.getTitle().contains("\n")) {
 										shift=4;
 									}
-									 
-								 
+									
 									g.drawImage(scale(button.getImage().getImage(), image_size, image_size), 
 											button.getX() + (button.getWidth() / 2) - image_size / 2 , 
 											button.getY() + (button.getHeight() / 2) - image_size - shift , 
@@ -676,7 +649,25 @@ public class RibbonBar extends JComponent {
 	    return null;
 	  }
  
-	
+  @Override
+  public String getToolTipText(MouseEvent e) {
+    for (int i = 0; i < TABS.size(); i++) {
+      Tab t = TABS.get(i);
+      if (t.isSelected()) {
+        for (int j = 0; j < t.getButtons().size(); j++) {
+          Button b = t.getButtons().get(j);
+          if (!b.isSeparator()) {
+            if (b.inBounds(e.getPoint(), b.getToken())) {
+              return b.getToolTip();
+            }
+          }
+        } // end for button search
+      } // end t.isSelected()
+    } // end for tab search
+    // no tooltip
+    return null;
+  }
+
 	/**
 	 * Global mouse adapter
 	 */
@@ -697,7 +688,8 @@ public class RibbonBar extends JComponent {
 				if (t.isSelected()) {
 					for (int j = 0; j < t.getButtons().size(); j++) {
 						Button b = t.getButtons().get(j);
-						if (!b.isSeparator()) {
+						//detected mouse only if button is enabled
+						if (!b.isSeparator() && b.isEnabled()) {
 							b.setHover(b.inBounds(e.getPoint(), b.getToken()));
 							if (b.hasDropDown()) {
 								b.setHoverTop(b.inBoundsPartOf(e.getPoint(), buttonPartialHeight, b.getToken()));
@@ -718,7 +710,7 @@ public class RibbonBar extends JComponent {
 		public void mouseReleased(MouseEvent e) {
 			boolean found = false;
 			if (e.getPoint().y <= ribbonTabHeight) {
-				
+
 				for (int i = 0; i < TABS.size(); i++) {
 					if (TABS.get(i).inBounds(e.getPoint(), TABS.get(i).getToken())) {
 						found = true;
@@ -728,9 +720,9 @@ public class RibbonBar extends JComponent {
 					for (int i = 0; i < TABS.size(); i++) {
 						TABS.get(i).setSelected(TABS.get(i).inBounds(e.getPoint(), TABS.get(i).getToken()));
 					}
-          minimized = false;
-  			  toggle();
-				}  
+					minimized = false;
+					toggle();
+				}
 			}
 			if (e.getPoint().y > ribbonTabHeight) {
 				for (int t = 0; t < TABS.size(); t++) {
@@ -740,7 +732,8 @@ public class RibbonBar extends JComponent {
 						for (int b = 0; b < TABS.get(t).getButtons().size(); b++) {
 							Button but = TABS.get(t).getButtons().get(b);
 							but.setPressed(false);
-							if (but.inBounds(e.getPoint(), but.getToken())) {
+							// fire action if it is in bounds and token is equal and it is not disabled
+							if (but.inBounds(e.getPoint(), but.getToken()) && but.isEnabled()) {
 								if (!but.hasDropDown() || but.isHoverTop()) {
 									but.fireAction(new ActionEvent(RibbonBar.this, (int) AWTEvent.MOUSE_EVENT_MASK,
 											"onClick"));
@@ -764,10 +757,10 @@ public class RibbonBar extends JComponent {
 									POPUP_MENU.show(RibbonBar.this, but.getX(), but.getY() + but.getHeight());
 									found = true;
 								}
-							}
-						}
-					}
-				}
+							}//in bounds button
+						}//end iteration button of selected tab
+					}// end case of tab is selected
+				} //end tab iteration
 			}
 
 			if (toggle.isBound(e.getPoint())) {
@@ -789,9 +782,6 @@ public class RibbonBar extends JComponent {
 			repaint();
 		}
 		
-		
-
-
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getPoint().y > ribbonTabHeight) {
@@ -800,7 +790,10 @@ public class RibbonBar extends JComponent {
 					if (tab.isSelected()) {
 						for (int b = 0; b < TABS.get(t).getButtons().size(); b++) {
 							Button but = TABS.get(t).getButtons().get(b);
-							but.setPressed(but.inBounds(e.getPoint(), but.getToken()));
+							//set pressed flag is it is in bounds and it is enabled
+							if (but.isEnabled()) {
+								but.setPressed(but.inBounds(e.getPoint(), but.getToken()));
+							}
 						}
 					}
 				}
