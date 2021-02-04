@@ -1,6 +1,8 @@
 package hu.csekme.RibbonMenu;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -98,12 +100,39 @@ public class Button extends VirtualObject {
     }
     
     /**
+     * In case of ClassCastException like
+     * sun.awt.image.ToolkitImage cannot be cast to java.awt.image.BufferedImage
+     * @param image as source
+     * @return converted BufferedImage
+     */
+	public static BufferedImage convertToBufferedImage(Image image) {
+		BufferedImage newImage = new BufferedImage(image.getWidth(null),
+				image.getHeight(null),
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = newImage.createGraphics();
+		g.drawImage(image, 0, 0, null);
+		g.dispose();
+		return newImage;
+	}
+    
+    /**
      * Convert ImageIcon to grayscale keep alpha chanel
      * @param image as original ImageIcon
      * @return image as grayscaled ImageIcon
      */
     private static ImageIcon convertToGrayScale(ImageIcon image) {
-    	BufferedImage source = (BufferedImage)image.getImage();
+    	BufferedImage source = null;
+    	try {
+    		//explicit type conversion
+    		source = (BufferedImage)image.getImage();
+    	} catch (ClassCastException err) {
+    		//in case of failure try to convert
+    		source = convertToBufferedImage(image.getImage());
+    	}
+    	
+    	if (source == null) {
+    		return image;
+    	}
     	BufferedImage img = new BufferedImage(image.getIconWidth(), image.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
     	for (int x=0; x<img.getWidth(); x++) {
     		for (int y=0; y<img.getHeight(); y++) {
