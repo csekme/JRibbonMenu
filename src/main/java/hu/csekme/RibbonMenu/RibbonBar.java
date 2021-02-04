@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package hu.csekme.RibbonMenu;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -25,8 +26,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.*;
+
 /**
  * Windows styled RibbonBar main component
+ * 
  * @author Csekme Krisztián
  * @see Tab
  * @see Button
@@ -40,11 +43,10 @@ public class RibbonBar extends JComponent {
 	private final static String SERIES = "ABCDEFGHIJKLMNOPQRSTWZXYabcdefghijklmneopqrstzyxwv0123456789#&@{}*";
 
 	private static RibbonBar instance = null;
-	
+
 	// colors
 	public static final int COLOR_RIBBON_BACKGROUND = 1;
-	
-	
+
 	public static final int COLOR_RIBBON_TAB_CONTAINER_BACKGROUND = 2;
 	public static final int COLOR_RIBBON_TAB_CONTAINER_STRIP = 3;
 	public static final int COLOR_RIBBON_TAB_BACKGROUND = 4;
@@ -53,7 +55,7 @@ public class RibbonBar extends JComponent {
 	public static final int COLOR_RIBBON_TAB_HOVER_FOREGROUND = 7;
 	public static final int COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND = 8;
 	public static final int COLOR_RIBBON_TAB_SELECTED_FOREGROUND = 9;
-	
+
 	public static final int COLOR_RIBBON_BUTTON_BACKGROUND = 10;
 	public static final int COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND = 11;
 	public static final int COLOR_RIBBON_BUTTON_HOVER_BACKGROUND = 12;
@@ -68,33 +70,34 @@ public class RibbonBar extends JComponent {
 	public static final int COLOR_RIBBON_MENUITEM_BACKGROUND = 21;
 	public static final int COLOR_RIBBON_TAB_SELECTED_BACKGROUND = 22;
 	public static final int COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR = 23;
-	
-	public static final double SCALING_FACTOR  =((double)java.awt.Toolkit.getDefaultToolkit().getScreenResolution()) / 96 ;
+
+	public static final double SCALING_FACTOR = ((double) java.awt.Toolkit.getDefaultToolkit().getScreenResolution())
+			/ 96;
 	static {
 		// SCALING_FACTOR = 1.0;
-		// SCALING_FACTOR =((double)java.awt.Toolkit.getDefaultToolkit().getScreenResolution()) / 96 ;
+		// SCALING_FACTOR
+		// =((double)java.awt.Toolkit.getDefaultToolkit().getScreenResolution()) / 96 ;
 	}
 	public static int SIZE_BUTTON_WIDTH = 75;
 	private static int SIZE_BUTTON_HEIGHT = 75;
 	public static int BUTTON_IMAGE_SIZE = 24;
-	
-	
+
 	// dimesnions
 	static int tabLayoutWestEastMargin = 8;
-	static int ribbonTabHeight = (int)(28 * SCALING_FACTOR);
+	static int ribbonTabHeight = (int) (28 * SCALING_FACTOR);
 	static int stripHeight = 0;
 	static int eastWestTabInset = 20;
 	static int northTabInset = 0;
 	static int buttonLeftRightMargin = 4;
 	static int ribbonButtonTopBase = ribbonTabHeight + 4;
-	static int buttonWidth = (int)(SIZE_BUTTON_WIDTH * SCALING_FACTOR);
-	static int buttonHeight = (int)(SIZE_BUTTON_HEIGHT * SCALING_FACTOR);
-	static int buttonPartialHeight = (int)(35 * SCALING_FACTOR);
-	static int slimButtonHeight = (int)(25 * SCALING_FACTOR);
+	static int buttonWidth = (int) (SIZE_BUTTON_WIDTH * SCALING_FACTOR);
+	static int buttonHeight = (int) (SIZE_BUTTON_HEIGHT * SCALING_FACTOR);
+	static int buttonPartialHeight = (int) (35 * SCALING_FACTOR);
+	static int slimButtonHeight = (int) (25 * SCALING_FACTOR);
 	static int separatorWidth = 7;
-	static int separatorHeight = (int)(88 * SCALING_FACTOR);
+	static int separatorHeight = (int) (88 * SCALING_FACTOR);
 	static int shadowHeight = 10;
-	static int ribbonHeight = (int)(126 * SCALING_FACTOR) + shadowHeight;
+	static int ribbonHeight = (int) (126 * SCALING_FACTOR) + shadowHeight;
 
 	boolean minimized = false;
 	boolean reminimized = false;
@@ -116,7 +119,7 @@ public class RibbonBar extends JComponent {
 	 * Constructor
 	 */
 	public RibbonBar() {
-		buttonWidth = (int)(SIZE_BUTTON_WIDTH * SCALING_FACTOR);
+		buttonWidth = (int) (SIZE_BUTTON_WIDTH * SCALING_FACTOR);
 		POPUP_MENU.setOpaque(true);
 		POPUP_MENU.setBackground(Color.white);
 		add(POPUP_MENU);
@@ -137,10 +140,10 @@ public class RibbonBar extends JComponent {
 		COLORS.put(COLOR_RIBBON_TAB_CONTAINER_STRIP, new Color(230, 229, 228));
 		COLORS.put(COLOR_RIBBON_TAB_BACKGROUND, new Color(255, 255, 255));
 		COLORS.put(COLOR_RIBBON_TAB_HOVER_BACKGROUND, new Color(250, 251, 252));
-		COLORS.put(COLOR_RIBBON_TAB_SELECTED_BACKGROUND,   new Color(245, 246, 247));
+		COLORS.put(COLOR_RIBBON_TAB_SELECTED_BACKGROUND, new Color(245, 246, 247));
 		COLORS.put(COLOR_RIBBON_TAB_FOREGROUND, new Color(70, 70, 70));
-		COLORS.put(COLOR_RIBBON_TAB_HOVER_FOREGROUND,  new Color(70, 70, 70));
-		COLORS.put(COLOR_RIBBON_TAB_SELECTED_FOREGROUND,  new Color(70, 70, 70));
+		COLORS.put(COLOR_RIBBON_TAB_HOVER_FOREGROUND, new Color(70, 70, 70));
+		COLORS.put(COLOR_RIBBON_TAB_SELECTED_FOREGROUND, new Color(70, 70, 70));
 		COLORS.put(COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND, new Color(245, 246, 247));
 		COLORS.put(COLOR_RIBBON_BUTTON_BACKGROUND, new Color(245, 246, 247));
 		COLORS.put(COLOR_RIBBON_BUTTON_HOVER_BACKGROUND, new Color(232, 239, 247));
@@ -151,12 +154,12 @@ public class RibbonBar extends JComponent {
 		COLORS.put(COLOR_RIBBON_GROUP_COLOR, new Color(130, 130, 130));
 		COLORS.put(COLOR_RIBBON_SHADOW_DARK, new Color(211, 211, 211));
 		COLORS.put(COLOR_RIBBON_SHADOW_LIGHT, new Color(230, 230, 230));
-		COLORS.put(COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND, new Color(201, 224, 247));	
-		
+		COLORS.put(COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND, new Color(201, 224, 247));
+
 		// add listeners
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
-		
+
 		// register for tooltips
 		ToolTipManager.sharedInstance().registerComponent(this);
 
@@ -164,6 +167,7 @@ public class RibbonBar extends JComponent {
 
 	/**
 	 * Set color of an UI elements
+	 * 
 	 * @param key   Class constant
 	 * @param value as Color
 	 */
@@ -192,20 +196,18 @@ public class RibbonBar extends JComponent {
 		}
 		getParent().revalidate();
 	}
-	
-	
+
 	int getMaxLineWidth(String text) {
 		String lines[] = text.split("\n");
 		int w = 0;
 		for (String line : lines) {
-			 int l = getGraphics().getFontMetrics(font).stringWidth(line);
-			 if (l>w) {
-				 w = l;
-			 }
+			int l = getGraphics().getFontMetrics(font).stringWidth(line);
+			if (l > w) {
+				w = l;
+			}
 		}
 		return w;
 	}
-	
 
 	/**
 	 * build an entire menu structure
@@ -223,14 +225,14 @@ public class RibbonBar extends JComponent {
 		// iterates over supreme items
 		for (int i = 0; i < TABS.size(); i++) {
 			Tab tab = TABS.get(i);
-			
-			int w =   getMaxLineWidth(tab.getTitle()) + (eastWestTabInset * 2);
+
+			int w = getMaxLineWidth(tab.getTitle()) + (eastWestTabInset * 2);
 			tab.setWidth(w);
 			tab.setHeight(ribbonTabHeight);
 			tab.setX(offset_t);
 			tab.setY(northTabInset);
 			offset_t += w;
-			int offset_bx = tabLayoutWestEastMargin; 
+			int offset_bx = tabLayoutWestEastMargin;
 			int offset_by = 0;
 			int slim_count = 0;
 			int slim_max = 0;
@@ -241,9 +243,10 @@ public class RibbonBar extends JComponent {
 				if (button.isSlim()) {
 					int sw;
 					if (button.getTitle() != null && button.getTitle().length() > 0) {
-						sw = getGraphics().getFontMetrics(font).stringWidth(button.getTitle()) + (int)(26 * SCALING_FACTOR);
+						sw = getGraphics().getFontMetrics(font).stringWidth(button.getTitle())
+								+ (int) (26 * SCALING_FACTOR);
 					} else {
-						sw = (int)(22 * SCALING_FACTOR);
+						sw = (int) (22 * SCALING_FACTOR);
 					}
 
 					if (slim_max < sw) {
@@ -255,7 +258,7 @@ public class RibbonBar extends JComponent {
 					button.setY(ribbonButtonTopBase + offset_by);
 					slim_count++;
 					offset_by += slimButtonHeight;
-					if (slim_count%3 ==0) {
+					if (slim_count % 3 == 0) {
 						offset_bx += slim_max;
 						offset_by = 0;
 						slim_max = 0;
@@ -280,7 +283,7 @@ public class RibbonBar extends JComponent {
 					}
 
 					// set new width based on text
-					int bw = getMaxLineWidth(button.getTitle()) + buttonLeftRightMargin * 2 ;
+					int bw = getMaxLineWidth(button.getTitle()) + buttonLeftRightMargin * 2;
 					button.setWidth(bw);
 					button.setHeight(buttonHeight);
 					button.setX(offset_bx);
@@ -305,21 +308,21 @@ public class RibbonBar extends JComponent {
 		TOKENS.put(gen, title);
 		Tab tab = new Tab(gen);
 		tab.setTitle(title);
-		if (TABS.size()==0) {
-			tab.setSelected( true );
+		if (TABS.size() == 0) {
+			tab.setSelected(true);
 		}
 		TABS.add(tab);
 		return tab;
 	}
-	
+
 	public static Image scale(Image im, int width, int height) {
 		Image b = im.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
 		MediaTracker tracker = new MediaTracker(new java.awt.Container());
 		tracker.addImage(b, 0);
 		try {
-		    tracker.waitForAll();
+			tracker.waitForAll();
 		} catch (InterruptedException ex) {
-		   Logger.getLogger(RibbonBar.class.getName()).log(Level.WARNING, null, ex);
+			Logger.getLogger(RibbonBar.class.getName()).log(Level.WARNING, null, ex);
 		}
 		return b;
 	}
@@ -341,11 +344,12 @@ public class RibbonBar extends JComponent {
 
 	/**
 	 * Graphics function
+	 * 
 	 * @param gg the Graphics context in which to paint
 	 */
 	@Override
 	public void paint(Graphics gg) {
-		Graphics2D g = (Graphics2D) gg;		 
+		Graphics2D g = (Graphics2D) gg;
 		// set quality
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -389,18 +393,19 @@ public class RibbonBar extends JComponent {
 			// Selected tab
 			if (tab.isSelected()) {
 				g.setColor(COLORS.get(COLOR_RIBBON_TAB_CONTAINER_STRIP));
-				g.drawRect(tab.getX(), tab.getY(), tab.getWidth()-1, tab.getHeight());
+				g.drawRect(tab.getX(), tab.getY(), tab.getWidth() - 1, tab.getHeight());
 				g.setColor(COLORS.get(COLOR_RIBBON_BACKGROUND));
-				g.drawLine(tab.getX(), tab.getHeight(), tab.getX()+tab.getWidth(), tab.getHeight());
-				
+				g.drawLine(tab.getX(), tab.getHeight(), tab.getX() + tab.getWidth(), tab.getHeight());
+
 				g.setColor(COLORS.get(COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND));
 				if (tab.isHover()) {
 					g.fillRect(tab.getX(), tab.getY() + tab.getHeight() - stripHeight, tab.getWidth(), stripHeight);
 				} else {
 					int half = (tab.getWidth() - g.getFontMetrics().stringWidth(tab.getTitle())) / 3;
-					g.fillRect(tab.getX() + half, tab.getY() + tab.getHeight() - stripHeight, tab.getWidth() - half * 2, stripHeight);
+					g.fillRect(tab.getX() + half, tab.getY() + tab.getHeight() - stripHeight, tab.getWidth() - half * 2,
+							stripHeight);
 				}
-			
+
 			}
 
 			if (tab.isHover()) {
@@ -413,9 +418,8 @@ public class RibbonBar extends JComponent {
 			}
 			g.drawString(tab.getTitle(),
 					tab.getX() + tab.getWidth() / 2 - g.getFontMetrics().stringWidth(tab.getTitle()) / 2,
-					tab.getY() +  (int)(20 * SCALING_FACTOR)  );
+					tab.getY() + (int) (20 * SCALING_FACTOR));
 
-		 
 			int lastSeparatorposition = 0;
 			// render selected tab
 			if (tab.isSelected() && !minimized) {
@@ -428,17 +432,21 @@ public class RibbonBar extends JComponent {
 							g.setColor(COLORS.get(COLOR_RIBBON_GROUP_COLOR));
 							int groupname_length = g.getFontMetrics().stringWidth(groupname);
 							int west = separator.getX();
-							if (index==0) {
-								g.drawString( groupname, west/2-groupname_length/2, getHeight() - 6 - shadowHeight );
-							} else  {
-								g.drawString( groupname, lastSeparatorposition +(((west - lastSeparatorposition)/2) - groupname_length/2), getHeight() - 6 - shadowHeight );
-							} 
+							if (index == 0) {
+								g.drawString(groupname, west / 2 - groupname_length / 2,
+										getHeight() - 6 - shadowHeight);
+							} else {
+								g.drawString(groupname,
+										lastSeparatorposition
+												+ (((west - lastSeparatorposition) / 2) - groupname_length / 2),
+										getHeight() - 6 - shadowHeight);
+							}
 						}
-						 
+
 						lastSeparatorposition = separator.getX();
 						index++;
 					}
-				
+
 					g.setFont(font);
 				}
 
@@ -463,29 +471,27 @@ public class RibbonBar extends JComponent {
 						if (!button.isSlim() && button.hasDropDown() && button.isHover()) {
 							if (button.isHoverTop()) {
 								g.fillRect(button.getX(), button.getY(), button.getWidth() + 1, buttonPartialHeight);
-								
-								g.setColor( COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR) );
+
+								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
 								g.setStroke(new BasicStroke(1.0f));
-								
+
 								g.drawRect(button.getX(), button.getY() + buttonPartialHeight, button.getWidth() + 1,
 										button.getHeight() - buttonPartialHeight);
-								
+
 								g.drawRect(button.getX(), button.getY(), button.getWidth() + 1, buttonPartialHeight);
-								
-								
+
 							} else {
-								g.setColor( COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR) );
+								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
 								g.setStroke(new BasicStroke(1.0f));
 
 								g.drawRect(button.getX(), button.getY(), button.getWidth() + 1, buttonPartialHeight);
 
-								g.setColor( COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BACKGROUND) );
+								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BACKGROUND));
 
-								
 								g.fillRect(button.getX(), button.getY() + buttonPartialHeight, button.getWidth() + 1,
 										button.getHeight() - buttonPartialHeight);
 
-								g.setColor( COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR) );
+								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
 								g.setStroke(new BasicStroke(1.0f));
 
 								g.drawRect(button.getX(), button.getY() + buttonPartialHeight, button.getWidth() + 1,
@@ -496,48 +502,49 @@ public class RibbonBar extends JComponent {
 						} else {
 							g.fillRect(button.getX(), button.getY(), button.getWidth(), button.getHeight());
 							if (button.isHover()) {
-								g.setColor( COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR) );
+								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
 								g.setStroke(new BasicStroke(1.0f));
-								g.drawRect(button.getX(), button.getY(), button.getWidth(), button.getHeight()-1);
+								g.drawRect(button.getX(), button.getY(), button.getWidth(), button.getHeight() - 1);
 							}
 						}
 
-						//button text color
-						g.setColor( button.isEnabled()?COLORS.get(COLOR_RIBBON_BUTTON_FOREGROUND):COLORS.get(COLOR_RIBBON_BUTTON_DISABLED_FOREGROUND) );
-						//slim button
+						// button text color
+						g.setColor(button.isEnabled() ? COLORS.get(COLOR_RIBBON_BUTTON_FOREGROUND)
+								: COLORS.get(COLOR_RIBBON_BUTTON_DISABLED_FOREGROUND));
+						// slim button
 						if (button.isSlim()) {
 							if (button.getImage() == null) {
-								g.drawString(button.getTitle(), button.getX() + 4, button.getY() + button.getHeight() - 8);
+								g.drawString(button.getTitle(), button.getX() + 4,
+										button.getY() + button.getHeight() - 8);
 							} else {
-								g.drawImage(scale(button.getImage().getImage(), (int)(16*SCALING_FACTOR), (int)(16*SCALING_FACTOR)) , button.getX() + 2, button.getY() + 4,
-										(int)(16 * SCALING_FACTOR), 
-										(int)(16 * SCALING_FACTOR),
-										this);
-								
-								g.drawString(button.getTitle(), button.getX() + 4 + (int)(16 * SCALING_FACTOR),
-										button.getY() + button.getHeight() - (int)(8 * SCALING_FACTOR));
+								g.drawImage(
+										scale(button.getImage().getImage(), (int) (16 * SCALING_FACTOR),
+												(int) (16 * SCALING_FACTOR)),
+										button.getX() + 2, button.getY() + 4, (int) (16 * SCALING_FACTOR),
+										(int) (16 * SCALING_FACTOR), this);
+
+								g.drawString(button.getTitle(), button.getX() + 4 + (int) (16 * SCALING_FACTOR),
+										button.getY() + button.getHeight() - (int) (8 * SCALING_FACTOR));
 							}
 						} else {
 							if (button.hasDropDown()) {
 								if (button.getImage() != null) {
-									
-									int image_size = (int)(BUTTON_IMAGE_SIZE * SCALING_FACTOR);
-									 
+
+									int image_size = (int) (BUTTON_IMAGE_SIZE * SCALING_FACTOR);
+
 									int shift = 2;
 									if (button.getTitle().contains("\n")) {
-										shift=4;
+										shift = 4;
 									}
-									
-									g.drawImage(scale(button.getImage().getImage(), image_size, image_size), 
-											button.getX() + (button.getWidth() / 2) - image_size / 2 , 
-											button.getY() + (button.getHeight() / 2) - image_size - shift , 
-											image_size,
-											image_size, 
-											this);
-									
-									
-									//g.drawImage(button.getImage().getImage(), button.getX() + 26, button.getY() + 6, 24,
-									//		24, this);
+
+									g.drawImage(scale(button.getImage().getImage(), image_size, image_size),
+											button.getX() + (button.getWidth() / 2) - image_size / 2,
+											button.getY() + (button.getHeight() / 2) - image_size - shift, image_size,
+											image_size, this);
+
+									// g.drawImage(button.getImage().getImage(), button.getX() + 26, button.getY() +
+									// 6, 24,
+									// 24, this);
 								}
 								String[] lines = button.getTitle().split("\n");
 								for (int l = 0; l < lines.length; l++) {
@@ -557,24 +564,22 @@ public class RibbonBar extends JComponent {
 								// Normal classic button
 							} else {
 								if (button.getImage() != null) {
-									int image_size = (int)(BUTTON_IMAGE_SIZE * SCALING_FACTOR);
-								 
-									g.drawImage(scale(button.getImage().getImage(), image_size, image_size), 
-											button.getX() + (button.getWidth() / 2) - image_size / 2 , 
-											button.getY() + (button.getHeight() / 2) - image_size , 
-											image_size,
-											image_size, 
-											this);
+									int image_size = (int) (BUTTON_IMAGE_SIZE * SCALING_FACTOR);
+
+									g.drawImage(scale(button.getImage().getImage(), image_size, image_size),
+											button.getX() + (button.getWidth() / 2) - image_size / 2,
+											button.getY() + (button.getHeight() / 2) - image_size, image_size,
+											image_size, this);
 								}
 								String[] lines = button.getTitle().split("\n");
 								for (int l = 0; l < lines.length; l++) {
-									if (l>1) {
+									if (l > 1) {
 										break;
 									}
 									int w = g.getFontMetrics().stringWidth(lines[l]);
-									g.drawString(lines[l], button.getX() + button.getWidth() / 2 - w / 2, 
-											button.getY()
-											+ button.getHeight() - (int)(16*SCALING_FACTOR) + (l * (int)(14 * SCALING_FACTOR)) - (lines.length > 1 ? 10 : 0)  );
+									g.drawString(lines[l], button.getX() + button.getWidth() / 2 - w / 2,
+											button.getY() + button.getHeight() - (int) (16 * SCALING_FACTOR)
+													+ (l * (int) (14 * SCALING_FACTOR)) - (lines.length > 1 ? 10 : 0));
 								}
 
 							}
@@ -602,7 +607,7 @@ public class RibbonBar extends JComponent {
 			if (reminimized) {
 				g.drawImage(pinned.getImage(), toggle.getX(), toggle.getY(), 16, 16, this);
 			} else {
-				g.drawImage(toggle.getImage().getImage(), toggle.getX(), toggle.getY(), 16, 16, this);							
+				g.drawImage(toggle.getImage().getImage(), toggle.getX(), toggle.getY(), 16, 16, this);
 			}
 		}
 		super.paint(g);
@@ -620,53 +625,34 @@ public class RibbonBar extends JComponent {
 		}
 		repaint();
 	}
-	
+
 	public static void fired() {
-		if (instance!=null) {
+		if (instance != null) {
 			if (instance.reminimized) {
 				instance.minimized = true;
 				instance.toggle();
 			}
 		}
 	}
-	
-	  @Override
-	  public String getToolTipText(MouseEvent e) {
-	    for (int i = 0; i < TABS.size(); i++) {
-	      Tab t = TABS.get(i);
-	      if (t.isSelected()) {
-	        for (int j = 0; j < t.getButtons().size(); j++) {
-	          Button b = t.getButtons().get(j);
-	          if (!b.isSeparator()) {
-	            if (b.inBounds(e.getPoint(), b.getToken())) {
-	              return b.getToolTip();
-	            }
-	          }
-	        } // end for button search
-	      } // end t.isSelected()
-	    } // end for tab search
-	    // no tooltip
-	    return null;
-	  }
- 
-  @Override
-  public String getToolTipText(MouseEvent e) {
-    for (int i = 0; i < TABS.size(); i++) {
-      Tab t = TABS.get(i);
-      if (t.isSelected()) {
-        for (int j = 0; j < t.getButtons().size(); j++) {
-          Button b = t.getButtons().get(j);
-          if (!b.isSeparator()) {
-            if (b.inBounds(e.getPoint(), b.getToken())) {
-              return b.getToolTip();
-            }
-          }
-        } // end for button search
-      } // end t.isSelected()
-    } // end for tab search
-    // no tooltip
-    return null;
-  }
+
+	@Override
+	public String getToolTipText(MouseEvent e) {
+		for (int i = 0; i < TABS.size(); i++) {
+			Tab t = TABS.get(i);
+			if (t.isSelected()) {
+				for (int j = 0; j < t.getButtons().size(); j++) {
+					Button b = t.getButtons().get(j);
+					if (!b.isSeparator()) {
+						if (b.inBounds(e.getPoint(), b.getToken())) {
+							return b.getToolTip();
+						}
+					}
+				} // end for button search
+			} // end t.isSelected()
+		} // end for tab search
+			// no tooltip
+		return null;
+	}
 
 	/**
 	 * Global mouse adapter
@@ -675,8 +661,7 @@ public class RibbonBar extends JComponent {
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			
-			
+
 			for (int i = 0; i < TABS.size(); i++) {
 				TABS.get(i).setHover(false);
 			}
@@ -688,7 +673,7 @@ public class RibbonBar extends JComponent {
 				if (t.isSelected()) {
 					for (int j = 0; j < t.getButtons().size(); j++) {
 						Button b = t.getButtons().get(j);
-						//detected mouse only if button is enabled
+						// detected mouse only if button is enabled
 						if (!b.isSeparator() && b.isEnabled()) {
 							b.setHover(b.inBounds(e.getPoint(), b.getToken()));
 							if (b.hasDropDown()) {
@@ -742,46 +727,45 @@ public class RibbonBar extends JComponent {
 									POPUP_MENU.removeAll();
 									for (int i = 0; i < but.getSubMenuList().size(); i++) {
 										if (but.getSubMenuList().get(i) instanceof JMenuItem) {
-											POPUP_MENU.add((JMenuItem)but.getSubMenuList().get(i));
+											POPUP_MENU.add((JMenuItem) but.getSubMenuList().get(i));
 										}
 										if (but.getSubMenuList().get(i) instanceof JCheckBoxMenuItem) {
 											POPUP_MENU.add((JCheckBoxMenuItem) but.getSubMenuList().get(i));
 										}
 										if (but.getSubMenuList().get(i) instanceof RibbonMenuItem) {
-											RibbonMenuItem ri =	((RibbonMenuItem)but.getSubMenuList().get(i));
-											int w = new JMenuItem(ri.getText()).getPreferredSize().width + 28 + ri.getIconTextGap();
-											ri.setPreferredSize(new Dimension(w, 22)); //TODO maybe scaling issue
+											RibbonMenuItem ri = ((RibbonMenuItem) but.getSubMenuList().get(i));
+											int w = new JMenuItem(ri.getText()).getPreferredSize().width + 28
+													+ ri.getIconTextGap();
+											ri.setPreferredSize(new Dimension(w, 22)); // TODO maybe scaling issue
 										}
 									}
-									
+
 									POPUP_MENU.show(RibbonBar.this, but.getX(), but.getY() + but.getHeight());
 									found = true;
 								}
-							}//in bounds button
-						}//end iteration button of selected tab
-					}// end case of tab is selected
-				} //end tab iteration
+							} // in bounds button
+						} // end iteration button of selected tab
+					} // end case of tab is selected
+				} // end tab iteration
 			}
 
 			if (toggle.isBound(e.getPoint())) {
 				reminimized = !reminimized;
 				if (reminimized) {
-				minimized = !minimized;
+					minimized = !minimized;
 				}
 				toggle();
-				
+
 			} else {
 				if (reminimized && !found) {
 					minimized = true;
 					toggle();
 				}
 			}
-			
-			
 
 			repaint();
 		}
-		
+
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getPoint().y > ribbonTabHeight) {
@@ -790,7 +774,7 @@ public class RibbonBar extends JComponent {
 					if (tab.isSelected()) {
 						for (int b = 0; b < TABS.get(t).getButtons().size(); b++) {
 							Button but = TABS.get(t).getButtons().get(b);
-							//set pressed flag is it is in bounds and it is enabled
+							// set pressed flag is it is in bounds and it is enabled
 							if (but.isEnabled()) {
 								but.setPressed(but.inBounds(e.getPoint(), but.getToken()));
 							}
