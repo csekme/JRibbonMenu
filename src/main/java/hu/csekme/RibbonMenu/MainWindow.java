@@ -37,10 +37,13 @@ public class MainWindow extends JFrame implements IRibbonBar {
 			{
 				Button btnUser = tbHome.addButton("User");
 				btnUser.setImage(Util.accessImageFile("dist/user.png"));
+				btnUser.addToolTip("Add new user");
 			}
 			{
 				Button btnSettings = tbHome.addButton("Settings\nConfigurations"); // \n <- line break 
+				btnSettings.setEnabled(false);
 				btnSettings.setImage(Util.accessImageFile("dist/settings.png"));
+				btnSettings.addToolTip("Customize your settings.");
 				{
 					// some ways to add the submenu
 					btnSettings.addSubMenu(a -> {
@@ -58,21 +61,26 @@ public class MainWindow extends JFrame implements IRibbonBar {
 			tbHome.addSeperator();
 			{
 				Button btnCopy = tbHome.addButton("Copy");
+				btnCopy.setEnabled(false);
 				btnCopy.setImage(Util.accessImageFile("dist/copy.png"));
+				btnCopy.addToolTip("Copy to Clipboard.");
 			}
 			{
 				Button btnPaste = tbHome.addButton("Paste\nfrom clipboard");
 				btnPaste.setImage(Util.accessImageFile("dist/paste.png"));
+				btnPaste.addToolTip("Paste from Clipboard");
 			}
 			tbHome.setGroupName("Clipboard");
 			tbHome.addSeperator();
 			{
 				Button tbLetter = tbHome.addSlimButton("Send email");
 				tbLetter.setImage(Util.accessImageFile("dist/letter.png"));
+				tbLetter.addToolTip("Compose and Send Email.");
 			}
 			{
 				Button btnFavourites = tbHome.addSlimButton("Favourites");
 				btnFavourites.setImage(Util.accessImageFile("dist/kedvencek.png"));
+				btnFavourites.addToolTip("View list of your favourites.");
 			}
 			tbHome.setGroupName("Contacts");
 			tbHome.addSeperator();
@@ -84,10 +92,12 @@ public class MainWindow extends JFrame implements IRibbonBar {
 		{
 			Button btnReminder = tbView.addButton("Reminder");
 			btnReminder.setImage(Util.accessImageFile("dist/remind.png"));
+			btnReminder.addToolTip("Manage your Reminders.");
 		}
 		{
 			Button btnFingerPrint = tbView.addButton("Fingerprint");
 			btnFingerPrint.setImage(Util.accessImageFile("dist/fingerprint.png"));
+			btnFingerPrint.addToolTip("Toggle FingerPrint Security.");
 		}
 	
 	}

@@ -3,8 +3,11 @@ package hu.csekme.RibbonMenu;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 
@@ -29,6 +32,16 @@ public class Button extends VirtualObject {
     private List<ActionListener> actions;
     private List<Object> subMenu;
     private boolean pressed;
+    private boolean enabled;
+     
+    /** The tooltip, if any */
+    private ToolTip tooltip;
+
+   /** Optional image to display of button not enabled */
+    private ImageIcon disabledImage;
+    
+    /** The action command string fired by the button. */
+    private String actionCommand = null;
 
     public Button(String token) {
         super(token);
@@ -37,8 +50,10 @@ public class Button extends VirtualObject {
         this.actions = new ArrayList<>();
         this.subMenu = new ArrayList<>();
         this.pressed = false;
+        this.tooltip = null;
+        this.disabledImage = null;
+        this.enabled = true;
     }
-
 
     public void createSeparator() {
         this.separator = true;
@@ -65,8 +80,80 @@ public class Button extends VirtualObject {
         this.pressed = pressed;
     }
 
+    public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
+    }
+    
+    public boolean isEnabled() {
+    	return this.enabled;
+    }
+
+    public void setDisabledImage(ImageIcon disabledImage) {
+      this.disabledImage = disabledImage;
+    }
+    
+    /**
+     * Convert ImageIcon to grayscale keep alpha chanel
+     * @param image as original ImageIcon
+     * @return image as grayscaled ImageIcon
+     */
+    private static ImageIcon convertToGrayScale(ImageIcon image) {
+    	BufferedImage source = (BufferedImage)image.getImage();
+    	BufferedImage img = new BufferedImage(image.getIconWidth(), image.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+    	for (int x=0; x<img.getWidth(); x++) {
+    		for (int y=0; y<img.getHeight(); y++) {
+    	
+    			int p = source.getRGB(x,y); //get pixel
+    			int a = (p>>24)&0xff; //alpha chanel
+    			int r = (p>>16)&0xff; //red chanel
+    			int g = (p>>8)&0xff; //green chanel
+    			int b = p&0xff; // blue chanel
+    			// https://en.wikipedia.org/wiki/Grayscale
+    			// use luma coding
+    			int avg = (int)(r * 0.299) + (int)(g * 0.587) + (int)(b * 0.114);
+    			//use 50% transparency on alpha channel  
+    			p = ((int)(a*.5)<<24) | (avg<<16) | (avg<<8) | avg;
+    			// set new pixel
+    			img.setRGB(x, y, p);	
+    	
+    		} //end for button width
+    	} //end for button height
+    	
+    	return new ImageIcon(img);
+    }
+    
+    /**
+     * Button image
+     * @param image as ImageIcon
+     */
+    @Override
+    public void setImage(ImageIcon image) {
+        super.setImage(image);
+        
+        //If no default disabled image create it from original image
+        if (disabledImage==null) {
+        	disabledImage = convertToGrayScale(image);
+        }
+    }
+
+   @Override
+    public ImageIcon getImage() {
+      if (!enabled) {
+        return disabledImage;
+      }
+      return super.getImage();
+    }
+
     public void addActionListener(ActionListener a) {
         actions.add(a);
+    }
+
+    public void setActionCommand(String actionCommand) {
+      this.actionCommand = actionCommand;
+    }
+
+    public String getActionCommand() {
+      return actionCommand;
     }
 
     public void addSubMenu(JMenuItem a) {
@@ -85,6 +172,16 @@ public class Button extends VirtualObject {
         subMenu.add(m);
     }
 
+    public void addToolTip(String text) {
+      this.tooltip = new ToolTip(text);
+    }
+    
+    public String getToolTip() {
+      if (tooltip==null)
+        return null;
+      return this.tooltip.getText();
+    }
+    
     public List<Object> getSubMenuList() {
         return subMenu;
     }
@@ -93,10 +190,20 @@ public class Button extends VirtualObject {
         return subMenu.size() == 0 ? false : true;
     }
 
-    public void fireAction(ActionEvent e) {
-        for (ActionListener a : actions) {
-            a.actionPerformed(e);
+    public void fireAction(ActionEvent event) {
+      if (enabled) {
+        ActionEvent e = event;
+        if (actionCommand != null) {
+          e = new ActionEvent(this,
+              ActionEvent.ACTION_PERFORMED,
+              actionCommand,
+              event.getWhen(),
+              event.getModifiers());
         }
+        for (ActionListener a : actions) {
+           a.actionPerformed(e);
+        }
+      }
     }
 
 }
