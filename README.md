@@ -1,6 +1,8 @@
 # JRibbonMenu
 ### Ribbon Menu Bar implementation in Java.
 
+Custom Version with a small change.  The unpin toggle has been removed due to odd behavoir with the GUIsliceBuilder.
+
 ![](md/img1.png)
 
 ## Installation

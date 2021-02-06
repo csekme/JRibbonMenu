@@ -91,7 +91,7 @@ public class RibbonBar extends JComponent {
 	static int ribbonHeight = (int)(126 * SCALING_FACTOR) + shadowHeight;
 
 	boolean minimized = false;
-	boolean reminimized = false;
+//	boolean reminimized = false;
 
 	static final JPopupMenu POPUP_MENU = new JPopupMenu();
 	private Font font;
@@ -592,11 +592,11 @@ public class RibbonBar extends JComponent {
 			toggle.setHeight(16);
 		}
 		if (!minimized) {
-			if (reminimized) {
-				g.drawImage(pinned.getImage(), toggle.getX(), toggle.getY(), 16, 16, this);
-			} else {
+//			if (reminimized) {
+//				g.drawImage(pinned.getImage(), toggle.getX(), toggle.getY(), 16, 16, this);
+//			} else {
 				g.drawImage(toggle.getImage().getImage(), toggle.getX(), toggle.getY(), 16, 16, this);							
-			}
+//			}
 		}
 		super.paint(g);
 	}
@@ -615,9 +615,14 @@ public class RibbonBar extends JComponent {
 	}
 	
 	public static void fired() {
-		if (instance!=null) {
-			if (instance.reminimized) {
-				instance.minimized = true;
+/*
+		  if (instance.reminimized) {
+        instance.minimized = true;
+        instance.toggle();
+      }
+*/
+			if (instance.minimized) {
+				instance.minimized = false;
 				instance.toggle();
 			}
 		}
@@ -737,6 +742,7 @@ public class RibbonBar extends JComponent {
 				} //end tab iteration
 			}
 
+/*
 			if (toggle.isBound(e.getPoint())) {
 				reminimized = !reminimized;
 				if (reminimized) {
@@ -750,8 +756,11 @@ public class RibbonBar extends JComponent {
 					toggle();
 				}
 			}
-			
-			
+*/
+     if (toggle.isBound(e.getPoint())) {
+        minimized = !minimized;
+        toggle();
+      }
 
 			repaint();
 		}
