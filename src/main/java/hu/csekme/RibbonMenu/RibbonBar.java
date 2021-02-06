@@ -102,7 +102,7 @@ public class RibbonBar extends JComponent {
 	static final List<Tab> TABS = new ArrayList<>();
 
 	static final Button toggle = new Button(generateToken(20));
-	private static ImageIcon pinned = Util.accessImageFile("images/pinned.png");
+//	private static ImageIcon pinned = Util.accessImageFile("images/pinned.png");
 
 	boolean buildMenu = true;
 
@@ -625,7 +625,6 @@ public class RibbonBar extends JComponent {
 				instance.minimized = false;
 				instance.toggle();
 			}
-		}
 	}
  
   @Override

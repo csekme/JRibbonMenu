@@ -41,7 +41,6 @@ public class MainWindow extends JFrame implements IRibbonBar {
 			}
 			{
 				Button btnSettings = tbHome.addButton("Settings\nConfigurations"); // \n <- line break 
-				btnSettings.setEnabled(false);
 				btnSettings.setImage(Util.accessImageFile("dist/settings.png"));
 				btnSettings.addToolTip("Customize your settings.");
 				{
