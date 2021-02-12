@@ -70,7 +70,7 @@ public abstract class VirtualObject extends Bound {
      * @param p as coordinate x,y
      * @param top distance from top
      * @param token based on the token you are looking for
-     * @param parts examine from TOP or BOTTOM
+     * @param part examine from TOP or BOTTOM
      * @return  true if part of it, otherwise false
      * @see java.awt.Point
      */
