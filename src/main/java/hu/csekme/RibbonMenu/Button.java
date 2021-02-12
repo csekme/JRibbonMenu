@@ -3,11 +3,14 @@ package hu.csekme.RibbonMenu;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
@@ -88,6 +91,7 @@ public class Button extends VirtualObject {
     }
 
     public void setEnabled(boolean enabled) {
+      this.setReloadIcons(true);	//this will refresh cached container
       this.enabled = enabled;
     }
     
@@ -98,7 +102,7 @@ public class Button extends VirtualObject {
     public void setDisabledImage(ImageIcon disabledImage) {
       this.disabledImage = disabledImage;
     }
-    
+  
     /**
      * In case of ClassCastException like
      * sun.awt.image.ToolkitImage cannot be cast to java.awt.image.BufferedImage

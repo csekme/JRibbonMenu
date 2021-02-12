@@ -44,6 +44,9 @@ public class RibbonBar extends JComponent {
 
 	private static RibbonBar instance = null;
 
+	// Store scaled image 
+	Map<String,Image> cachedScaledIcons = new HashMap<String, Image>();
+	
 	// colors
 	public static final int COLOR_RIBBON_BACKGROUND = 1;
 
@@ -294,6 +297,8 @@ public class RibbonBar extends JComponent {
 				}
 			}
 		}
+		
+		
 		repaint();
 	}
 
@@ -315,16 +320,32 @@ public class RibbonBar extends JComponent {
 		return tab;
 	}
 
-	public static Image scale(Image im, int width, int height) {
-		Image b = im.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
-		MediaTracker tracker = new MediaTracker(new java.awt.Container());
-		tracker.addImage(b, 0);
-		try {
-			tracker.waitForAll();
-		} catch (InterruptedException ex) {
-			Logger.getLogger(RibbonBar.class.getName()).log(Level.WARNING, null, ex);
-		}
-		return b;
+	
+    /**
+     * Scale original picture
+     * @param o Virtual Object which has an icon
+     * @param width desired width
+     * @param height desired height
+     * @return scaled image
+     */
+	public Image scale(VirtualObject o, int width, int height) {
+		Image icon = cachedScaledIcons.get(o.getToken());
+		if (icon==null || o.needToReloadIcons()) {
+			if (o.getImage()==null) {
+				return null;
+			}
+			Image b = o.getImage().getImage().getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+			MediaTracker tracker = new MediaTracker(new java.awt.Container());
+			tracker.addImage(b, 0);
+			try {
+				tracker.waitForAll();
+			} catch (InterruptedException ex) {
+				Logger.getLogger(RibbonBar.class.getName()).log(Level.WARNING, null, ex);
+			}
+			icon = b;
+			cachedScaledIcons.put(o.getToken(), icon);
+		}		
+		return icon;
 	}
 
 	/**
@@ -518,7 +539,7 @@ public class RibbonBar extends JComponent {
 										button.getY() + button.getHeight() - 8);
 							} else {
 								g.drawImage(
-										scale(button.getImage().getImage(), (int) (16 * SCALING_FACTOR),
+										scale(button, (int) (16 * SCALING_FACTOR),
 												(int) (16 * SCALING_FACTOR)),
 										button.getX() + 2, button.getY() + 4, (int) (16 * SCALING_FACTOR),
 										(int) (16 * SCALING_FACTOR), this);
@@ -537,7 +558,7 @@ public class RibbonBar extends JComponent {
 										shift = 4;
 									}
 
-									g.drawImage(scale(button.getImage().getImage(), image_size, image_size),
+									g.drawImage(scale(button, image_size, image_size),
 											button.getX() + (button.getWidth() / 2) - image_size / 2,
 											button.getY() + (button.getHeight() / 2) - image_size - shift, image_size,
 											image_size, this);
@@ -566,7 +587,7 @@ public class RibbonBar extends JComponent {
 								if (button.getImage() != null) {
 									int image_size = (int) (BUTTON_IMAGE_SIZE * SCALING_FACTOR);
 
-									g.drawImage(scale(button.getImage().getImage(), image_size, image_size),
+									g.drawImage(scale(button, image_size, image_size),
 											button.getX() + (button.getWidth() / 2) - image_size / 2,
 											button.getY() + (button.getHeight() / 2) - image_size, image_size,
 											image_size, this);
@@ -635,6 +656,9 @@ public class RibbonBar extends JComponent {
 		}
 	}
 
+	/**
+	 * Get Tooltip text
+	 */
 	@Override
 	public String getToolTipText(MouseEvent e) {
 		for (int i = 0; i < TABS.size(); i++) {
@@ -643,14 +667,14 @@ public class RibbonBar extends JComponent {
 				for (int j = 0; j < t.getButtons().size(); j++) {
 					Button b = t.getButtons().get(j);
 					if (!b.isSeparator()) {
-						if (b.inBounds(e.getPoint(), b.getToken())) {
+						if ( (b.hasDropDown() && b.inBoundsPartOf(e.getPoint(),buttonPartialHeight, b.getToken(), Parts.TOP)) || (!b.hasDropDown() && b.inBounds(e.getPoint(), b.getToken())) ) {
 							return b.getToolTip();
-						}
+						} 
 					}
 				} // end for button search
 			} // end t.isSelected()
 		} // end for tab search
-			// no tooltip
+		// no tooltip
 		return null;
 	}
 
@@ -677,7 +701,7 @@ public class RibbonBar extends JComponent {
 						if (!b.isSeparator() && b.isEnabled()) {
 							b.setHover(b.inBounds(e.getPoint(), b.getToken()));
 							if (b.hasDropDown()) {
-								b.setHoverTop(b.inBoundsPartOf(e.getPoint(), buttonPartialHeight, b.getToken()));
+								b.setHoverTop(b.inBoundsPartOf(e.getPoint(), buttonPartialHeight, b.getToken(), Parts.TOP));
 							}
 						}
 					}

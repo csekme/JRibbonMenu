@@ -37,6 +37,7 @@ public abstract class VirtualObject extends Bound {
     private boolean hoverTop;
     private boolean selected;
     private boolean selectedTop;
+    private boolean reloadIcons;
  
     /**
      * Create Virtual Object with unique token
@@ -67,16 +68,17 @@ public abstract class VirtualObject extends Bound {
     /**
      * Tell that point obtained in the parameter is part of the object, calculated from provided top
      * @param p as coordinate x,y
-     * @param fromTheTop  calculate from this point of top
+     * @param top distance from top
      * @param token based on the token you are looking for
+     * @param parts examine from TOP or BOTTOM
      * @return  true if part of it, otherwise false
      * @see java.awt.Point
      */
-    public boolean inBoundsPartOf(Point p, int fromTheTop, String token) {
-        if ((p.x > getX()) && (p.x < (getX() + getWidth())) && (p.y > getY() + fromTheTop) && (p.y < (getY() + getHeight())) && this.token.equals(token)) {
-            return false;
+    public boolean inBoundsPartOf(Point p, int top, String token, Parts part) {
+        if ( (p.x > getX()) && (p.x < (getX() + getWidth())) && ( part==Parts.TOP?(p.y < getY() + top):(p.y > getY() + top)) && (p.y < (getY() + getHeight())) && this.token.equals(token)) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -238,5 +240,23 @@ public abstract class VirtualObject extends Bound {
     public void setHoverTop(boolean hoverTop) {
         this.hoverTop = hoverTop;
     }
+
+    /**
+     * A change has occurred, need to reload icons, after a call it set to false automatically
+     * @return need to reload icons
+     */
+	public boolean needToReloadIcons() {
+		boolean reload = reloadIcons;
+		setReloadIcons(false);
+		return reload;
+	}
+
+	/**
+	 * Set flag of reload icons. 
+	 * @param reloadIcons set it to true for reload icons
+	 */
+	public void setReloadIcons(boolean reloadIcons) {
+		this.reloadIcons = reloadIcons;
+	}
 
 }
