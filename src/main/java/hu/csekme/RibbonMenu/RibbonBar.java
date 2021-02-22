@@ -172,7 +172,7 @@ public class RibbonBar extends JComponent {
 	
     /**
      * Sets the enabled state of all object on RibbonBar.
-     * @param b if true, enables this object; otherwise, disables it
+     * @param enabled if true, enables this object; otherwise, disables it
      */
 	public void setEnabled(boolean enabled) {
 		toggle.setEnabled(enabled);

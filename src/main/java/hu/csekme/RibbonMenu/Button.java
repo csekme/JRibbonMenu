@@ -93,7 +93,7 @@ public class Button extends VirtualObject {
     /**
      * Sets the enabled state of the object.
      *
-     * @param b if true, enables this object; otherwise, disables it
+     * @param enabled if true, enables this object; otherwise, disables it
      */
     public void setEnabled(boolean enabled) {
       this.setReloadIcons(true);	//this will refresh cached container
