@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.JButton;
 /**
  * 
  * @author Krisz
@@ -29,6 +31,7 @@ public class Tab extends VirtualObject implements Iterable<Button> {
 	List<Button> buttons;
 	Map<Integer, String> groups;
 	int separators;
+	boolean enabled = true;
 	
 	public Tab(String token) {
 		super(token);
@@ -134,5 +137,29 @@ public class Tab extends VirtualObject implements Iterable<Button> {
 	public Iterator<Button> iterator() {
 		return buttons.iterator();
 	}
+
+    /**
+     * Determines whether this component is enabled. An enabled component
+     * can respond to user input and generate events. Components are
+     * enabled initially by default. A component may be enabled or disabled by
+     * calling its <code>setEnabled</code> method.
+     * @return <code>true</code> if the component is enabled,
+     *          <code>false</code> otherwise
+     * @see #setEnabled
+     */
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+    /**
+     * Sets the enabled state of the object.
+     *
+     * @param b if true, enables this object; otherwise, disables it
+     */
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
+	
  
 }

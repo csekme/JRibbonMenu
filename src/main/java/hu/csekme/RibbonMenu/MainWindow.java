@@ -21,7 +21,7 @@ public class MainWindow extends JFrame implements IRibbonBar {
 		setSize(800, 600);
 		{
 			//Add ribbon bar to NORTH (Suggested)
-			this.ribbonBar = new RibbonBar();
+			this.ribbonBar = RibbonBar.create();
 			getContentPane().add(this.ribbonBar, BorderLayout.NORTH);
 		}
 	}

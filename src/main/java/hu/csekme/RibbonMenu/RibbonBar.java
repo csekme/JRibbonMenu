@@ -104,6 +104,9 @@ public class RibbonBar extends JComponent {
 
 	boolean minimized = false;
 	boolean reminimized = false;
+	boolean poopup = false;
+	
+	boolean enabled = true;
 
 	static final JPopupMenu POPUP_MENU = new JPopupMenu();
 	private Font font;
@@ -121,7 +124,7 @@ public class RibbonBar extends JComponent {
 	/**
 	 * Constructor
 	 */
-	public RibbonBar() {
+	private RibbonBar() {
 		buttonWidth = (int) (SIZE_BUTTON_WIDTH * SCALING_FACTOR);
 		POPUP_MENU.setOpaque(true);
 		POPUP_MENU.setBackground(Color.white);
@@ -129,7 +132,7 @@ public class RibbonBar extends JComponent {
 
 		if (font == null) {
 			// inherit font from JMenuItem
-			font = new JMenuItem().getFont().deriveFont(Font.PLAIN).deriveFont(12f);
+			font = new JMenuItem().getFont().deriveFont(Font.PLAIN);//.deriveFont(12f);
 		}
 		{
 			setMinimumSize(new Dimension(0, ribbonHeight));
@@ -165,9 +168,70 @@ public class RibbonBar extends JComponent {
 
 		// register for tooltips
 		ToolTipManager.sharedInstance().registerComponent(this);
-
+	}
+	
+    /**
+     * Sets the enabled state of all object on RibbonBar.
+     * @param b if true, enables this object; otherwise, disables it
+     */
+	public void setEnabled(boolean enabled) {
+		toggle.setEnabled(enabled);
+		TABS.forEach( tab->{
+			tab.setEnabled(enabled);
+			tab.forEach( btn-> {
+				btn.setEnabled(enabled);
+			});
+		});
+		this.enabled = true;
+		repaint();
+	}
+	
+    /**
+     * Determines whether objects on RibbonBar are enabled. An enabled components
+     * can respond to user input and generate events. Components are
+     * enabled initially by default. A component may be enabled or disabled by
+     * calling its <code>setEnabled</code> method.
+     * @return <code>true</code> if the component is enabled,
+     *          <code>false</code> otherwise
+     * @see #setEnabled
+     */
+	public boolean isEnabled() {
+		return this.enabled;
+	}
+	
+	/**
+	 * Find button element by title it will return with the first match
+	 * It doens't work properly if your titles of buttons are not unique 
+	 * @param title button title
+	 * @return first matched button otherwise null
+	 */
+	public Button findByTitle(String title) {
+		for (int t = 0; t < TABS.size(); t++) {
+			Tab tab = TABS.get(t);
+			for (int i = 0; i < tab.getButtons().size(); i++) {
+				Button b = tab.getButtons().get(i);
+				if (!b.isSeparator() && b.getTitle()!=null && b.getTitle().equals(title)) {
+					return tab.getButtons().get(i);
+				}
+			}//end buttons on tab
+		}//end tab
+		return null;
 	}
 
+	/**
+	 * Create RibbonBar instance, its a Singleton. Only one instance 
+	 * available at runtime
+	 * @return RibbonBar instance
+	 */
+	public static RibbonBar create() {
+		if (instance == null) {
+			instance = new RibbonBar();
+			return instance;
+		}
+		return instance;
+	}
+	
+	
 	/**
 	 * Set color of an UI elements
 	 * 
@@ -445,7 +509,7 @@ public class RibbonBar extends JComponent {
 			// render selected tab
 			if (tab.isSelected() && !minimized) {
 				{ // Group title
-					g.setFont(font.deriveFont(9f * (float) SCALING_FACTOR));
+					g.setFont(font.deriveFont((float)(font.getSize()* 0.8f) * (float) SCALING_FACTOR));
 					int index = 0;
 					for (Button separator : tab.getSeparators()) {
 						String groupname = tab.getGroupName(index);
@@ -648,7 +712,9 @@ public class RibbonBar extends JComponent {
 	}
 
 	public static void fired() {
+		//System.err.println(instance);
 		if (instance != null) {
+			
 			if (instance.reminimized) {
 				instance.minimized = true;
 				instance.toggle();
@@ -690,7 +756,9 @@ public class RibbonBar extends JComponent {
 				TABS.get(i).setHover(false);
 			}
 			for (int i = 0; i < TABS.size(); i++) {
-				TABS.get(i).setHover(TABS.get(i).inBounds(e.getPoint(), TABS.get(i).getToken()));
+				if (TABS.get(i).isEnabled()) {
+					TABS.get(i).setHover(TABS.get(i).inBounds(e.getPoint(), TABS.get(i).getToken()));
+				}
 			}
 			for (int i = 0; i < TABS.size(); i++) {
 				Tab t = TABS.get(i);
@@ -727,7 +795,10 @@ public class RibbonBar extends JComponent {
 				}
 				if (found) {
 					for (int i = 0; i < TABS.size(); i++) {
-						TABS.get(i).setSelected(TABS.get(i).inBounds(e.getPoint(), TABS.get(i).getToken()));
+						Tab t = TABS.get(i);
+						if (t.isEnabled()) {
+							t.setSelected(t.inBounds(e.getPoint(), t.getToken()));
+						}
 					}
 					minimized = false;
 					toggle();
@@ -773,7 +844,7 @@ public class RibbonBar extends JComponent {
 				} // end tab iteration
 			}
 
-			if (toggle.isBound(e.getPoint())) {
+			if (toggle.isBound(e.getPoint()) && toggle.isEnabled()) {
 				reminimized = !reminimized;
 				if (reminimized) {
 					minimized = !minimized;
@@ -812,6 +883,9 @@ public class RibbonBar extends JComponent {
 		@Override
 		public void mouseExited(MouseEvent e) {
 			clearFlag();
+			if (!POPUP_MENU.isVisible()) {
+				fired();
+			}
 		}
 
 		@Override

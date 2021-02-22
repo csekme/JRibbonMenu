@@ -90,11 +90,25 @@ public class Button extends VirtualObject {
         this.pressed = pressed;
     }
 
+    /**
+     * Sets the enabled state of the object.
+     *
+     * @param b if true, enables this object; otherwise, disables it
+     */
     public void setEnabled(boolean enabled) {
       this.setReloadIcons(true);	//this will refresh cached container
       this.enabled = enabled;
     }
     
+    /**
+     * Determines whether this component is enabled. An enabled component
+     * can respond to user input and generate events. Components are
+     * enabled initially by default. A component may be enabled or disabled by
+     * calling its <code>setEnabled</code> method.
+     * @return <code>true</code> if the component is enabled,
+     *          <code>false</code> otherwise
+     * @see #setEnabled
+     */
     public boolean isEnabled() {
     	return this.enabled;
     }
