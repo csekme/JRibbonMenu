@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
 // Copyright 2020 Csekme Krisztián
 //
@@ -206,6 +207,14 @@ public class Button extends VirtualObject {
 
     public String getActionCommand() {
       return actionCommand;
+    }
+    
+    public void clearSubMenu() {
+    	subMenu.clear();
+    }
+    
+    public void addSubMenuSeparator() {
+    	subMenu.add(new JSeparator());
     }
 
     public void addSubMenu(JMenuItem a) {
