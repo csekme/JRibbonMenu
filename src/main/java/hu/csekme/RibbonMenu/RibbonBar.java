@@ -821,6 +821,10 @@ public class RibbonBar extends JComponent {
 								if (but.hasDropDown() && !but.isHoverTop()) {
 									POPUP_MENU.removeAll();
 									for (int i = 0; i < but.getSubMenuList().size(); i++) {
+										Object item = but.getSubMenuList().get(i);
+										if (item instanceof JSeparator) {
+											POPUP_MENU.add((JSeparator)item);
+										}
 										if (but.getSubMenuList().get(i) instanceof JMenuItem) {
 											POPUP_MENU.add((JMenuItem) but.getSubMenuList().get(i));
 										}
@@ -829,9 +833,11 @@ public class RibbonBar extends JComponent {
 										}
 										if (but.getSubMenuList().get(i) instanceof RibbonMenuItem) {
 											RibbonMenuItem ri = ((RibbonMenuItem) but.getSubMenuList().get(i));
+											/*
 											int w = new JMenuItem(ri.getText()).getPreferredSize().width + 28
 													+ ri.getIconTextGap();
 											ri.setPreferredSize(new Dimension(w, 22)); // TODO maybe scaling issue
+											*/
 										}
 									}
 
