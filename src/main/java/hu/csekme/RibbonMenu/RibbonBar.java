@@ -126,8 +126,8 @@ public class RibbonBar extends JComponent {
 	 */
 	private RibbonBar() {
 		buttonWidth = (int) (SIZE_BUTTON_WIDTH * SCALING_FACTOR);
-		POPUP_MENU.setOpaque(true);
-		POPUP_MENU.setBackground(Color.white);
+		//POPUP_MENU.setOpaque(true);
+		//POPUP_MENU.setBackground(Color.white);
 		add(POPUP_MENU);
 
 		if (font == null) {
@@ -168,6 +168,46 @@ public class RibbonBar extends JComponent {
 
 		// register for tooltips
 		ToolTipManager.sharedInstance().registerComponent(this);
+	}
+	
+	/**
+	 * Change all settings to default
+	 */
+	public void resetColors() {
+		putColor(RibbonBar.COLOR_RIBBON_TAB_CONTAINER_BACKGROUND, UIManager.getColor("TabbedPane.background").brighter());
+		putColor(RibbonBar.COLOR_RIBBON_TAB_BACKGROUND, 			UIManager.getColor("TabbedPane.background").brighter());
+		putColor(RibbonBar.COLOR_RIBBON_TAB_SELECTED_BACKGROUND, 	UIManager.getColor("TabbedPane.background"));
+		putColor(RibbonBar.COLOR_RIBBON_BACKGROUND, 				UIManager.getColor("TabbedPane.background"));
+		putColor(RibbonBar.COLOR_RIBBON_TAB_FOREGROUND, 			UIManager.getColor("Button.foreground"));
+		putColor(RibbonBar.COLOR_RIBBON_TAB_SELECTED_FOREGROUND, 	UIManager.getColor("Button.foreground"));
+		putColor(RibbonBar.COLOR_RIBBON_TAB_HOVER_BACKGROUND, 	UIManager.getColor("TabbedPane.buttonHoverBackground"));
+		putColor(RibbonBar.COLOR_RIBBON_TAB_HOVER_FOREGROUND, 	UIManager.getColor("Button.foreground"));
+		putColor(RibbonBar.COLOR_RIBBON_BUTTON_BACKGROUND, UIManager.getColor("TabbedPane.background"));
+		putColor(RibbonBar.COLOR_RIBBON_BUTTON_FOREGROUND, UIManager.getColor("Button.foreground"));
+		putColor(RibbonBar.COLOR_RIBBON_BUTTON_HOVER_BACKGROUND, UIManager.getColor("TabbedPane.buttonHoverBackground"));
+		putColor(RibbonBar.COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND, UIManager.getColor("Button.default.pressedBackground"));
+		putColor(RibbonBar.COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR, UIManager.getColor("Button.focusedBorderColor"));
+		putColor(RibbonBar.COLOR_RIBBON_SEPARATOR_FOREGROUND, UIManager.getColor("TabbedPane.light"));
+		putColor(RibbonBar.COLOR_RIBBON_TAB_CONTAINER_STRIP, UIManager.getColor("TabbedPane.light"));
+		putColor(RibbonBar.COLOR_RIBBON_SHADOW_DARK, UIManager.getColor("TabbedPane.background").darker());
+		putColor(RibbonBar.COLOR_RIBBON_SHADOW_LIGHT, UIManager.getColor("TabbedPane.background").brighter());
+		
+		SwingUtilities.updateComponentTreeUI(POPUP_MENU);
+		
+		TABS.forEach( tab->{
+			tab.forEach( b->{
+				if (b.hasDropDown()) {
+					List<Object> subs = b.getSubMenuList();
+					for (Object item : subs) {
+						SwingUtilities.updateComponentTreeUI((Component)item);
+						if (item instanceof RibbonMenuItem) {
+							((RibbonMenuItem)item).setBackground( UIManager.getColor("MenuItem.background") );
+						}
+					}
+				}
+			});
+		} );
+		
 	}
 	
     /**

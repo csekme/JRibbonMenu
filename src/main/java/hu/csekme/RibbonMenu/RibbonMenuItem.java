@@ -90,6 +90,8 @@ public class RibbonMenuItem extends JMenuItem {
     @Override
     public void paint(Graphics gl) {
         Graphics2D g = (Graphics2D) gl;
+        super.paint(gl);
+       
 /*
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
         g.setFont(ref.getFont().deriveFont(Font.PLAIN));
@@ -107,7 +109,7 @@ public class RibbonMenuItem extends JMenuItem {
         g.drawString(getText(), getIconTextGap() + 26, (int)(16 * SCALING_FACTOR));
         */
         if (!isCheckMenu() && icon != null) {
-            g.drawImage(icon.getImage(), 4, 3, (int)(16 * SCALING_FACTOR), (int)(16 * SCALING_FACTOR), this);
+            g.drawImage(icon.getImage(), 4, (int)(getHeight()/2-(8 * SCALING_FACTOR)), (int)(16 * SCALING_FACTOR), (int)(16 * SCALING_FACTOR), this);
         }
 
         if (isCheckMenu()) {
@@ -121,7 +123,7 @@ public class RibbonMenuItem extends JMenuItem {
             }
         }
 
-         super.paint(g);
+         
     }
 
     MouseAdapter MA = new MouseAdapter() {

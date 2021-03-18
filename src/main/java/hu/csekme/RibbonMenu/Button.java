@@ -218,7 +218,7 @@ public class Button extends VirtualObject {
     }
 
     public void addSubMenu(JMenuItem a) {
-        a.setForeground(Color.DARK_GRAY);
+      //  a.setForeground(Color.DARK_GRAY);
         subMenu.add(a);
     }
 
@@ -227,6 +227,14 @@ public class Button extends VirtualObject {
     }
 
 
+    public void addSubMenu(ActionListener a, String caption, ImageIcon icon) {
+        RibbonMenuItem m = new RibbonMenuItem(caption);
+        m.setIcon(icon);
+        m.addActionListener(a);
+        subMenu.add(m);
+    }
+
+    
     public void addSubMenu(ActionListener a, String caption) {
         RibbonMenuItem m = new RibbonMenuItem(caption);
         m.addActionListener(a);
