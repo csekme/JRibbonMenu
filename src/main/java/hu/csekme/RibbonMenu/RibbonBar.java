@@ -472,18 +472,25 @@ public class RibbonBar extends JComponent {
 	 * 
 	 * @param gg the Graphics context in which to paint
 	 */
+	int tick = 0;
 	@Override
 	public void paint(Graphics gg) {
+		
+		
+		
 		Graphics2D g = (Graphics2D) gg;
 		// set quality
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		// the very first time build entire menu structure
-		if (buildMenu) {
-			buildMenu = false;
-			buildMenu();
+		
+		if (tick<510) {
+			tick++;
 		}
+		if (tick<500) {
+		 	buildMenu();
+		}		
 
 		// Ribbon background
 		g.setColor(COLORS.get(COLOR_RIBBON_BACKGROUND));
