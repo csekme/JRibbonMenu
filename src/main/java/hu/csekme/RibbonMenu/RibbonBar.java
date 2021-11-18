@@ -193,7 +193,7 @@ public class RibbonBar extends JComponent {
 		putColor(RibbonBar.COLOR_RIBBON_SEPARATOR_FOREGROUND, UIManager.getColor("TabbedPane.light"));
 		putColor(RibbonBar.COLOR_RIBBON_TAB_CONTAINER_STRIP, UIManager.getColor("TabbedPane.light"));
 		putColor(RibbonBar.COLOR_RIBBON_SHADOW_DARK, UIManager.getColor("TabbedPane.background").darker());
-		putColor(RibbonBar.COLOR_RIBBON_SHADOW_LIGHT, UIManager.getColor("TabbedPane.background").brighter());
+		putColor(RibbonBar.COLOR_RIBBON_SHADOW_LIGHT, UIManager.getColor("TabbedPane.background"));
 		
 		SwingUtilities.updateComponentTreeUI(POPUP_MENU);
 		
