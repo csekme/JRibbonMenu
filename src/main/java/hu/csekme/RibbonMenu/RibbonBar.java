@@ -15,6 +15,8 @@
  */
 package hu.csekme.RibbonMenu;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -174,6 +176,7 @@ public class RibbonBar extends JComponent {
 	 * Change all settings to default
 	 */
 	public void resetColors() {
+		cachedScaledIcons.clear();
 		putColor(RibbonBar.COLOR_RIBBON_TAB_CONTAINER_BACKGROUND, UIManager.getColor("TabbedPane.background").brighter());
 		putColor(RibbonBar.COLOR_RIBBON_TAB_BACKGROUND, 			UIManager.getColor("TabbedPane.background").brighter());
 		putColor(RibbonBar.COLOR_RIBBON_TAB_SELECTED_BACKGROUND, 	UIManager.getColor("TabbedPane.background"));
@@ -434,9 +437,17 @@ public class RibbonBar extends JComponent {
      */
 	public Image scale(VirtualObject o, int width, int height) {
 		Image icon = cachedScaledIcons.get(o.getToken());
+
 		if (icon==null || o.needToReloadIcons()) {
 			if (o.getImage()==null) {
 				return null;
+			}
+			if (o.getImage() instanceof FlatSVGIcon) {
+			 
+				FlatSVGIcon i = (FlatSVGIcon)o.getImage();
+				icon = i.derive(width, height).getImage();
+				cachedScaledIcons.put(o.getToken(), icon);
+				return icon;
 			}
 			Image b = o.getImage().getImage().getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
 			MediaTracker tracker = new MediaTracker(new java.awt.Container());
@@ -482,7 +493,12 @@ public class RibbonBar extends JComponent {
 		// set quality
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+		g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
+		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 		// the very first time build entire menu structure
 		
 		if (tick<510) {
@@ -668,7 +684,7 @@ public class RibbonBar extends JComponent {
 									if (button.getTitle().contains("\n")) {
 										shift = 4;
 									}
-
+									//SVG teszt
 									g.drawImage(scale(button, image_size, image_size),
 											button.getX() + (button.getWidth() / 2) - image_size / 2,
 											button.getY() + (button.getHeight() / 2) - image_size - shift, image_size,

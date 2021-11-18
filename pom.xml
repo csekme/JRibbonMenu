@@ -38,10 +38,29 @@
 		<main.class>hu.csekme.RibbonMenu.Program</main.class>
 		<java.version>8</java.version>
 		<encoding>UTF-8</encoding>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>		
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<flatlaf.version>1.6.1</flatlaf.version>
 	</properties>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/com.formdev/flatlaf -->
+		<!-- Integrated theme -->
+		<dependency>
+			<groupId>com.formdev</groupId>
+			<artifactId>flatlaf</artifactId>
+			<version>${flatlaf.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.formdev</groupId>
+			<artifactId>flatlaf-swingx</artifactId>
+			<version>${flatlaf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.formdev</groupId>
+			<artifactId>flatlaf-extras</artifactId>
+			<version>${flatlaf.version}</version>
+		</dependency>
 
 	</dependencies>
 
@@ -94,7 +113,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Javadoc -->
+			<!-- Javadoc
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -108,6 +127,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 			<!-- compiling -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
