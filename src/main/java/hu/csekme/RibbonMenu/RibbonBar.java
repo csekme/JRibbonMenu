@@ -51,7 +51,6 @@ public class RibbonBar extends JComponent {
 	
 	// colors
 	public static final int COLOR_RIBBON_BACKGROUND = 1;
-
 	public static final int COLOR_RIBBON_TAB_CONTAINER_BACKGROUND = 2;
 	public static final int COLOR_RIBBON_TAB_CONTAINER_STRIP = 3;
 	public static final int COLOR_RIBBON_TAB_BACKGROUND = 4;
@@ -60,7 +59,6 @@ public class RibbonBar extends JComponent {
 	public static final int COLOR_RIBBON_TAB_HOVER_FOREGROUND = 7;
 	public static final int COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND = 8;
 	public static final int COLOR_RIBBON_TAB_SELECTED_FOREGROUND = 9;
-
 	public static final int COLOR_RIBBON_BUTTON_BACKGROUND = 10;
 	public static final int COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND = 11;
 	public static final int COLOR_RIBBON_BUTTON_HOVER_BACKGROUND = 12;
@@ -75,6 +73,7 @@ public class RibbonBar extends JComponent {
 	public static final int COLOR_RIBBON_MENUITEM_BACKGROUND = 21;
 	public static final int COLOR_RIBBON_TAB_SELECTED_BACKGROUND = 22;
 	public static final int COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR = 23;
+	public static final int COLOR_RIBBON_TAB_STRIP_BACKGROUND = 24;
 
 	public static final double SCALING_FACTOR = ((double) java.awt.Toolkit.getDefaultToolkit().getScreenResolution())
 			/ 96;
@@ -88,9 +87,9 @@ public class RibbonBar extends JComponent {
 	public static int BUTTON_IMAGE_SIZE = 24;
 
 	// dimesnions
-	static int tabLayoutWestEastMargin = 8;
+	static int tabLayoutWestEastMargin = 12; //8
 	static int ribbonTabHeight = (int) (28 * SCALING_FACTOR);
-	static int stripHeight = 0;
+	static int stripHeight = 2;
 	static int eastWestTabInset = 20;
 	static int northTabInset = 0;
 	static int buttonLeftRightMargin = 4;
@@ -166,7 +165,7 @@ public class RibbonBar extends JComponent {
 		COLORS.put(COLOR_RIBBON_SHADOW_DARK, new Color(211, 211, 211));
 		COLORS.put(COLOR_RIBBON_SHADOW_LIGHT, new Color(230, 230, 230));
 		COLORS.put(COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND, new Color(201, 224, 247));
-
+		COLORS.put(COLOR_RIBBON_TAB_STRIP_BACKGROUND, new Color(150,150,150));
 		// add listeners
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
@@ -188,16 +187,17 @@ public class RibbonBar extends JComponent {
 		putColor(RibbonBar.COLOR_RIBBON_TAB_SELECTED_FOREGROUND, 	UIManager.getColor("Button.foreground"));
 		putColor(RibbonBar.COLOR_RIBBON_TAB_HOVER_BACKGROUND, 	UIManager.getColor("TabbedPane.buttonHoverBackground"));
 		putColor(RibbonBar.COLOR_RIBBON_TAB_HOVER_FOREGROUND, 	UIManager.getColor("Button.foreground"));
-		putColor(RibbonBar.COLOR_RIBBON_BUTTON_BACKGROUND, UIManager.getColor("TabbedPane.background"));
+		putColor(RibbonBar.COLOR_RIBBON_BUTTON_BACKGROUND, UIManager.getColor("TabbedPane.background").brighter());
 		putColor(RibbonBar.COLOR_RIBBON_BUTTON_FOREGROUND, UIManager.getColor("Button.foreground"));
 		putColor(RibbonBar.COLOR_RIBBON_BUTTON_HOVER_BACKGROUND, UIManager.getColor("TabbedPane.buttonHoverBackground"));
-		putColor(RibbonBar.COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND, UIManager.getColor("Button.default.pressedBackground"));
+		putColor(RibbonBar.COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND, UIManager.getColor("Button.background"));
 		putColor(RibbonBar.COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR, UIManager.getColor("Button.focusedBorderColor"));
 		putColor(RibbonBar.COLOR_RIBBON_SEPARATOR_FOREGROUND, UIManager.getColor("TabbedPane.light"));
 		putColor(RibbonBar.COLOR_RIBBON_TAB_CONTAINER_STRIP, UIManager.getColor("TabbedPane.light"));
-		putColor(RibbonBar.COLOR_RIBBON_SHADOW_DARK, UIManager.getColor("TabbedPane.background").darker());
+		putColor(RibbonBar.COLOR_RIBBON_SHADOW_DARK, UIManager.getColor("TabbedPane.background"));
 		putColor(RibbonBar.COLOR_RIBBON_SHADOW_LIGHT, UIManager.getColor("TabbedPane.background"));
-		putColor(RibbonBar.COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND, Color.red);// UIManager.getColor("Button.focusedBorderColor"));
+		putColor(RibbonBar.COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND, UIManager.getColor("Button.focusedBorderColor"));// UIManager.getColor("Button.focusedBorderColor"));
+		putColor(RibbonBar.COLOR_RIBBON_TAB_STRIP_BACKGROUND, UIManager.getColor("TabbedPane.background").darker());
 		SwingUtilities.updateComponentTreeUI(POPUP_MENU);
 		
 		TABS.forEach( tab->{
@@ -511,11 +511,17 @@ public class RibbonBar extends JComponent {
 
 		// Ribbon background
 		g.setColor(COLORS.get(COLOR_RIBBON_BACKGROUND));
-		//g.fillRoundRect(0, 0, getWidth(), getHeight(), tabArc, tabArc);
+		g.fillRect(0, 0, getWidth(), getHeight());
 
 		// Ribbon tab background
+		GradientPaint shadow_paint = new GradientPaint(4, ribbonTabHeight-1,
+		COLORS.get(COLOR_RIBBON_SHADOW_LIGHT), 4, ribbonTabHeight+8 + getHeight()- (int)(41 * SCALING_FACTOR), COLORS.get(COLOR_RIBBON_SHADOW_DARK));
+		g.setPaint(shadow_paint);
+		//g.setColor(COLORS.get(COLOR_RIBBON_TAB_CONTAINER_BACKGROUND).darker().darker());
+		g.fillRoundRect(4, ribbonTabHeight+4, getWidth()-12, getHeight()- (int)(41 * SCALING_FACTOR), tabArc, tabArc);
+
 		g.setColor(COLORS.get(COLOR_RIBBON_TAB_CONTAINER_BACKGROUND));
-		g.fillRoundRect(2, ribbonTabHeight, getWidth()-4, getHeight()-40, tabArc, tabArc);
+		g.fillRoundRect(6, ribbonTabHeight, getWidth()-12, getHeight()- (int)(41 * SCALING_FACTOR), tabArc, tabArc);
 
 		g.setColor(COLORS.get(COLOR_RIBBON_TAB_CONTAINER_STRIP));
 		//g.drawLine(0, ribbonTabHeight, getWidth(), ribbonTabHeight);
@@ -538,7 +544,6 @@ public class RibbonBar extends JComponent {
 				}
 			}
 		//	g.fillRoundRect(tab.getX(), tab.getY(), tab.getWidth(), tab.getHeight(), 0,0);
-
 			// Selected tab
 			if (tab.isSelected()) {
 				g.setColor(COLORS.get(COLOR_RIBBON_TAB_CONTAINER_STRIP));
@@ -547,13 +552,16 @@ public class RibbonBar extends JComponent {
 			//	g.drawLine(tab.getX(), tab.getHeight(), tab.getX() + tab.getWidth(), tab.getHeight());
 				g.setColor(COLORS.get(COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND));
 				if (tab.isHover()) {
-					g.fillRect(tab.getX(), tab.getY() + tab.getHeight() - stripHeight, tab.getWidth(), stripHeight);
+					g.fillRect(tab.getX(), tab.getY() + tab.getHeight() - stripHeight -4, tab.getWidth(), stripHeight);
 				} else {
 					int half = (tab.getWidth() - g.getFontMetrics().stringWidth(tab.getTitle())) / 3;
-					g.fillRect(tab.getX() + half, tab.getY() + tab.getHeight() - stripHeight, tab.getWidth() - half * 2,
-							stripHeight);
+					g.fillRect(tab.getX() + half, tab.getY() + tab.getHeight() - stripHeight -4, tab.getWidth() - half * 2,
+							stripHeight );
 				}
 
+			} else if (tab.isHover()) {
+				g.setColor(COLORS.get(COLOR_RIBBON_TAB_STRIP_BACKGROUND));
+				g.fillRect(tab.getX(), tab.getY() + tab.getHeight() - stripHeight -4, tab.getWidth(), stripHeight);
 			}
 
 			if (tab.isHover()) {
@@ -616,35 +624,36 @@ public class RibbonBar extends JComponent {
 							g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_PRESSED_BACKGROUND));
 						}
 
-						if (!button.isSlim() && button.hasDropDown() && button.isHover()) {
-							if (button.isHoverTop()) {
-								g.fillRect(button.getX(), button.getY(), button.getWidth() + 1, buttonPartialHeight);
-
-								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
-								g.setStroke(new BasicStroke(1.0f));
-
-								g.drawRect(button.getX(), button.getY() + buttonPartialHeight, button.getWidth() + 1,button.getHeight() - buttonPartialHeight);
-								g.drawRect(button.getX(), button.getY(), button.getWidth() + 1, buttonPartialHeight);
-
-							} else {
-								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
-								g.setStroke(new BasicStroke(1.0f));
-
-								g.drawRect(button.getX(), button.getY(), button.getWidth() + 1, buttonPartialHeight);
-
-								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BACKGROUND));
-
-								g.fillRect(button.getX(), button.getY() + buttonPartialHeight, button.getWidth() + 1,	button.getHeight() - buttonPartialHeight);
-
-								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
-								g.setStroke(new BasicStroke(1.0f));
-
-								g.drawRect(button.getX(), button.getY() + buttonPartialHeight, button.getWidth() + 1,
-										button.getHeight() - buttonPartialHeight);
-
-							}
-
-						} else {
+//						if (!button.isSlim() && button.hasDropDown() && button.isHover() ) {
+//							if (button.isHoverTop()) {
+//								g.fillRect(button.getX(), button.getY(), button.getWidth() + 1, buttonPartialHeight);
+//
+//								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
+//								g.setStroke(new BasicStroke(1.0f));
+//
+//								g.drawRect(button.getX(), button.getY() + buttonPartialHeight, button.getWidth() + 1,button.getHeight() - buttonPartialHeight);
+//								g.drawRect(button.getX(), button.getY(), button.getWidth() + 1, buttonPartialHeight);
+//
+//							} else {
+//								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
+//								g.setStroke(new BasicStroke(1.0f));
+//
+//								g.drawRect(button.getX(), button.getY(), button.getWidth() + 1, buttonPartialHeight);
+//
+//								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BACKGROUND));
+//
+//								g.fillRect(button.getX(), button.getY() + buttonPartialHeight, button.getWidth() + 1,	button.getHeight() - buttonPartialHeight);
+//
+//								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
+//								g.setStroke(new BasicStroke(1.0f));
+//
+//								g.drawRect(button.getX(), button.getY() + buttonPartialHeight, button.getWidth() + 1,
+//										button.getHeight() - buttonPartialHeight);
+//
+//							}
+//
+//						}
+						if (!button.isSlim()){
 							//normal button background
 							g.fillRoundRect(button.getX(), button.getY(), button.getWidth(), button.getHeight(), buttonArc, buttonArc);
 							if (button.isHover()) {
@@ -736,16 +745,17 @@ public class RibbonBar extends JComponent {
 			}
 
 			// draw shadow
-			if (shadowHeight > 0) {
-				GradientPaint shadow_paint = new GradientPaint(0, getHeight() - shadowHeight,
-						COLORS.get(COLOR_RIBBON_SHADOW_DARK), 0, getHeight(), COLORS.get(COLOR_RIBBON_SHADOW_LIGHT));
-				g.setPaint(shadow_paint);
-				g.fill(new Rectangle2D.Double(0, getHeight() - shadowHeight, getWidth(), getHeight()));
-			}
+//			if (shadowHeight > 0) {
+//				GradientPaint shadow_paint = new GradientPaint(0, getHeight() - shadowHeight,
+//						COLORS.get(COLOR_RIBBON_SHADOW_DARK), 0, getHeight(), COLORS.get(COLOR_RIBBON_SHADOW_LIGHT));
+//				g.setPaint(shadow_paint);
+//				g.fill(new Rectangle2D.Double(0, getHeight() - shadowHeight, getWidth(), getHeight()));
+//			}
+
 		}
 		{
-			toggle.setX(getWidth() - 20 - tabLayoutWestEastMargin);
-			toggle.setY(getHeight() - 18 - shadowHeight);
+			toggle.setX(getWidth() - 24 - tabLayoutWestEastMargin);
+			toggle.setY(getHeight() - 24 - shadowHeight);
 			toggle.setWidth(16);
 			toggle.setHeight(16);
 		}
