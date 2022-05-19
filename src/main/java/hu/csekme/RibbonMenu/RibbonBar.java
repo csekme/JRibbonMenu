@@ -196,8 +196,13 @@ public class RibbonBar extends JComponent {
 		putColor(RibbonBar.COLOR_RIBBON_TAB_CONTAINER_STRIP, UIManager.getColor("TabbedPane.light"));
 		putColor(RibbonBar.COLOR_RIBBON_SHADOW_DARK, UIManager.getColor("TabbedPane.background"));
 		putColor(RibbonBar.COLOR_RIBBON_SHADOW_LIGHT, UIManager.getColor("TabbedPane.background"));
-		putColor(RibbonBar.COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND, UIManager.getColor("Button.focusedBorderColor"));// UIManager.getColor("Button.focusedBorderColor"));
-		putColor(RibbonBar.COLOR_RIBBON_TAB_STRIP_BACKGROUND, UIManager.getColor("TabbedPane.background").darker());
+		Color cl = UIManager.getColor("Button.focusedBorderColor");
+		putColor(RibbonBar.COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND, cl);// UIManager.getColor("Button.focusedBorderColor"));
+		if (cl!=null) {
+			putColor(RibbonBar.COLOR_RIBBON_TAB_STRIP_BACKGROUND, cl.darker());
+		} else {
+			putColor(RibbonBar.COLOR_RIBBON_TAB_STRIP_BACKGROUND, cl);
+		}
 		SwingUtilities.updateComponentTreeUI(POPUP_MENU);
 		
 		TABS.forEach( tab->{
@@ -546,22 +551,28 @@ public class RibbonBar extends JComponent {
 		//	g.fillRoundRect(tab.getX(), tab.getY(), tab.getWidth(), tab.getHeight(), 0,0);
 			// Selected tab
 			if (tab.isSelected()) {
+				g.setFont(font.deriveFont(Font.BOLD));
 				g.setColor(COLORS.get(COLOR_RIBBON_TAB_CONTAINER_STRIP));
 			//	g.drawRect(tab.getX(), tab.getY(), tab.getWidth() - 1, tab.getHeight());
 				g.setColor(COLORS.get(COLOR_RIBBON_BACKGROUND));
 			//	g.drawLine(tab.getX(), tab.getHeight(), tab.getX() + tab.getWidth(), tab.getHeight());
 				g.setColor(COLORS.get(COLOR_RIBBON_TAB_SELECTED_STRIP_BACKGROUND));
 				if (tab.isHover()) {
-					g.fillRect(tab.getX(), tab.getY() + tab.getHeight() - stripHeight -4, tab.getWidth(), stripHeight);
+					int half = g.getFontMetrics().stringWidth(tab.getTitle()) + 20;
+					g.fillRect(tab.getX() + tab.getWidth()/2-half/2, tab.getY() + tab.getHeight() - stripHeight - 2, half,
+							stripHeight );
 				} else {
-					int half = (tab.getWidth() - g.getFontMetrics().stringWidth(tab.getTitle())) / 3;
-					g.fillRect(tab.getX() + half, tab.getY() + tab.getHeight() - stripHeight -4, tab.getWidth() - half * 2,
+					int half = g.getFontMetrics().stringWidth(tab.getTitle());
+					g.fillRect(tab.getX() + tab.getWidth()/2-half/2, tab.getY() + tab.getHeight() - stripHeight - 2, half,
 							stripHeight );
 				}
 
 			} else if (tab.isHover()) {
 				g.setColor(COLORS.get(COLOR_RIBBON_TAB_STRIP_BACKGROUND));
-				g.fillRect(tab.getX(), tab.getY() + tab.getHeight() - stripHeight -4, tab.getWidth(), stripHeight);
+
+				int half = g.getFontMetrics().stringWidth(tab.getTitle()) + 20;
+				g.fillRect(tab.getX() + tab.getWidth()/2-half/2, tab.getY() + tab.getHeight() - stripHeight - 2, half,
+						stripHeight );
 			}
 
 			if (tab.isHover()) {
@@ -572,10 +583,13 @@ public class RibbonBar extends JComponent {
 			if (tab.isSelected()) {
 				g.setColor(COLORS.get(COLOR_RIBBON_TAB_SELECTED_FOREGROUND));
 			}
+
+
+
 			g.drawString(tab.getTitle(),
 					tab.getX() + tab.getWidth() / 2 - g.getFontMetrics().stringWidth(tab.getTitle()) / 2,
 					tab.getY() + (int) (20 * SCALING_FACTOR));
-
+			g.setFont(font);
 			int lastSeparatorposition = 0;
 			// render selected tab
 			if (tab.isSelected() && !minimized) {
@@ -653,9 +667,12 @@ public class RibbonBar extends JComponent {
 //							}
 //
 //						}
+
+						g.fillRoundRect(button.getX(), button.getY(), button.getWidth(), button.getHeight(), buttonArc, buttonArc);
+
+
 						if (!button.isSlim()){
 							//normal button background
-							g.fillRoundRect(button.getX(), button.getY(), button.getWidth(), button.getHeight(), buttonArc, buttonArc);
 							if (button.isHover()) {
 								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
 								g.setStroke(new BasicStroke(1.0f));
@@ -668,6 +685,16 @@ public class RibbonBar extends JComponent {
 								: COLORS.get(COLOR_RIBBON_BUTTON_DISABLED_FOREGROUND));
 						// slim button
 						if (button.isSlim()) {
+							 if (button.isHover()) {
+								g.setColor(COLORS.get(COLOR_RIBBON_BUTTON_HOVER_BORDER_COLOR));
+								g.setStroke(new BasicStroke(1.0f));
+								g.drawRoundRect(button.getX(), button.getY(), button.getWidth(), button.getHeight() - 1, buttonArc, buttonArc);
+							}
+
+							// button text color
+							g.setColor(button.isEnabled() ? COLORS.get(COLOR_RIBBON_BUTTON_FOREGROUND)
+									: COLORS.get(COLOR_RIBBON_BUTTON_DISABLED_FOREGROUND));
+
 							if (button.getImage() == null) {
 								g.drawString(button.getTitle(), button.getX() + 4,
 										button.getY() + button.getHeight() - 8);
