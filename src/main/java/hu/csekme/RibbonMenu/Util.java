@@ -3,7 +3,6 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
@@ -74,10 +73,10 @@ public class Util {
 	 */
 	public static InputStream accessStream(String filename) {
         // this is the path within the jar file
-        InputStream input = Util.class.getResourceAsStream("/" + filename);
+        InputStream input = Util.class.getResourceAsStream(filename);
         if (input == null) {
             // this is how we load file within editor (eg eclipse)
-            input = Util.class.getClassLoader().getResourceAsStream("/" + filename);
+            input = Util.class.getClassLoader().getResourceAsStream(filename);
         }
         return input;
     }

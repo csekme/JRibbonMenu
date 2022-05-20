@@ -83,13 +83,17 @@ public class Button extends VirtualObject {
     public void setEnabled(boolean enabled) {
       this.enabled = enabled;
     }
+    
+    public boolean isEnabled() {
+    	return this.enabled;
+    }
 
     public void setDisabledImage(ImageIcon disabledImage) {
       this.disabledImage = disabledImage;
     }
     
     /**
-     * Convert ImageIcon to grayscale keep alpha chanel
+     * Convert ImageIcon to grayscale keep alpha channel
      * @param image as original ImageIcon
      * @return image as grayscaled ImageIcon
      */
@@ -107,7 +111,8 @@ public class Button extends VirtualObject {
     			// https://en.wikipedia.org/wiki/Grayscale
     			// use luma coding
     			int avg = (int)(r * 0.299) + (int)(g * 0.587) + (int)(b * 0.114);
-    			p = (a<<24) | (avg<<16) | (avg<<8) | avg;
+    			//use 50% transparency on alpha channel  
+    			p = ((int)(a*.5)<<24) | (avg<<16) | (avg<<8) | avg;
     			// set new pixel
     			img.setRGB(x, y, p);	
     	
