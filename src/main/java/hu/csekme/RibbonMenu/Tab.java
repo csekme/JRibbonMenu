@@ -77,7 +77,7 @@ public class Tab extends VirtualObject implements Iterable<Button> {
 	
 	/**
 	 * Get separators (TODO: need a dedicated class for separators 
-	 * @return
+	 * @return List
 	 */
 	public List<Button> getSeparators() {
 		List<Button> sep = new ArrayList<Button>();

@@ -93,7 +93,7 @@ public class Button extends VirtualObject {
     }
     
     /**
-     * Convert ImageIcon to grayscale keep alpha chanel
+     * Convert ImageIcon to grayscale keep alpha channel
      * @param image as original ImageIcon
      * @return image as grayscaled ImageIcon
      */

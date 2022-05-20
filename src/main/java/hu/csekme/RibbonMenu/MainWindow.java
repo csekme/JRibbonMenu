@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 public class MainWindow extends JFrame implements IRibbonBar {
 
 	private static final long serialVersionUID = 6524936981221127992L;
+	
 	RibbonBar ribbonBar;
  
 	/**
@@ -22,6 +23,8 @@ public class MainWindow extends JFrame implements IRibbonBar {
 		{
 			//Add ribbon bar to NORTH (Suggested)
 			this.ribbonBar = new RibbonBar();
+// If you find the auto collapse is a problem uncomment the disable call			
+//			this.ribbonBar.disableCollapse();
 			getContentPane().add(this.ribbonBar, BorderLayout.NORTH);
 		}
 	}

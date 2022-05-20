@@ -22,8 +22,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.*;
 /**
  * Office styled RibbonBar main component
@@ -31,7 +29,7 @@ import java.util.*;
  */
 public class RibbonBar extends JComponent {
 
-	private static final long serialVersionUID = -2268640468339894311L;
+  private static final long serialVersionUID = 6524936981221127992L;
 
 	// for generate tokens
 	private final static String SERIES = "ABCDEFGHIJKLMNOPQRSTWZXYabcdefghijklmneopqrstzyxwv0123456789#&@{}*";
@@ -91,7 +89,8 @@ public class RibbonBar extends JComponent {
 	static int ribbonHeight = (int)(126 * SCALING_FACTOR) + shadowHeight;
 
 	boolean minimized = false;
-//	boolean reminimized = false;
+	boolean reminimized = false;
+	boolean disable_collapse = false;
 
 	static final JPopupMenu POPUP_MENU = new JPopupMenu();
 	private Font font;
@@ -102,9 +101,22 @@ public class RibbonBar extends JComponent {
 	static final List<Tab> TABS = new ArrayList<>();
 
 	static final Button toggle = new Button(generateToken(20));
-//	private static ImageIcon pinned = Util.accessImageFile("images/pinned.png");
+  private static ImageIcon pinned = Util.accessImageFile("images/pinned.png");
 
 	boolean buildMenu = true;
+
+  /**
+   * RibbonBar Factory to create our Singleton Object.
+   * 
+   * @return Ribbonbar instance only one permitted
+   */
+  public static synchronized RibbonBar create() {
+    if (instance == null) {
+      instance = new RibbonBar();
+    }
+    buttonWidth = (int)(SIZE_BUTTON_WIDTH * SCALING_FACTOR);
+    return instance;
+  }
 
 	/**
 	 * Constructor
@@ -186,6 +198,16 @@ public class RibbonBar extends JComponent {
 		getParent().revalidate();
 	}
 	
+	/**
+	 * disableAutoCollapse
+	 * For some applications the autocollapse can be come annoying
+	 * so calling this routine will turn this feature off.
+	 * The user can still collapse the ribbon my selecting
+	 * minimize button but won't have to select the pinned button.
+	 */
+	public void disableCollapse() {
+	  disable_collapse = true;
+	}
 	
 	int getMaxLineWidth(String text) {
 		String lines[] = text.split("\n");
@@ -312,7 +334,8 @@ public class RibbonBar extends JComponent {
 		try {
 		    tracker.waitForAll();
 		} catch (InterruptedException ex) {
-		   Logger.getLogger(RibbonBar.class.getName()).log(Level.WARNING, null, ex);
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
 		}
 		return b;
 	}
@@ -591,12 +614,12 @@ public class RibbonBar extends JComponent {
 			toggle.setWidth(16);
 			toggle.setHeight(16);
 		}
-		if (!minimized) {
-//			if (reminimized) {
-//				g.drawImage(pinned.getImage(), toggle.getX(), toggle.getY(), 16, 16, this);
-//			} else {
+		if (!minimized && !disable_collapse) {
+			if (reminimized) {
+				g.drawImage(pinned.getImage(), toggle.getX(), toggle.getY(), 16, 16, this);
+			} else {
 				g.drawImage(toggle.getImage().getImage(), toggle.getX(), toggle.getY(), 16, 16, this);							
-//			}
+			}
 		}
 		super.paint(g);
 	}
@@ -615,16 +638,16 @@ public class RibbonBar extends JComponent {
 	}
 	
 	public static void fired() {
-/*
+	  if (instance != null) {
 		  if (instance.reminimized) {
         instance.minimized = true;
         instance.toggle();
       }
-*/
 			if (instance.minimized) {
 				instance.minimized = false;
 				instance.toggle();
 			}
+	  }
 	}
  
   @Override
@@ -741,7 +764,6 @@ public class RibbonBar extends JComponent {
 				} //end tab iteration
 			}
 
-/*
 			if (toggle.isBound(e.getPoint())) {
 				reminimized = !reminimized;
 				if (reminimized) {
@@ -755,12 +777,7 @@ public class RibbonBar extends JComponent {
 					toggle();
 				}
 			}
-*/
-     if (toggle.isBound(e.getPoint())) {
-        minimized = !minimized;
-        toggle();
-      }
-
+			
 			repaint();
 		}
 		
