@@ -1,5 +1,12 @@
 # JRibbonMenu
-### Ribbon Menu Bar implementation in Java.
+
+## Ribbon Menu Bar implementation in Java.
+
+### Version 2
+
+Now supports FlatLaf Themes, High DPI Displays using FlatSVGIcons, FlatLaf-Extra components, and a new QuickAccessBar.
+
+### Version 1.06
 
 Converted to a Multi-Release JAR (MRJAR). It now supports Java 1.8 without any changes and Java 9+ as module or non-module jar.
 
