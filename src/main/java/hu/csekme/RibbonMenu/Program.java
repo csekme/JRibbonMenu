@@ -15,6 +15,7 @@
  */
 package hu.csekme.RibbonMenu;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.IntelliJTheme;
 
@@ -36,6 +37,7 @@ public class Program {
 			public void run() {
 				try {
 					FlatIntelliJLaf.setup();
+					//FlatDarculaLaf.setup();
 				 	MainWindow frame = new MainWindow();
 			    frame.setLocationRelativeTo(null);
 				 	frame.setVisible(true);

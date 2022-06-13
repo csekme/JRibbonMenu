@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * The Class RibbonTab.
@@ -38,7 +38,7 @@ public class RibbonTab extends JPanel {
    */
 	public RibbonTab(String title) {
     this.title = title;
-    this.setBackground(Color.white);
+    this.setBackground(UIManager.getColor("Button.background"));
 		this.groups = new ArrayList<>();
 		this.setLayout(new FlowLayout());
 	}
