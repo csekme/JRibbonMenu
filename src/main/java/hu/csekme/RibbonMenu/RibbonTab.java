@@ -1,6 +1,7 @@
 package hu.csekme.RibbonMenu;
 
 import java.awt.*;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +43,11 @@ public class RibbonTab extends JPanel {
 		this.groups = new ArrayList<>();
 		this.setLayout(new FlowLayout());
 	}
-	
-  /**
+
+
+
+
+    /**
    * getTitle.
    *
    * @return title

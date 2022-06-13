@@ -105,7 +105,7 @@ public class MainWindow extends JFrame implements ActionListener {
             //Add some button
             {
                 JButton btnUser = new JButton("User");
-                btnUser.setBorder(null);
+
                 btnUser.setVerticalTextPosition(SwingConstants.BOTTOM);
                 btnUser.setHorizontalTextPosition(SwingConstants.CENTER);
                 btnUser.setIcon(Util.accessImageFile("dist/user.png"));
@@ -117,7 +117,7 @@ public class MainWindow extends JFrame implements ActionListener {
             {
                 DropDownButton btnSample = new DropDownButton("Warnings");
                 btnSample.setIcon(Util.accessImageFile("dist/warning.png"));
-                btnSample.setBorder(null);
+
                 btnSample.setToolTipText("Customize your settings.");
                 btnSample.setVerticalTextPosition(SwingConstants.BOTTOM);
                 btnSample.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -151,7 +151,7 @@ public class MainWindow extends JFrame implements ActionListener {
             }
             {
                 JButton btnSettings = new JButton("<html><body align=\"center\">Settings<br>Configurations</body></html>");
-                btnSettings.setBorder(null);
+
                 btnSettings.setIcon(Util.accessImageFile("dist/settings.png"));
                 btnSettings.setToolTipText("Customize your settings.");
                 btnSettings.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -167,7 +167,7 @@ public class MainWindow extends JFrame implements ActionListener {
             {
                 JButton btnCopy = new JButton("Copy");
                 btnCopy.setEnabled(true);
-                btnCopy.setBorder(null);
+
                 btnCopy.setIcon(Util.accessImageFile("dist/copy.png"));
                 btnCopy.setToolTipText("Copy to Clipboard.");
                 btnCopy.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -179,7 +179,7 @@ public class MainWindow extends JFrame implements ActionListener {
             {
                 btnPaste = new JButton("Paste\nfrom clipboard");
                 btnPaste.setIcon(Util.accessImageFile("dist/paste.png"));
-                btnPaste.setBorder(null);
+
                 btnPaste.setEnabled(false);
                 btnPaste.setToolTipText("Paste from Clipboard");
                 btnPaste.setActionCommand("paste");
@@ -195,7 +195,7 @@ public class MainWindow extends JFrame implements ActionListener {
         tbView.add(rgClipboard);
         {
             JButton btnReminder = new JButton("Reminder");
-            btnReminder.setBorder(null);
+
             btnReminder.setIcon(Util.accessImageFile("dist/remind.png"));
             btnReminder.setToolTipText("Manage your Reminders.");
             rgClipboard.addComponent(btnReminder, DisplayState.NORMAL);

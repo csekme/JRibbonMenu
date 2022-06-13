@@ -1,5 +1,7 @@
 package hu.csekme.RibbonMenu;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -83,13 +85,24 @@ public class DropDownButton extends JButton {
     }
 
     private MouseAdapter ma = new MouseAdapter() {
-        final JComponent handle = DropDownButton.this;
+        final JButton handle = DropDownButton.this;
         @Override
         public void mouseClicked(MouseEvent e) {
             // default click event to show submenu when the user clicked on mouse button 1
             if (e.getButton() == MouseEvent.BUTTON1 && popupMenu!=null) {
                 popupMenu.show(handle,0, handle.getHeight());
             }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+            handle.setBorderPainted(true);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            handle.setBorderPainted(false);
         }
     };
 }
