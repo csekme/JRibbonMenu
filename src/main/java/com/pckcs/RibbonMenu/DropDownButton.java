@@ -72,7 +72,7 @@ public class DropDownButton extends JButton implements ActionListener {
     }
 
     /**
-     * Override updateUI to load new Look & Feel if necessary
+     * Override updateUI to load new Look &#38; Feel if necessary
      * on entire component tree
      */
     @Override
