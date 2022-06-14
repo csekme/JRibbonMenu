@@ -13,53 +13,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hu.csekme.RibbonMenu;
-
+package com.pckcs.RibbonMenu;
+import com.formdev.flatlaf.*;
+import com.formdev.flatlaf.intellijthemes.FlatAllIJThemes;
+import com.pckcs.RibbonMenu.common.CommonUtils;
+import com.pckcs.RibbonMenu.common.ThemeInfo;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 import javax.swing.*;
-
-
 
 /**
  * The Class MainWindow.
  */
 public class MainWindow extends JFrame implements ActionListener {
 
-    /**
-     * The Constant serialVersionUID.
-     */
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 6524936981221127992L;
-
-    /**
-     * The ribbon bar.
-     */
+    /** The ribbon bar. */
     RibbonBar ribbonBar;
-
-    /**
-     * sample paste button
-     */
+    /** sample paste button */
     JButton btnPaste = null;
+    /** The themes. */
+    public static List<ThemeInfo> themes;
+    /** Theme selector **/
+    JComboBox<ThemeInfo> cbThemeSelector;
+    /** Base panel **/
+    JPanel panelBase;
 
-    /**
-     * Create the frame.
-     */
+    /** Create the frame. */
     public MainWindow() {
         double version = Double.parseDouble(System.getProperty("java.specification.version"));
         String osName = System.getProperty("os.name").toLowerCase();
         System.out.println("Java ver: " + version + " osys: " + osName);
+        loadThemes();
         initGUI();
+        buildSampleMenu();
+        addEvents();
+        SwingUtilities.invokeLater(()->{
+            cbThemeSelector.setSelectedIndex(5);
+        });
     }
 
 
-    /**
-     * Initializes the GUI.
-     */
-    public void initGUI() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+    public void buildSampleMenu() {
         // Create quick access bar
         QuickAccessBar quickbar = QuickAccessBar.create();
         {
@@ -207,7 +209,32 @@ public class MainWindow extends JFrame implements ActionListener {
             rgClipboard.addComponent(btnFingerPrint, DisplayState.NORMAL);
         }
 
-    }
+    } // buildSampleMenu
+
+    public void addEvents() {
+        cbThemeSelector.addActionListener(a->{
+            setLookAndFeel((ThemeInfo) cbThemeSelector.getSelectedItem());
+        });
+    } // addEvents
+
+
+    /**
+     * Initializes the GUI.
+     */
+    public void initGUI() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setLayout(new BorderLayout());
+        {
+            panelBase = new JPanel();
+            panelBase.setLayout(new BorderLayout());
+            add(panelBase, BorderLayout.CENTER);
+        }
+        {
+            cbThemeSelector = new JComboBox<ThemeInfo>(new Vector<ThemeInfo>( themes ));
+            panelBase.add(cbThemeSelector, BorderLayout.NORTH);
+        }
+    } // initGUI
 
 
     /**
@@ -242,6 +269,78 @@ public class MainWindow extends JFrame implements ActionListener {
                 break;
             default:
                 break;
+        }
+    }
+
+
+    public void setLookAndFeel(ThemeInfo selectedLaf) {
+        try {
+            // scan themes for a match
+            ThemeInfo themeInfo = null;
+            for (ThemeInfo ti : themes) {
+                if (ti.name.equals(selectedLaf.name)) {
+                    themeInfo = ti;
+                }
+            }
+            if (themeInfo != null) {
+                if( themeInfo.lafClassName != null ) {
+                    UIManager.setLookAndFeel( themeInfo.lafClassName );
+                    SwingUtilities.updateComponentTreeUI(this);
+                    return;
+                } else if( themeInfo.themeFile != null ) {
+                    FileInputStream inStream = new FileInputStream(themeInfo.themeFile);
+                    FlatLaf.setup(IntelliJTheme.createLaf(inStream));
+                    inStream.close();
+                    SwingUtilities.updateComponentTreeUI(this);
+                    return;
+                }
+            }
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (Exception ex) {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                SwingUtilities.updateComponentTreeUI(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    } // end setLookAndFeel
+
+    /**
+     * load themes from templates folder
+     */
+    public static void loadThemes() {
+        themes = new ArrayList<ThemeInfo>();
+
+        for (UIManager.LookAndFeelInfo look_and_feel : UIManager.getInstalledLookAndFeels()) {
+            JFrame.setDefaultLookAndFeelDecorated( false );
+            JDialog.setDefaultLookAndFeelDecorated( false );
+            themes.add(new ThemeInfo(look_and_feel.getName(),
+                    null, look_and_feel.getClassName()));
+        }
+
+        themes.add( new ThemeInfo( "Flat Light"   , null, FlatLightLaf.class.getName() ) );
+        themes.add( new ThemeInfo( "Flat Dark"    , null, FlatDarkLaf.class.getName() ) );
+        themes.add( new ThemeInfo( "Flat IntelliJ", null, FlatIntelliJLaf.class.getName() ) );
+        themes.add( new ThemeInfo( "Flat Darcula" , null, FlatDarculaLaf.class.getName() ) );
+
+        // add intellij themes next
+        for (FlatAllIJThemes.FlatIJLookAndFeelInfo info : FlatAllIJThemes.INFOS) {
+            themes.add( new ThemeInfo( info.getName() , null, info.getClassName()) );
+        }
+
+        String themesPath = CommonUtils.getInstance().getWorkingDir() +
+                "templates" + System.getProperty("file.separator") + "intellijthemes";
+        File directory = new File(themesPath);
+        File[] themeFiles = directory.listFiles( (dir, name) -> name.endsWith( ".theme.json" ) );
+        if( themeFiles == null )
+            return;
+        for( File f : themeFiles ) {
+            String name = f.getName();
+            int n = name.indexOf(".theme.json");
+            name = name.substring(0, n);
+            themes.add(new ThemeInfo( name, f, null));
         }
     }
 

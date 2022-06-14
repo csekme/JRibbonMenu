@@ -1,10 +1,8 @@
-package hu.csekme.RibbonMenu;
+package com.pckcs.RibbonMenu;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Dropdown button that allow to use submenu
@@ -12,19 +10,19 @@ import java.awt.event.MouseEvent;
  * @see #addSubMenu(JMenuItem)
  * @author csk
  */
-public class DropDownButton extends JButton {
-
-    private static final String template = "<html><body align=\"center\">%s<br>&ensp;</body></html>";
-
+public class DropDownButton extends JButton implements ActionListener {
+    // label name template
+    private static final String TEMPLATE = "<html><body align=\"center\">%s<br>&ensp;</body></html>";
+    // container for submenu
     private JPopupMenu popupMenu;
 
     public DropDownButton() {
-        addMouseListener(ma);
+        addActionListener(this);
     }
 
     public DropDownButton(String text) {
         setText(text);
-        addMouseListener(ma);
+        addActionListener(this);
     }
 
     /**
@@ -41,7 +39,7 @@ public class DropDownButton extends JButton {
             if (text.contains("\n")) {
                 text = text.replace("\n", "<br>");
             }
-            super.setText(String.format(template, text));
+            super.setText(String.format(TEMPLATE, text));
         } else {
             //<br>&ensp; TODO: if html text is entered you have to check for the existence of white characters with line breaks
             super.setText(text);
@@ -74,6 +72,19 @@ public class DropDownButton extends JButton {
     }
 
     /**
+     * Override updateUI to load new Look & Feel if necessary
+     * on entire component tree
+     */
+    @Override
+    public void updateUI() {
+        super.updateUI();
+        if (popupMenu!=null) {
+            popupMenu.updateUI();
+            SwingUtilities.updateComponentTreeUI(popupMenu);
+        }
+    }
+
+    /**
      * Add menu item to your submenu
      * @param item submenu item {JMenuItem, JCheckBoxMenuItem, JRadioButtonMenuItem}
      */
@@ -84,25 +95,8 @@ public class DropDownButton extends JButton {
         popupMenu.add(item);
     }
 
-    private MouseAdapter ma = new MouseAdapter() {
-        final JButton handle = DropDownButton.this;
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // default click event to show submenu when the user clicked on mouse button 1
-            if (e.getButton() == MouseEvent.BUTTON1 && popupMenu!=null) {
-                popupMenu.show(handle,0, handle.getHeight());
-            }
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-            handle.setBorderPainted(true);
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            handle.setBorderPainted(false);
-        }
-    };
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        popupMenu.show(DropDownButton.this,0, DropDownButton.this.getHeight());
+    }
 }

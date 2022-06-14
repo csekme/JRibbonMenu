@@ -1,4 +1,4 @@
-package hu.csekme.RibbonMenu;
+package com.pckcs.RibbonMenu;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -121,11 +121,10 @@ public class RibbonGroup extends JComponent {
             String componentName = compo.getClass().getName();
             if (componentName.endsWith("JButton")) {
                 componentName = ((JButton) compo).getText();
-                System.out.println(componentName);
+             //   System.out.println(componentName);
             } else {
 //        compo.paintComponent(g);
-                System.out.println(compo.getClass().getName().substring(componentName.indexOf("swing.") + "swing.".length(),
-                        componentName.length()));
+             //   System.out.println(compo.getClass().getName().substring(componentName.indexOf("swing.") + "swing.".length(),componentName.length()));
             }
         }
     }

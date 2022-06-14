@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hu.csekme.RibbonMenu;
+package com.pckcs.RibbonMenu;
 
 import java.awt.Font;
 import java.awt.FontFormatException;

@@ -1,4 +1,4 @@
-package hu.csekme.RibbonMenu;
+package com.pckcs.RibbonMenu;
 
 /**
  * The Enum DisplayState.

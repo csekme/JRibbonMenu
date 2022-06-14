@@ -33,7 +33,7 @@
     <property name="debug" value="on"/>
 
     <!-- javadoc package -->
-    <property name="packages" value="hu.csekme.RibbonMenu"/>
+    <property name="packages" value="com.pckcs.RibbonMenu"/>
 
     <path id="libraries">
         <fileset dir="lib">
@@ -101,7 +101,7 @@
             <bottom>
                 <![CDATA[${app.copyright}]]>
             </bottom>
-            <group title = "Ribbon Menu" packages = "hu.csekme.RibbonMenu"/>
+            <group title = "Ribbon Menu" packages = "com.pckcs.RibbonMenu"/>
         </javadoc>
         <echo>JavaDoc generated to ${dir.javadoc}</echo>
     </target>
@@ -127,7 +127,7 @@
             <jar destfile="${dir.dist}/RibbonMenuRunnable.jar">
                 <manifest>
                     <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                    <attribute name="Rsrc-Main-Class" value="hu.csekme.RibbonMenu.Sample"/>
+                    <attribute name="Rsrc-Main-Class" value="com.pckcs.RibbonMenu.Sample"/>
                     <attribute name="Implementation-Title" value="${app.name}"/>
                     <attribute name="Implementation-Vendor" value="${app.author}"/>
                     <attribute name="Implementation-Version" value="${app.version}"/>

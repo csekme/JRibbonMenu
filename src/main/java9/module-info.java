@@ -2,7 +2,7 @@
 
 module JRibbonMenu {
   requires transitive java.desktop;
-  exports hu.csekme.RibbonMenu;
+  exports com.pckcs.RibbonMenu;
   exports dist;
   exports images;
   opens dist;

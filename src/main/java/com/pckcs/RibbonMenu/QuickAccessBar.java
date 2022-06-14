@@ -1,4 +1,4 @@
-package hu.csekme.RibbonMenu;
+package com.pckcs.RibbonMenu;
 
 import java.awt.Component;
 import java.awt.Container;

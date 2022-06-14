@@ -1,7 +1,6 @@
-package hu.csekme.RibbonMenu;
+package com.pckcs.RibbonMenu;
 
 import java.awt.*;
-import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +18,10 @@ public class RibbonTab extends JPanel {
 
   /** The groups. */
 	List<RibbonGroup> groups;
-  
+
   /** The title. */
   private String title = null;
-	
+
 	/**
    * The separators.
    *
@@ -30,7 +29,7 @@ public class RibbonTab extends JPanel {
    *          the title
    */
 //	int separators;
-	
+
 	/**
    * Instantiates a new tab.
    *
@@ -38,14 +37,20 @@ public class RibbonTab extends JPanel {
    *          the title
    */
 	public RibbonTab(String title) {
-    this.title = title;
-    this.setBackground(UIManager.getColor("Button.background"));
-		this.groups = new ArrayList<>();
-		this.setLayout(new FlowLayout());
+      this.title = title;
+      this.groups = new ArrayList<>();
+	  this.setLayout(new FlowLayout());
 	}
 
-
-
+    /**
+     * Override updateUI to add custom logic when changing themes if needed
+     */
+    @Override
+    public void updateUI() {
+      super.updateUI();
+      // some use case better visibility
+      this.setBackground(UIManager.getColor("Button.background"));
+    }
 
     /**
    * getTitle.
@@ -55,7 +60,7 @@ public class RibbonTab extends JPanel {
   public String getTitle() {
     return title;
   }
-  
+
 	/**
    * addComponent.
    *
@@ -65,7 +70,7 @@ public class RibbonTab extends JPanel {
 	public void addGroup(RibbonGroup comp) {
 		this.add(comp);
 	}
-	
+
   /**
    * paintComponent
    *
@@ -74,15 +79,15 @@ public class RibbonTab extends JPanel {
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
-    Component[] components = this.getComponents();            
+    Component[] components = this.getComponents();
     for (Component compo : components) {
         String componentName = compo.getClass().getName();
         if (componentName.endsWith("RibbonGroup")) {
           componentName = ((RibbonGroup)compo).getTitle();
-          System.out.println(componentName);
+       //   System.out.println(componentName);
         } else {
 //        compo.paintComponent(g);
-        System.out.println(compo.getClass().getName().substring(componentName.indexOf("swing.") + "swing.".length(), 
+        System.out.println(compo.getClass().getName().substring(componentName.indexOf("swing.") + "swing.".length(),
             componentName.length()));
         }
     }
