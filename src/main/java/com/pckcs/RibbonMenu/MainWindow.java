@@ -18,8 +18,6 @@ package com.pckcs.RibbonMenu;
 import com.formdev.flatlaf.*;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.intellijthemes.FlatAllIJThemes;
-import com.pckcs.RibbonMenu.common.CommonUtils;
-import com.pckcs.RibbonMenu.common.ThemeInfo;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -102,8 +100,8 @@ public class MainWindow extends JFrame implements ActionListener {
       {
         JButton qFavourite = new JButton();
         qFavourite.setIcon(new FlatSVGIcon("images/svg/favourite.svg"));
-        qFavourite.setToolTipText("Save File");
-        qFavourite.setActionCommand("save");
+        qFavourite.setToolTipText("Favourite");
+        qFavourite.setActionCommand("favourite");
         qFavourite.addActionListener(this);
         quickbar.addButton(qFavourite);
       }
@@ -180,14 +178,13 @@ public class MainWindow extends JFrame implements ActionListener {
         JButton btnSettings = new JButton("<html><body align=\"center\">Settings<br>Configurations</body></html>");
 
 //                btnSettings.setIcon(Util.accessImageFile("dist/settings.png"));
-        btnSettings.setIcon(new FlatSVGIcon("images/svg/settings.svg", 42, 42));
+        btnSettings.setIcon(new FlatSVGIcon("images/svg/settings.svg"));
 
         btnSettings.setToolTipText("Customize your settings.");
         btnSettings.setVerticalTextPosition(SwingConstants.BOTTOM);
         btnSettings.setHorizontalTextPosition(SwingConstants.CENTER);
 
-        rgBase.addComponent(btnSettings, DisplayState.NORMAL);
-
+        rgBase.addComponent(btnSettings, DisplayState.LARGE);
 
       }
       {
@@ -222,6 +219,23 @@ public class MainWindow extends JFrame implements ActionListener {
         btnPaste.setHorizontalTextPosition(SwingConstants.CENTER);
         rgClipboard.addComponent(btnPaste, DisplayState.NORMAL);
       }
+      rgClipboard.addSeparator();
+//      RibbonGroup rgContacts = new RibbonGroup("Contacts");
+      RibbonGroup rgContacts = new RibbonGroup();
+      tbHome.add(rgContacts);
+      {
+        JButton btnLetter = new JButton("Send email");
+        btnLetter.setIcon(Util.accessImageFile("dist/letter.png"));
+        btnLetter.setToolTipText("Compose and Send Email.");
+        rgContacts.addComponent(btnLetter, DisplayState.SLIM);
+      }
+      {
+        JButton btnFavourites = new JButton("Favourites");
+        btnFavourites.setIcon(Util.accessImageFile("dist/kedvencek.png"));
+        btnFavourites.setToolTipText("View list of your favourites.");
+        rgContacts.addComponent(btnFavourites, DisplayState.SLIM);
+      }
+      rgContacts.addSeparator();
     }
     RibbonTab tbView = new RibbonTab("Security"); //Second tab
     ribbonBar.addTab(tbView);
@@ -259,12 +273,10 @@ public class MainWindow extends JFrame implements ActionListener {
     setLayout(new BorderLayout());
     {
       panelBase = new JPanel();
-      panelBase.setLayout(new BorderLayout());
-      add(panelBase, BorderLayout.CENTER);
-    }
-    {
+      panelBase.setLayout(new GridBagLayout());
       cbThemeSelector = new JComboBox<ThemeInfo>(new Vector<ThemeInfo>(themes));
-      panelBase.add(cbThemeSelector, BorderLayout.NORTH);
+      panelBase.add(cbThemeSelector);
+      add(panelBase, BorderLayout.CENTER);
     }
   } // initGUI
 
@@ -285,6 +297,9 @@ public class MainWindow extends JFrame implements ActionListener {
         break;
       case "paste":
         System.out.println("Paste button pressed");
+        break;
+      case "favourite":
+        System.out.println("Favourite button pressed");
         break;
       case "exit":
         System.out.println("Exit Application button pressed");
@@ -342,7 +357,7 @@ public class MainWindow extends JFrame implements ActionListener {
   /**
    * load themes from templates folder
    */
-  public static void loadThemes() {
+  public void loadThemes() {
     themes = new ArrayList<ThemeInfo>();
 
     for (UIManager.LookAndFeelInfo look_and_feel : UIManager.getInstalledLookAndFeels()) {
@@ -361,19 +376,22 @@ public class MainWindow extends JFrame implements ActionListener {
     for (FlatAllIJThemes.FlatIJLookAndFeelInfo info : FlatAllIJThemes.INFOS) {
       themes.add(new ThemeInfo(info.getName(), null, info.getClassName()));
     }
-
-    String themesPath = CommonUtils.getInstance().getWorkingDir() +
-            "templates" + System.getProperty("file.separator") + "intellijthemes";
-    File directory = new File(themesPath);
-    File[] themeFiles = directory.listFiles((dir, name) -> name.endsWith(".theme.json"));
-    if (themeFiles == null)
-      return;
-    for (File f : themeFiles) {
-      String name = f.getName();
-      int n = name.indexOf(".theme.json");
-      name = name.substring(0, n);
-      themes.add(new ThemeInfo(name, f, null));
-    }
   }
 
+  private class ThemeInfo {
+    public final String name;
+    public final File themeFile;
+    public final String lafClassName;
+
+    public ThemeInfo(String name, File themeFile, String lafClassName) {
+      this.name = name;
+      this.themeFile = themeFile;
+      this.lafClassName = lafClassName;
+    }
+
+    @Override
+    public String toString() {
+      return name;
+    }
+  }
 }

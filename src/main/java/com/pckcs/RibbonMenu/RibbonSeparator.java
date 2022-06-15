@@ -67,21 +67,22 @@ public class RibbonSeparator extends JComponent {
   }
 
   @Override
-  public void paint(Graphics r) {
-    super.paint(r);
-    Graphics2D g = (Graphics2D) r;
+  public void paint(Graphics g) {
+    super.paint(g);
+    Graphics2D g2d = (Graphics2D) g.create();
     if (colorUser == null) {
       g.setColor(color);
     } else {
       g.setColor(colorUser);
     }
-    g.setStroke(new BasicStroke(wide));
-    g.drawLine(
+    g2d.setStroke(new BasicStroke(wide));
+    g2d.drawLine(
             getWidth() / 2 - (int) wide / 2,
             insets.top,
             getWidth() / 2 - (int) wide / 2,
             getHeight() - insets.top - insets.bottom
     );
+    g2d.dispose();
   }
 
   /**

@@ -17,12 +17,19 @@ package com.pckcs.RibbonMenu;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 /**
  * The Class Util.
@@ -115,4 +122,57 @@ public class Util {
 		}
 		return null;
 	}
+	
+  public static ImageIcon scaleIcon(Icon icon, DisplayState state) {
+    int size = 24;
+    switch (state) {
+      case SLIM:
+        size = 16;
+        break;
+      case LARGE:
+        size = 42;
+        break;
+      case QUICK:
+        size = 22;
+        break;
+      default:
+        break;
+    }
+    if (icon instanceof FlatSVGIcon) {
+      FlatSVGIcon flaticon = null;
+
+      String name = ((FlatSVGIcon)icon).getName();
+      flaticon = new FlatSVGIcon(name, size, size);
+      return flaticon;
+    } else {
+      Image iconImage = iconToImage(icon);
+      Image resized = iconImage.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH);
+      BufferedImage newImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+
+      Graphics2D g2d = newImage.createGraphics();
+      g2d.drawImage(resized, 0, 0, null);
+      g2d.dispose();
+      return new ImageIcon(newImage);
+    }
+    
+  }
+
+  public static Image iconToImage(Icon icon) {
+    if (icon instanceof ImageIcon) {
+       return ((ImageIcon)icon).getImage();
+    } 
+    else {
+       int w = icon.getIconWidth();
+       int h = icon.getIconHeight();
+       GraphicsEnvironment ge = 
+         GraphicsEnvironment.getLocalGraphicsEnvironment();
+       GraphicsDevice gd = ge.getDefaultScreenDevice();
+       GraphicsConfiguration gc = gd.getDefaultConfiguration();
+       BufferedImage image = gc.createCompatibleImage(w, h);
+       Graphics2D g = image.createGraphics();
+       icon.paintIcon(null, g, 0, 0);
+       g.dispose();
+       return image;
+    }
+  }
 }

@@ -16,6 +16,8 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+
 /**
  * The Class RibbonGroup.
  *
@@ -92,6 +94,12 @@ public class RibbonGroup extends JComponent {
         displayState.add(state);
         if (comp instanceof AbstractButton) {
             AbstractButton ab = (AbstractButton)comp;
+            if (ab.getIcon() != null && state != DisplayState.NORMAL) {
+              ab.setIcon(Util.scaleIcon(ab.getIcon(), state));
+//              if (ab.getIcon() instanceof FlatSVGIcon) {
+//                ab.setIcon(scaleIcon(((FlatSVGIcon)ab.getIcon()).getName(),state));
+//              }
+            }
             ab.setBorderPainted(false);
             comp.addMouseListener(new MouseAdapter() {
                 @Override
@@ -106,6 +114,8 @@ public class RibbonGroup extends JComponent {
         }
 
     }
+    
+    
 
     /**
      * Add default separator

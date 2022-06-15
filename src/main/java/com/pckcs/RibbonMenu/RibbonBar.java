@@ -3,8 +3,13 @@ package com.pckcs.RibbonMenu;
 import javax.swing.*;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * Office styled RibbonBar main component.
@@ -152,4 +157,23 @@ public class RibbonBar extends JPanel {
     ribbonTabPanel.addTab(tab.getTitle(), tab);
   }
 	
+  /**
+   * paintChildren
+   *
+   * @see javax.swing.JComponent#paintChildren(java.awt.Graphics)
+   */
+  @Override
+  public void paintChildren(Graphics g) {
+    super.paintChildren(g);
+    
+    Graphics2D g2d = (Graphics2D) g.create();
+    Color colorShadowDark = UIManager.getColor("InternalFrame.borderDarkShadow");
+    Color colorShadow = UIManager.getColor("InternalFrame.borderShadow");
+    GradientPaint shadow_paint = new GradientPaint(0, getHeight() - shadowHeight,
+        colorShadowDark, 0, getHeight(), colorShadow);
+    g2d.setPaint(shadow_paint);
+    g2d.fill(new Rectangle2D.Double(0, getHeight() - shadowHeight, getWidth(), getHeight()));
+
+    g2d.dispose();  
+  }
 }

@@ -2,18 +2,28 @@ package com.pckcs.RibbonMenu;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.LayoutManager;
 import java.awt.LayoutManager2;
+import java.awt.Shape;
+import java.awt.geom.Arc2D;
+import java.awt.geom.GeneralPath;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 
 /**
@@ -29,12 +39,11 @@ public class QuickAccessBar extends JPanel {
   /** The instance. */
   private static QuickAccessBar instance = null;
   
-	/** The separators. */
-//	int separators;
-	
-  /** The quickbar width. */
-  static int quickbarWidth = 0;
-  
+  private Color colorBorder;
+
+  /** The layout for quickbar. */
+  BoxLayout lm;
+
   /**
    * RibbonBar Factory to create our Singleton Object.
    * 
@@ -51,7 +60,7 @@ public class QuickAccessBar extends JPanel {
    * Constructor.
    */
   public QuickAccessBar() {
-//		this.separators = 0;
+    this.add(Box.createRigidArea(new Dimension(10, 10)));
     QuickBarLayout layout =  new QuickBarLayout();
     setLayout( layout );
 
@@ -60,6 +69,14 @@ public class QuickAccessBar extends JPanel {
     updateUI();
 	}
 	
+  /**
+   * Override the updateUI function to follow changes to the theme
+   */
+  @Override
+  public void updateUI() {
+    colorBorder = UIManager.getColor("MenuBar.foreground");
+  }
+
 	/**
    * addButton.
    *
@@ -67,34 +84,58 @@ public class QuickAccessBar extends JPanel {
    *          the button
    */
 	public void addButton(JButton button) {
-    if (button.getIcon() instanceof FlatSVGIcon) {
-      FlatSVGIcon icon = (FlatSVGIcon)button.getIcon();
-      button.setIcon(icon.derive(24,24));
+    if (button.getIcon() != null) {
+//      FlatSVGIcon icon = (FlatSVGIcon)button.getIcon();
+//      button.setIcon(icon.derive(BUTTON_SIZE,BUTTON_SIZE));
+      button.setIcon(Util.scaleIcon(button.getIcon(), DisplayState.QUICK));
     }
+    this.add(Box.createRigidArea(new Dimension(2,0)));
     this.add(button);
-    quickbarWidth += button.getWidth();
 	}
 	
 	/**
-   * add seperator.
-   */
-	public void addSeperator() {
-/*
-		String gen = RibbonBar.generateToken(8);
-		QuickButton button = new QuickButton(gen);
-		button.createSeparator();
-		buttons.add(button);
-		separators++;
-*/
-	}
+	 * paintChildren
+	 *
+	 * @see javax.swing.JComponent#paintChildren(java.awt.Graphics)
+	 */
+	@Override
+	public void paintChildren(Graphics g) {
+	  super.paintChildren(g);
+	  
+    Graphics2D g2d = (Graphics2D) g.create();
+    double height = (double)RibbonBar.quickbarHeight - 1.0f;
+    int minX = 0;
+    Dimension size = lm.preferredLayoutSize(this);
+    int maxX = size.width;
+ 
+    float radius = (float) height / 2.0f;
+
+    GeneralPath outline = new GeneralPath();
+
+    // top left corner
+    outline.moveTo(minX - 1, 0);
+    // top right corner
+    outline.lineTo(maxX, 0);
+    // right arc
+    outline.append(new Arc2D.Double(maxX - radius, 0, height,
+        height, 90, -180, Arc2D.OPEN), true);
+    // bottom left corner
+    outline.lineTo(minX - 1, height);
+    outline.lineTo(minX - 1, 0);
+
+    Shape contour = outline;
+    if (contour != null) {
+      g2d.setColor(colorBorder);
+      g2d.draw(contour);
+    }
+
+    g2d.dispose();	
+ }
 	
   /**
    * The Class QuickBarLayout.
    */
   private class QuickBarLayout implements LayoutManager2, PropertyChangeListener, UIResource {
-
-    /** The layout for quickbar. */
-    BoxLayout lm;
 
     /**
      * Instantiates a new quick bar layout.
@@ -229,13 +270,4 @@ public class QuickAccessBar extends JPanel {
     super.setLayout(mgr);
   }
 
-  /**
-   * paintComponent
-   *
-   * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-   */
-  @Override
-  public void paintComponent(Graphics g) {
-    super.paintComponent(g);
-  }
 }
