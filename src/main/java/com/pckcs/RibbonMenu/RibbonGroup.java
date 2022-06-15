@@ -108,6 +108,23 @@ public class RibbonGroup extends JComponent {
     }
 
     /**
+     * Add default separator
+     * @see RibbonSeparator
+     */
+    public void addSeparator() {
+        addComponent(new RibbonSeparator(), DisplayState.SEPARATOR);
+    }
+
+    /**
+     * Add custom separator
+     * @param separator
+     * @see RibbonSeparator
+     */
+    public void addSeparator(RibbonSeparator separator) {
+        addComponent(separator, DisplayState.SEPARATOR);
+    }
+
+    /**
      * paintComponent.
      *
      * @param g the g

@@ -18,7 +18,8 @@ import com.formdev.flatlaf.*;
 import com.formdev.flatlaf.intellijthemes.FlatAllIJThemes;
 import com.pckcs.RibbonMenu.common.CommonUtils;
 import com.pckcs.RibbonMenu.common.ThemeInfo;
-import java.awt.BorderLayout;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -163,6 +164,11 @@ public class MainWindow extends JFrame implements ActionListener {
 
 
             }
+          {
+              RibbonSeparator rs = new RibbonSeparator();
+
+              rgBase.addSeparator(rs);
+          }
 //      RibbonGroup rgClipboard = new RibbonGroup("Clipboard");
             RibbonGroup rgClipboard = new RibbonGroup();
             tbHome.add(rgClipboard);
