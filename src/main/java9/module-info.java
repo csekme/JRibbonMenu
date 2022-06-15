@@ -2,7 +2,7 @@
 
 module JRibbonMenu {
   requires transitive java.desktop;
-  exports com.pckcs.RibbonMenu;
+  exports  com.pckcs.RibbonMenu;
   requires com.kitfox.svg; 
   requires com.formdev.flatlaf;
   requires com.formdev.flatlaf.intellijthemes;
