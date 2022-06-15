@@ -15,6 +15,7 @@
  */
 package com.pckcs.RibbonMenu;
 import com.formdev.flatlaf.*;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.intellijthemes.FlatAllIJThemes;
 import com.pckcs.RibbonMenu.common.CommonUtils;
 import com.pckcs.RibbonMenu.common.ThemeInfo;
@@ -82,6 +83,14 @@ public class MainWindow extends JFrame implements ActionListener {
                 qSave.setActionCommand("save");
                 qSave.addActionListener(this);
                 quickbar.addButton(qSave);
+            }
+            {
+                JButton qFavourite = new JButton();
+                qFavourite.setIcon(new FlatSVGIcon("images/svg/favourite.svg"));
+                qFavourite.setToolTipText("Save File");
+                qFavourite.setActionCommand("save");
+                qFavourite.addActionListener(this);
+                quickbar.addButton(qFavourite);
             }
             {
                 JButton qExit = new JButton();
@@ -155,7 +164,9 @@ public class MainWindow extends JFrame implements ActionListener {
             {
                 JButton btnSettings = new JButton("<html><body align=\"center\">Settings<br>Configurations</body></html>");
 
-                btnSettings.setIcon(Util.accessImageFile("dist/settings.png"));
+//                btnSettings.setIcon(Util.accessImageFile("dist/settings.png"));
+                btnSettings.setIcon(new FlatSVGIcon("images/svg/settings.svg", 42, 42));
+
                 btnSettings.setToolTipText("Customize your settings.");
                 btnSettings.setVerticalTextPosition(SwingConstants.BOTTOM);
                 btnSettings.setHorizontalTextPosition(SwingConstants.CENTER);

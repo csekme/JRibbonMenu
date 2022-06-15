@@ -1,5 +1,7 @@
 package com.pckcs.RibbonMenu;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -65,6 +67,10 @@ public class QuickAccessBar extends JPanel {
    *          the button
    */
 	public void addButton(JButton button) {
+    if (button.getIcon() instanceof FlatSVGIcon) {
+      FlatSVGIcon icon = (FlatSVGIcon)button.getIcon();
+      button.setIcon(icon.derive(24,24));
+    }
     this.add(button);
     quickbarWidth += button.getWidth();
 	}
