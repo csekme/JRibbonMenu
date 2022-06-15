@@ -2,28 +2,15 @@ package com.pckcs.RibbonMenu;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LayoutManager;
-import java.awt.LayoutManager2;
-import java.awt.Shape;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.plaf.UIResource;
 
 /**
@@ -40,6 +27,7 @@ public class QuickAccessBar extends JPanel {
   private static QuickAccessBar instance = null;
   
   private Color colorBorder;
+  private Color colorBackground;
 
   /** The layout for quickbar. */
   BoxLayout lm;
@@ -61,20 +49,19 @@ public class QuickAccessBar extends JPanel {
    */
   public QuickAccessBar() {
     this.add(Box.createRigidArea(new Dimension(10, 10)));
-    QuickBarLayout layout =  new QuickBarLayout();
-    setLayout( layout );
-
-    addPropertyChangeListener( layout );
-
+    QuickBarLayout layout = new QuickBarLayout();
+    setLayout(layout);
+    addPropertyChangeListener(layout);
     updateUI();
-	}
+  }
 	
   /**
    * Override the updateUI function to follow changes to the theme
    */
   @Override
   public void updateUI() {
-    colorBorder = UIManager.getColor("MenuBar.foreground");
+    colorBorder = UIManager.getColor("MenuBar.borderColor");  //"MenuBar.foreground"
+    colorBackground = UIManager.getColor("Button.background");
   }
 
 	/**
@@ -88,6 +75,19 @@ public class QuickAccessBar extends JPanel {
 //      FlatSVGIcon icon = (FlatSVGIcon)button.getIcon();
 //      button.setIcon(icon.derive(BUTTON_SIZE,BUTTON_SIZE));
       button.setIcon(Util.scaleIcon(button.getIcon(), DisplayState.QUICK));
+      button.setBorderPainted(false);
+      button.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+          button.setBorderPainted(true);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+          button.setBorderPainted(false);
+        }
+      });
+
     }
     this.add(Box.createRigidArea(new Dimension(2,0)));
     this.add(button);
@@ -100,9 +100,10 @@ public class QuickAccessBar extends JPanel {
 	 */
 	@Override
 	public void paintChildren(Graphics g) {
-	  super.paintChildren(g);
+
 	  
     Graphics2D g2d = (Graphics2D) g.create();
+    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     double height = (double)RibbonBar.quickbarHeight - 1.0f;
     int minX = 0;
     Dimension size = lm.preferredLayoutSize(this);
@@ -125,11 +126,13 @@ public class QuickAccessBar extends JPanel {
 
     Shape contour = outline;
     if (contour != null) {
+      g2d.setColor(colorBackground);
+      g2d.fill(contour);
+      super.paintChildren(g2d);
       g2d.setColor(colorBorder);
       g2d.draw(contour);
     }
-
-    g2d.dispose();	
+    g2d.dispose();
  }
 	
   /**
