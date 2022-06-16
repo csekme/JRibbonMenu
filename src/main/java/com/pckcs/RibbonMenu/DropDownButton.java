@@ -13,6 +13,9 @@ import java.awt.event.ActionListener;
  * @see #addSubMenu(JMenuItem)
  */
 public class DropDownButton extends JButton implements ActionListener {
+  
+  private static final long serialVersionUID = 1L;
+  
   // label name template
   private static final String TEMPLATE = "<html><body align=\"center\">%s<br>&ensp;</body></html>";
   // container for submenu

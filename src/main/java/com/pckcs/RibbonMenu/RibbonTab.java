@@ -39,7 +39,7 @@ public class RibbonTab extends JPanel {
 	public RibbonTab(String title) {
       this.title = title;
       this.groups = new ArrayList<>();
-	  this.setLayout(new FlowLayout());
+	  this.setLayout(new FlowLayout(FlowLayout.LEFT));
 	}
 
     /**

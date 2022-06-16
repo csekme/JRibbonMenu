@@ -1,7 +1,5 @@
 package com.pckcs.RibbonMenu;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -302,6 +300,8 @@ public class QuickAccessBar extends JPanel {
 
 
   class MinimizeButton extends JButton {
+
+    private static final long serialVersionUID = 1L;
 
     public MinimizeButton() {
 
