@@ -137,6 +137,7 @@ public class RibbonBar extends JComponent {
 		if (font == null) {
 			// inherit font from JMenuItem
 			font = new JMenuItem().getFont().deriveFont(Font.PLAIN);//.deriveFont(12f);
+			fontSize = font.getSize();
 		}
 		{
 			setMinimumSize(new Dimension(0, ribbonHeight));
@@ -173,7 +174,33 @@ public class RibbonBar extends JComponent {
 		// register for tooltips
 		ToolTipManager.sharedInstance().registerComponent(this);
 	}
-	
+
+	float fontSize = 12;
+
+	public void increaseFont() {
+		fontSize++;
+		font = font.deriveFont(fontSize);
+		buildMenu();
+	}
+
+	public void setFontSize(float fontSize) {
+		font = font.deriveFont(fontSize);
+		buildMenu();
+	}
+
+	public void decreaseFont() {
+		fontSize--;
+		font = font.deriveFont(fontSize);
+		buildMenu();
+	}
+
+	public void resetFont() {
+		fontSize = 14;
+		font = font.deriveFont(fontSize);
+		buildMenu();
+	}
+
+
 	/**
 	 * Change all settings to default
 	 */

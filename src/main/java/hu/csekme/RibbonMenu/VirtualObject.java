@@ -16,7 +16,7 @@
 package hu.csekme.RibbonMenu;
 import java.awt.Color;
 import java.awt.Point;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 /**
  * Virtual object in two dimensional space. Used for Swing drawing.
@@ -38,6 +38,7 @@ public abstract class VirtualObject extends Bound {
     private boolean selected;
     private boolean selectedTop;
     private boolean reloadIcons;
+    JComponent c;
  
     /**
      * Create Virtual Object with unique token
@@ -45,6 +46,7 @@ public abstract class VirtualObject extends Bound {
      * @param token unique string value
      */
     public VirtualObject(String token) {
+        c.getGraphics();
         this.ForegroundColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
         this.BackgroundColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
         this.token = token;
