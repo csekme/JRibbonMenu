@@ -82,7 +82,6 @@ public class RibbonSeparator extends JComponent {
     } else {
       g2d.setColor(colorUser);
     }
-    System.out.println(g2d.getColor());
     g2d.drawLine(
             getWidth() / 2 - (int) wide / 2,
             insets.top,
