@@ -145,6 +145,7 @@ public class RibbonBar extends JPanel {
       ribbonPane.setPreferredSize(new Dimension(width, quickbarHeight+ribbonHeight));
 //      ribbonPane.setOneTouchExpandable(true);
       ribbonPane.setDividerLocation(quickbarHeight);
+			//ribbonPane.setDividerSize(0);
       add(ribbonPane, BorderLayout.CENTER);
     }
 	}

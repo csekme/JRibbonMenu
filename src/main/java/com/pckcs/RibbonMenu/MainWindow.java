@@ -83,7 +83,7 @@ public class MainWindow extends JFrame implements ActionListener {
       //Add some buttons
       {
         JButton qOpen = new JButton();
-        qOpen.setIcon(Util.accessImageFile("dist/Open24.png"));
+        qOpen.setIcon(new FlatSVGIcon("images/open.svg"));
         qOpen.setToolTipText("Open File");
         qOpen.setActionCommand("open");
         qOpen.addActionListener(this);
@@ -101,10 +101,18 @@ public class MainWindow extends JFrame implements ActionListener {
       {
         JButton qFavourite = new JButton();
         qFavourite.setIcon(new FlatSVGIcon("images/svg/favourite.svg"));
-        qFavourite.setToolTipText("Favourite");
-        qFavourite.setActionCommand("favourite");
+        qFavourite.setToolTipText("User");
+        qFavourite.setActionCommand("user");
         qFavourite.addActionListener(this);
         quickbar.addButton(qFavourite);
+      }
+      {
+        JButton qUser = new JButton();
+        qUser.setIcon(new FlatSVGIcon("images/user.svg"));
+        qUser.setToolTipText("Favourite");
+        qUser.setActionCommand("favourite");
+        qUser.addActionListener(this);
+        quickbar.addButton(qUser);
       }
       {
         JButton qExit = new JButton();
@@ -134,7 +142,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         btnUser.setVerticalTextPosition(SwingConstants.BOTTOM);
         btnUser.setHorizontalTextPosition(SwingConstants.CENTER);
-        btnUser.setIcon(Util.accessImageFile("dist/user.png"));
+        btnUser.setIcon(new FlatSVGIcon("images/user.svg", 42, 42));
         btnUser.setToolTipText("Add new user");
         btnUser.setActionCommand("new_user");
         btnUser.addActionListener(this);
@@ -142,7 +150,7 @@ public class MainWindow extends JFrame implements ActionListener {
       }
       {
         DropDownButton btnSample = new DropDownButton("Warnings");
-        btnSample.setIcon(Util.accessImageFile("dist/warning.png"));
+        btnSample.setIcon(new FlatSVGIcon("images/warning.svg", 42, 42));
 
         btnSample.setToolTipText("Customize your settings.");
         btnSample.setVerticalTextPosition(SwingConstants.BOTTOM);
