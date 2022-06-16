@@ -136,8 +136,8 @@ public class MainWindow extends JFrame implements ActionListener {
     RibbonTab tbHome = new RibbonTab("Home");
     ribbonBar.addTab(tbHome);
     {
-//      RibbonGroup rgBase = new RibbonGroup("Base");
-      RibbonGroup rgBase = new RibbonGroup();
+      RibbonGroup rgBase = new RibbonGroup("Base");
+//      RibbonGroup rgBase = new RibbonGroup();
       tbHome.addGroup(rgBase);
       //Add some button
       {
@@ -149,7 +149,7 @@ public class MainWindow extends JFrame implements ActionListener {
         btnUser.setToolTipText("Add new user");
         btnUser.setActionCommand("new_user");
         btnUser.addActionListener(this);
-        rgBase.addComponent(btnUser, DisplayState.NORMAL);
+        rgBase.addComponent(btnUser, DisplayState.LARGE);
       }
       {
         DropDownButton btnSample = new DropDownButton("Warnings");
@@ -182,7 +182,7 @@ public class MainWindow extends JFrame implements ActionListener {
           btnSample.addSubMenu(rm1);
           btnSample.addSubMenu(rm2);
         }
-        rgBase.addComponent(btnSample, DisplayState.NORMAL);
+        rgBase.addComponent(btnSample, DisplayState.LARGE);
 
 
       }
@@ -200,12 +200,12 @@ public class MainWindow extends JFrame implements ActionListener {
 
       }
       {
-        RibbonSeparator rs = new RibbonSeparator();
+//        RibbonSeparator rs = new RibbonSeparator();
 
-        rgBase.addSeparator(rs);
+        rgBase.addSeparator();
       }
-//      RibbonGroup rgClipboard = new RibbonGroup("Clipboard");
-      RibbonGroup rgClipboard = new RibbonGroup();
+      RibbonGroup rgClipboard = new RibbonGroup("Clipboard");
+//      RibbonGroup rgClipboard = new RibbonGroup();
       tbHome.add(rgClipboard);
       {
         JButton btnCopy = new JButton("Copy");
@@ -217,10 +217,10 @@ public class MainWindow extends JFrame implements ActionListener {
         btnCopy.setHorizontalTextPosition(SwingConstants.CENTER);
         btnCopy.setActionCommand("copy");
         btnCopy.addActionListener(this);
-        rgClipboard.addComponent(btnCopy, DisplayState.NORMAL);
+        rgClipboard.addComponent(btnCopy, DisplayState.LARGE);
       }
       {
-        btnPaste = new JButton("Paste\nfrom clipboard");
+        btnPaste = new JButton("<html><body align=\"center\">Paste<br>from clipboard</body></html>");
         btnPaste.setIcon(Util.accessImageFile("dist/paste.png"));
 
         btnPaste.setEnabled(false);
@@ -229,11 +229,11 @@ public class MainWindow extends JFrame implements ActionListener {
         btnPaste.addActionListener(this);
         btnPaste.setVerticalTextPosition(SwingConstants.BOTTOM);
         btnPaste.setHorizontalTextPosition(SwingConstants.CENTER);
-        rgClipboard.addComponent(btnPaste, DisplayState.NORMAL);
+        rgClipboard.addComponent(btnPaste, DisplayState.LARGE);
       }
       rgClipboard.addSeparator();
-//      RibbonGroup rgContacts = new RibbonGroup("Contacts");
-      RibbonGroup rgContacts = new RibbonGroup();
+      RibbonGroup rgContacts = new RibbonGroup("Contacts");
+//      RibbonGroup rgContacts = new RibbonGroup();
       tbHome.add(rgContacts);
       {
         JButton btnLetter = new JButton("Send email");
@@ -251,20 +251,20 @@ public class MainWindow extends JFrame implements ActionListener {
     }
     RibbonTab tbView = new RibbonTab("Security"); //Second tab
     ribbonBar.addTab(tbView);
-    RibbonGroup rgClipboard = new RibbonGroup();
+    RibbonGroup rgClipboard = new RibbonGroup("Clipboard");
     tbView.add(rgClipboard);
     {
       JButton btnReminder = new JButton("Reminder");
 
       btnReminder.setIcon(Util.accessImageFile("dist/remind.png"));
       btnReminder.setToolTipText("Manage your Reminders.");
-      rgClipboard.addComponent(btnReminder, DisplayState.NORMAL);
+      rgClipboard.addComponent(btnReminder, DisplayState.LARGE);
     }
     {
       JButton btnFingerPrint = new JButton("Fingerprint");
       btnFingerPrint.setIcon(Util.accessImageFile("dist/fingerprint.png"));
       btnFingerPrint.setToolTipText("Toggle FingerPrint Security.");
-      rgClipboard.addComponent(btnFingerPrint, DisplayState.NORMAL);
+      rgClipboard.addComponent(btnFingerPrint, DisplayState.LARGE);
     }
 
   } // buildSampleMenu

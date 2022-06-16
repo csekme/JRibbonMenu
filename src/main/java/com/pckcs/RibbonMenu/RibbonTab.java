@@ -71,25 +71,4 @@ public class RibbonTab extends JPanel {
 		this.add(comp);
 	}
 
-  /**
-   * paintComponent
-   *
-   * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-   */
-  @Override
-  public void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    Component[] components = this.getComponents();
-    for (Component compo : components) {
-        String componentName = compo.getClass().getName();
-        if (componentName.endsWith("RibbonGroup")) {
-          componentName = ((RibbonGroup)compo).getTitle();
-       //   System.out.println(componentName);
-        } else {
-//        compo.paintComponent(g);
-        System.out.println(compo.getClass().getName().substring(componentName.indexOf("swing.") + "swing.".length(),
-            componentName.length()));
-        }
-    }
-  }
 }

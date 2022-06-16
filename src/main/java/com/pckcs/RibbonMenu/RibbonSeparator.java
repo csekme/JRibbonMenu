@@ -13,6 +13,8 @@ import java.awt.*;
  */
 public class RibbonSeparator extends JComponent {
 
+  private static final long serialVersionUID = 1L;
+  
   private static final short defaultMarinTop = 2;
   private static final short defaultMarinBottom = 2;
   private static final short defaultMarinLeft = 6;

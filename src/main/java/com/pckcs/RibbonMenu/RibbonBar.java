@@ -95,7 +95,7 @@ public class RibbonBar extends JPanel {
 	static int shadowHeight = 10;
 	
 	/** The ribbon height. */
-	static int ribbonHeight = 126 + shadowHeight;
+	static int ribbonHeight = 145 + shadowHeight;
 	
 	/** The font. */
 	protected Font font = null;
@@ -166,7 +166,7 @@ public class RibbonBar extends JPanel {
   @Override
   public void paintChildren(Graphics g) {
     super.paintChildren(g);
-    
+
     Graphics2D g2d = (Graphics2D) g.create();
     Color colorShadowDark = UIManager.getColor("InternalFrame.borderDarkShadow");
     Color colorShadow = UIManager.getColor("InternalFrame.borderShadow");
@@ -175,6 +175,7 @@ public class RibbonBar extends JPanel {
     g2d.setPaint(shadow_paint);
     g2d.fill(new Rectangle2D.Double(0, getHeight() - shadowHeight, getWidth(), getHeight()));
 
-    g2d.dispose();  
+    g2d.dispose();
+
   }
 }

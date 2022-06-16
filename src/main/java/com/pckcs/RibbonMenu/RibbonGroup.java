@@ -1,8 +1,15 @@
 package com.pckcs.RibbonMenu;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -22,24 +29,18 @@ public class RibbonGroup extends JComponent {
    */
   private static final long serialVersionUID = 1L;
 
-  private int nRows = 0;
-  private int nColumns;
+  private int nColumns = 0;
+  private int nRows    = 0;
   private int nStacked = 0;
 
   GridBagLayout layout;
+
+  GroupName lblTitle = null;
   
   /**
    * Display state for components.
    */
   List<DisplayState> displayState;
-
-  /**
-   * The title.
-   */
-  private String title = null;
-
-  /** The separators. */
-  // int separators;
 
   /**
    * Instantiates a new group.
@@ -57,16 +58,10 @@ public class RibbonGroup extends JComponent {
    *          the title
    */
   public RibbonGroup(String title) {
-    this.title = title;
-  }
-
-  /**
-   * getTitle.
-   *
-   * @return title
-   */
-  public String getTitle() {
-    return title;
+    lblTitle = new GroupName(title);
+    lblTitle.setHorizontalAlignment(JLabel.CENTER);
+    layout = new GridBagLayout();
+    this.setLayout(layout);
   }
 
   /**
@@ -86,6 +81,11 @@ public class RibbonGroup extends JComponent {
       AbstractButton ab = (AbstractButton) comp;
       if (ab.getIcon() != null && state != DisplayState.NORMAL) {
         ab.setIcon(Util.scaleIcon(ab.getIcon(), state));
+      }
+      if (comp instanceof JButton && state != DisplayState.SLIM) {
+        JButton jb = (JButton) comp;
+        jb.setVerticalTextPosition(SwingConstants.BOTTOM);
+        jb.setHorizontalTextPosition(SwingConstants.CENTER);
       }
       ab.setBorderPainted(false);
       comp.addMouseListener(new MouseAdapter() {
@@ -109,15 +109,15 @@ public class RibbonGroup extends JComponent {
       c.fill = GridBagConstraints.HORIZONTAL;
       switch (nStacked) {
       case 0:
-        c.gridx = nRows;
+        c.gridx = nColumns;
         c.gridy = 0;
         break;
       case 1:
-        c.gridx = nRows;
+        c.gridx = nColumns;
         c.gridy = 1;
         break;
       case 2:
-        c.gridx = nRows++;
+        c.gridx = nColumns++;
         c.gridy = 2;
         break;
       default:
@@ -127,16 +127,16 @@ public class RibbonGroup extends JComponent {
       if (nStacked > 2)
         nStacked = 0;
       this.add(comp, c);
-      nColumns++;
+      nRows++;
     } else if (state == DisplayState.SEPARATOR) {
       comp.setPreferredSize(new Dimension(5,RibbonBar.ribbonHeight));
       c.fill = GridBagConstraints.VERTICAL;
-      c.gridx = nColumns++;
+      c.gridx = nRows++;
       c.gridy = 0;
       this.add(comp, c);
     } else {
       c.fill = GridBagConstraints.BOTH;
-      c.gridx = nColumns++;
+      c.gridx = nRows++;
       c.gridy = 0;
       this.add(comp, c);
     }
@@ -149,16 +149,18 @@ public class RibbonGroup extends JComponent {
    */
   public void addSeparator() {
     addComponent(new RibbonSeparator(), DisplayState.SEPARATOR);
-  }
+    if (lblTitle != null) {
+      GridBagConstraints c = new GridBagConstraints();
+      c.weightx = 1;
+      c.weighty = nRows;
+//      c.anchor = GridBagConstraints.WEST;
+//      c.fill = GridBagConstraints.BOTH;
+      c.gridwidth = nColumns;
+      c.gridx = 0;
+      c.gridy = nRows;
+      this.add(lblTitle, c);
+    }
 
-  /**
-   * Add custom separator
-   * 
-   * @param separator
-   * @see RibbonSeparator
-   */
-  public void addSeparator(RibbonSeparator separator) {
-    addComponent(separator, DisplayState.SEPARATOR);
   }
 
 }
