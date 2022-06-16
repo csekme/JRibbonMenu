@@ -35,7 +35,7 @@ public class RibbonSeparator extends JComponent {
    */
   @Override
   public void setForeground(Color fg) {
-    colorUser = fg;
+    this.colorUser = fg;
   }
 
   /**
@@ -44,6 +44,9 @@ public class RibbonSeparator extends JComponent {
   @Override
   public void updateUI() {
     color = UIManager.getColor("ToolBar.separatorColor");
+    if (UIManager.getBoolean("laf.dark")) {
+      color = color.brighter();
+    }
   }
 
   /**
@@ -54,6 +57,11 @@ public class RibbonSeparator extends JComponent {
   @Override
   public int getWidth() {
     return (int) wide + insets.left + insets.right;
+  }
+
+  @Override
+  public Dimension getMaximumSize() {
+    return new Dimension(getWidth(), Integer.MAX_VALUE);
   }
 
   /**
@@ -70,12 +78,12 @@ public class RibbonSeparator extends JComponent {
   public void paint(Graphics g) {
     super.paint(g);
     Graphics2D g2d = (Graphics2D) g.create();
-    if (colorUser == null) {
-      g.setColor(color);
-    } else {
-      g.setColor(colorUser);
-    }
     g2d.setStroke(new BasicStroke(wide));
+    if (colorUser == null) {
+      g2d.setColor(color);
+    } else {
+      g2d.setColor(colorUser);
+    }
     g2d.drawLine(
             getWidth() / 2 - (int) wide / 2,
             insets.top,

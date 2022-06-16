@@ -89,6 +89,7 @@ public class MainWindow extends JFrame implements ActionListener {
         qOpen.addActionListener(this);
         quickbar.addButton(qOpen);
       }
+      quickbar.addSeparator();
       {
         JButton qSave = new JButton();
         qSave.setIcon(Util.accessImageFile("dist/Save24.png"));

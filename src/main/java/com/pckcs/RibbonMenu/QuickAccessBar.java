@@ -92,6 +92,27 @@ public class QuickAccessBar extends JPanel {
     this.add(Box.createRigidArea(new Dimension(2,0)));
     this.add(button);
 	}
+
+  /**
+   * Add default separator
+   * @see RibbonSeparator
+   */
+  public void addSeparator() {
+    this.add(Box.createRigidArea(new Dimension(2,0)));
+    RibbonSeparator separator = new RibbonSeparator();
+    separator.setForeground(UIManager.getColor("ToolBar.separatorColor"));
+    this.add(separator);
+  }
+
+  /**
+   * Add custom separator
+   * @param separator
+   * @see RibbonSeparator
+   */
+  public void addSeparator(RibbonSeparator separator) {
+    this.add(Box.createRigidArea(new Dimension(2,0)));
+    this.add(separator);
+  }
 	
 	/**
 	 * paintChildren
