@@ -18,6 +18,9 @@ package com.pckcs.RibbonMenu;
 import com.formdev.flatlaf.*;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.intellijthemes.FlatAllIJThemes;
+import com.pckcs.RibbonMenu.Icons.IconDown;
+import com.pckcs.RibbonMenu.Icons.IconPinned;
+import com.pckcs.RibbonMenu.Icons.IconUp;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -57,7 +60,7 @@ public class MainWindow extends JFrame implements ActionListener {
   /**
    * Base panel
    **/
-  JPanel panelBase;
+  JPanel pnlContent;
 
   /**
    * Create the frame.
@@ -281,11 +284,39 @@ public class MainWindow extends JFrame implements ActionListener {
     setSize(800, 600);
     setLayout(new BorderLayout());
     {
-      panelBase = new JPanel();
-      panelBase.setLayout(new GridBagLayout());
-      cbThemeSelector = new JComboBox<ThemeInfo>(new Vector<ThemeInfo>(themes));
-      panelBase.add(cbThemeSelector);
-      add(panelBase, BorderLayout.CENTER);
+      JPanel pnlBase = new JPanel();
+      pnlBase.setLayout(new BorderLayout());
+      add(pnlBase, BorderLayout.CENTER);
+      {
+        JPanel pnlTop = new JPanel();
+        pnlTop.setLayout(new GridBagLayout());
+        pnlBase.add(pnlTop, BorderLayout.NORTH);
+        {
+          cbThemeSelector = new JComboBox<ThemeInfo>(new Vector<ThemeInfo>(themes));
+          pnlTop.add(cbThemeSelector, new GridBagConstraints(0,0,1,1,1.0,0.0,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(4,4,4,4),0,0));
+        }
+      }
+      {
+        pnlContent = new JPanel();
+        pnlContent.setLayout(new GridBagLayout());
+        pnlBase.add(pnlContent, BorderLayout.CENTER);
+      }
+
+      { // IconUp example
+        JButton btnUp = new JButton();
+        btnUp.setIcon(new IconUp(24,24));
+        pnlContent.add(btnUp, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+      }
+      { // IconDown example
+        JButton btnDown = new JButton();
+        btnDown.setIcon(new IconDown(24,24));
+        pnlContent.add(btnDown, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+      }
+      { // IconPinned example
+        JButton btnPinned = new JButton();
+        btnPinned.setIcon(new IconPinned(24,24));
+        pnlContent.add(btnPinned, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+      }
     }
   } // initGUI
 

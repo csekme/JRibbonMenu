@@ -29,6 +29,8 @@ public class QuickAccessBar extends JPanel {
   private Color colorBorder;
   private Color colorBackground;
 
+  MinimizeButton minimizeButton;
+
   /** The layout for quickbar. */
   BoxLayout lm;
 
@@ -53,6 +55,8 @@ public class QuickAccessBar extends JPanel {
     setLayout(layout);
     addPropertyChangeListener(layout);
     updateUI();
+    //minimizeButton = new MinimizeButton();
+    //add(minimizeButton);
   }
 	
   /**
@@ -91,6 +95,7 @@ public class QuickAccessBar extends JPanel {
     }
     this.add(Box.createRigidArea(new Dimension(2,0)));
     this.add(button);
+    //setComponentZOrder(minimizeButton, getComponentCount()-1);
 	}
 
   /**
@@ -102,6 +107,7 @@ public class QuickAccessBar extends JPanel {
     RibbonSeparator separator = new RibbonSeparator();
     separator.setForeground(UIManager.getColor("ToolBar.separatorColor"));
     this.add(separator);
+    //setComponentZOrder(minimizeButton, getComponentCount()-1);
   }
 
   /**
@@ -112,6 +118,7 @@ public class QuickAccessBar extends JPanel {
   public void addSeparator(RibbonSeparator separator) {
     this.add(Box.createRigidArea(new Dimension(2,0)));
     this.add(separator);
+    //setComponentZOrder(minimizeButton, getComponentCount()-1);
   }
 	
 	/**
@@ -122,7 +129,6 @@ public class QuickAccessBar extends JPanel {
 	@Override
 	public void paintChildren(Graphics g) {
 
-	  
     Graphics2D g2d = (Graphics2D) g.create();
     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     double height = (double)RibbonBar.quickbarHeight - 1.0f;
@@ -155,7 +161,7 @@ public class QuickAccessBar extends JPanel {
     }
     g2d.dispose();
  }
-	
+
   /**
    * The Class QuickBarLayout.
    */
@@ -292,6 +298,20 @@ public class QuickAccessBar extends JPanel {
       removePropertyChangeListener((PropertyChangeListener)oldMgr);
     }
     super.setLayout(mgr);
+  }
+
+
+  class MinimizeButton extends JButton {
+
+    public MinimizeButton() {
+
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+      g.setColor(Color.red);
+      g.fillRect(0,0,getWidth(),getHeight());
+    }
   }
 
 }
