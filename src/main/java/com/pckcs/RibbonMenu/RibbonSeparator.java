@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Helps to group or visually segment different controls
  * Foreground color set by UI key of "ToolBar.separatorColor" come from FlatLaf
- * You can change it manually by set Color with {@link #setForeground(Color)}
+ * You can change it manually by set Color with {@link #setColor(Color)}
  *
  * @author csk
  * @see RibbonGroup
@@ -29,13 +29,11 @@ public class RibbonSeparator extends JComponent {
   private Color colorUser;
 
   /**
-   * Override default foreground color
-   *
-   * @param fg passed color
+   * Set color manually
+   * @param color passed color
    */
-  @Override
-  public void setForeground(Color fg) {
-    this.colorUser = fg;
+  public void setColor(Color color) {
+    this.colorUser = color;
   }
 
   /**
@@ -84,6 +82,7 @@ public class RibbonSeparator extends JComponent {
     } else {
       g2d.setColor(colorUser);
     }
+    System.out.println(g2d.getColor());
     g2d.drawLine(
             getWidth() / 2 - (int) wide / 2,
             insets.top,
