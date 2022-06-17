@@ -22,6 +22,8 @@ public class RibbonTab extends JPanel {
   /** The title. */
   private String title = null;
 
+  JPanel container;
+
 	/**
    * The separators.
    *
@@ -36,11 +38,14 @@ public class RibbonTab extends JPanel {
    * @param title
    *          the title
    */
-	public RibbonTab(String title) {
-      this.title = title;
-      this.groups = new ArrayList<>();
-	  this.setLayout(new FlowLayout(FlowLayout.LEFT));
-	}
+  public RibbonTab(String title) {
+    this.title = title;
+    this.container = new JPanel();
+    this.container.setLayout(new GridBagLayout());
+    this.groups = new ArrayList<>();
+    this.setLayout(new BorderLayout());
+    add(this.container, BorderLayout.WEST);
+  }
 
     /**
      * Override updateUI to add custom logic when changing themes if needed
@@ -68,7 +73,24 @@ public class RibbonTab extends JPanel {
    *          the comp
    */
 	public void addGroup(RibbonGroup comp) {
-		this.add(comp);
+    GridBagConstraints c = new GridBagConstraints();
+    c.gridx = this.container.getComponentCount();
+    c.gridy = 0;
+    c.gridwidth = 1;
+    c.gridheight = 2;
+    c.weighty = 1;
+    c.anchor = GridBagConstraints.CENTER;
+    c.insets = new Insets(0,0,RibbonBar.shadowHeight,0);
+    c.ipadx=0;
+    c.ipady=0;
+    c.fill = GridBagConstraints.VERTICAL;
+		this.container.add(comp, c);
 	}
+
+  @Override
+  @Deprecated
+  public Component add(Component component) {
+    throw new RuntimeException("Do not use this method. Use instead addGroup");
+  }
 
 }

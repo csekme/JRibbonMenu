@@ -22,6 +22,9 @@ public class RibbonColorFilter extends FlatSVGIcon.ColorFilter implements Functi
    */
   @Override
   public Color apply(Color color) {
+    if (UIManager.getColor("ToolBar.separatorColor") == null) {
+      UIManager.put("ToolBar.separatorColor", new JSeparator().getForeground());
+    }
     if (color.getRGB() == new Color(90, 90, 90).getRGB()) {
       if (UIManager.getBoolean("laf.dark")) {
         lastColor = UIManager.getColor("ToolBar.separatorColor").brighter().brighter();

@@ -44,6 +44,7 @@ public class QuickAccessBar extends JPanel {
     return instance;
   }
 
+
   /**
    * Constructor.
    */
@@ -307,11 +308,7 @@ public class QuickAccessBar extends JPanel {
 
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-      g.setColor(Color.red);
-      g.fillRect(0,0,getWidth(),getHeight());
-    }
+
   }
 
 }

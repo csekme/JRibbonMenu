@@ -45,6 +45,7 @@ public class MainWindow extends JFrame implements ActionListener {
    * The ribbon bar.
    */
   RibbonBar ribbonBar;
+  QuickAccessBar quickbar;
   /**
    * sample paste button
    */
@@ -81,7 +82,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
   public void buildSampleMenu() {
     // Create quick access bar
-    QuickAccessBar quickbar = QuickAccessBar.create();
+
     {
       //Add some buttons
       {
@@ -126,11 +127,7 @@ public class MainWindow extends JFrame implements ActionListener {
         quickbar.addButton(qExit);
       }
     }
-    //Add ribbon bar to NORTH (Suggested)
-    // NOTE: quickbar may be null
-    this.ribbonBar = RibbonBar.create(getWidth(), quickbar);
-//    this.ribbonBar = RibbonBar.create(getWidth(), null);
-    getContentPane().add(this.ribbonBar, BorderLayout.NORTH);
+
 
     //Create a first tab
     RibbonTab tbHome = new RibbonTab("Home");
@@ -206,7 +203,7 @@ public class MainWindow extends JFrame implements ActionListener {
       }
       RibbonGroup rgClipboard = new RibbonGroup("Clipboard");
 //      RibbonGroup rgClipboard = new RibbonGroup();
-      tbHome.add(rgClipboard);
+      tbHome.addGroup(rgClipboard);
       {
         JButton btnCopy = new JButton("Copy");
         btnCopy.setEnabled(true);
@@ -232,9 +229,25 @@ public class MainWindow extends JFrame implements ActionListener {
         rgClipboard.addComponent(btnPaste, DisplayState.LARGE);
       }
       rgClipboard.addSeparator();
+
+      RibbonGroup rgTestControl = new RibbonGroup("Interesting");
+      tbHome.addGroup(rgTestControl);
+      rgTestControl.addComponent(cbThemeSelector, DisplayState.SLIM);
+      cbThemeSelector.setToolTipText("Select your favourite theme");
+
+
+//      RibbonGroup rgClipboard = new RibbonGroup();
+      JComboBox<String> cmbDevelopers = new JComboBox<>();
+      cmbDevelopers.setToolTipText("Please choose a developer.");
+      cmbDevelopers.addItem("Developers");
+      cmbDevelopers.addItem("Paul Conti");
+      cmbDevelopers.addItem("Krisztián Csekme");
+      rgTestControl.addComponent(cmbDevelopers, DisplayState.SLIM);
+      rgTestControl.addSeparator();
+
       RibbonGroup rgContacts = new RibbonGroup("Contacts");
 //      RibbonGroup rgContacts = new RibbonGroup();
-      tbHome.add(rgContacts);
+      tbHome.addGroup(rgContacts);
       {
         JButton btnLetter = new JButton("Send email");
         btnLetter.setIcon(Util.accessImageFile("dist/letter.png"));
@@ -252,7 +265,7 @@ public class MainWindow extends JFrame implements ActionListener {
     RibbonTab tbView = new RibbonTab("Security"); //Second tab
     ribbonBar.addTab(tbView);
     RibbonGroup rgClipboard = new RibbonGroup("Clipboard");
-    tbView.add(rgClipboard);
+    tbView.addGroup(rgClipboard);
     {
       JButton btnReminder = new JButton("Reminder");
 
@@ -280,9 +293,14 @@ public class MainWindow extends JFrame implements ActionListener {
    * Initializes the GUI.
    */
   public void initGUI() {
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setSize(800, 600);
-    setLayout(new BorderLayout());
+    {
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      setSize(800, 600);
+      setLayout(new BorderLayout());
+    }
+    this.quickbar = QuickAccessBar.create();
+    this.ribbonBar = RibbonBar.create(this.quickbar);
+    add(this.ribbonBar, BorderLayout.NORTH);
     {
       JPanel pnlBase = new JPanel();
       pnlBase.setLayout(new BorderLayout());
@@ -293,7 +311,8 @@ public class MainWindow extends JFrame implements ActionListener {
         pnlBase.add(pnlTop, BorderLayout.NORTH);
         {
           cbThemeSelector = new JComboBox<ThemeInfo>(new Vector<ThemeInfo>(themes));
-          pnlTop.add(cbThemeSelector, new GridBagConstraints(0,0,1,1,1.0,0.0,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(4,4,4,4),0,0));
+          //cbThemeSelector.setPrototypeDisplayValue(((ThemeInfo)cbThemeSelector.getSelectedItem()).getShortName());
+        //  pnlTop.add(cbThemeSelector, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
         }
       }
       {
@@ -304,17 +323,17 @@ public class MainWindow extends JFrame implements ActionListener {
 
       { // IconUp example
         JButton btnUp = new JButton();
-        btnUp.setIcon(new IconUp(24,24));
+        btnUp.setIcon(new IconUp(24, 24));
         pnlContent.add(btnUp, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
       }
       { // IconDown example
         JButton btnDown = new JButton();
-        btnDown.setIcon(new IconDown(24,24));
+        btnDown.setIcon(new IconDown(24, 24));
         pnlContent.add(btnDown, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
       }
       { // IconPinned example
         JButton btnPinned = new JButton();
-        btnPinned.setIcon(new IconPinned(24,24));
+        btnPinned.setIcon(new IconPinned(24, 24));
         pnlContent.add(btnPinned, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
       }
     }
@@ -423,6 +442,14 @@ public class MainWindow extends JFrame implements ActionListener {
     public final File themeFile;
     public final String lafClassName;
 
+    public String getShortName() {
+      int ch = name.length();
+      if (ch>20) {
+        return  name.substring(0,20) + "...";
+      }
+      return name;
+    }
+
     public ThemeInfo(String name, File themeFile, String lafClassName) {
       this.name = name;
       this.themeFile = themeFile;
@@ -431,7 +458,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
     @Override
     public String toString() {
-      return name;
+      return getShortName();
     }
   }
 }

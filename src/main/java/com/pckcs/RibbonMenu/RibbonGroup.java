@@ -22,7 +22,7 @@ import javax.swing.*;
  *
  * @author Paul Conti
  */
-public class RibbonGroup extends JComponent {
+public class RibbonGroup extends JPanel {
 
   /**
    * The Constant serialVersionUID.
@@ -60,8 +60,22 @@ public class RibbonGroup extends JComponent {
   public RibbonGroup(String title) {
     lblTitle = new GroupName(title);
     lblTitle.setHorizontalAlignment(JLabel.CENTER);
+    lblTitle.setVerticalTextPosition(JLabel.BOTTOM);
     layout = new GridBagLayout();
     this.setLayout(layout);
+  }
+
+  /**
+   * Override updateUI to add custom logic when changing themes if needed
+   */
+  @Override
+  public void updateUI() {
+    super.updateUI();
+    // some use case better visibility
+    this.setBackground(UIManager.getColor("Button.background"));
+    if (lblTitle!=null) {
+      lblTitle.setEnabled(false);
+    }
   }
 
   /**
@@ -101,11 +115,13 @@ public class RibbonGroup extends JComponent {
       });
     }
     GridBagConstraints c = new GridBagConstraints();
-    c.weightx = 1;
-    c.weighty = 1;
+    c.weightx = 1.0;
+    c.weighty = 1.0;
+    c.insets = new Insets(2,2,0,0);
     c.anchor = GridBagConstraints.WEST;
 
     if (state == DisplayState.SLIM) {
+      c.weighty = 0.0;
       c.fill = GridBagConstraints.HORIZONTAL;
       switch (nStacked) {
       case 0:
@@ -129,8 +145,14 @@ public class RibbonGroup extends JComponent {
       this.add(comp, c);
       nRows++;
     } else if (state == DisplayState.SEPARATOR) {
-      comp.setPreferredSize(new Dimension(5,RibbonBar.ribbonHeight));
+      if (comp instanceof RibbonSeparator) {
+        RibbonSeparator sep = (RibbonSeparator) comp;
+        sep.setPreferredSize(new Dimension(sep.getWidth(),RibbonBar.ribbonHeight));
+      } else {
+        throw new RuntimeException("Please use RibbonSeparator component for state of SEPARATOR");
+      }
       c.fill = GridBagConstraints.VERTICAL;
+      c.gridheight = 4;
       c.gridx = nRows++;
       c.gridy = 0;
       this.add(comp, c);
@@ -152,12 +174,12 @@ public class RibbonGroup extends JComponent {
     if (lblTitle != null) {
       GridBagConstraints c = new GridBagConstraints();
       c.weightx = 1;
-      c.weighty = nRows;
-//      c.anchor = GridBagConstraints.WEST;
+      c.weighty = 1;
+      c.anchor = GridBagConstraints.SOUTH;
 //      c.fill = GridBagConstraints.BOTH;
       c.gridwidth = nColumns;
       c.gridx = 0;
-      c.gridy = nRows;
+      c.gridy = 3;
       this.add(lblTitle, c);
     }
 
