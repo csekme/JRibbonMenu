@@ -254,13 +254,26 @@ public class MainWindow extends JFrame implements ActionListener {
         btnLetter.setToolTipText("Compose and Send Email.");
         rgContacts.addComponent(btnLetter, DisplayState.SLIM);
       }
+      /*
       {
         JButton btnFavourites = new JButton("Favourites");
         btnFavourites.setIcon(Util.accessImageFile("dist/kedvencek.png"));
         btnFavourites.setToolTipText("View list of your favourites.");
         rgContacts.addComponent(btnFavourites, DisplayState.SLIM);
       }
+      */
+
       rgContacts.addSeparator();
+
+      RibbonGroup rgTestGroup = new RibbonGroup("Without separator");
+      tbHome.addGroup(rgTestGroup);
+      {
+        JButton btnFavourites = new JButton("Favourites");
+        btnFavourites.setIcon(Util.accessImageFile("dist/kedvencek.png"));
+        btnFavourites.setToolTipText("View list of your favourites.");
+        rgTestGroup.addComponent(btnFavourites, DisplayState.SLIM);
+      }
+
     }
     RibbonTab tbView = new RibbonTab("Security"); //Second tab
     ribbonBar.addTab(tbView);
@@ -295,7 +308,7 @@ public class MainWindow extends JFrame implements ActionListener {
   public void initGUI() {
     {
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      setSize(800, 600);
+      setSize(1000, 600);
       setLayout(new BorderLayout());
     }
     this.quickbar = QuickAccessBar.create();
