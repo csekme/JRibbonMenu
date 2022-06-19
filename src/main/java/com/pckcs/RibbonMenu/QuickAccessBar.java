@@ -24,14 +24,12 @@ public class QuickAccessBar extends JPanel {
   /** The instance. */
   private static QuickAccessBar instance = null;
   
-  private Color colorBorder;
-  private Color colorBackground;
-
-  MinimizeButton minimizeButton;
-
   /** The layout for quickbar. */
-  BoxLayout lm;
+  FlowLayout layout;
 
+  /** toolbar */
+  private static BackgroundBar toolbar;
+  
   /**
    * RibbonBar Factory to create our Singleton Object.
    * 
@@ -49,24 +47,13 @@ public class QuickAccessBar extends JPanel {
    * Constructor.
    */
   public QuickAccessBar() {
-    this.add(Box.createRigidArea(new Dimension(10, 10)));
-    QuickBarLayout layout = new QuickBarLayout();
-    setLayout(layout);
-    addPropertyChangeListener(layout);
-    updateUI();
-    //minimizeButton = new MinimizeButton();
-    //add(minimizeButton);
+    toolbar = new BackgroundBar(JToolBar.HORIZONTAL);
+    toolbar.setOpaque(true);
+    layout = new FlowLayout(FlowLayout.LEADING, 2, 4);
+    this.setLayout(layout);
+    this.add(toolbar);
   }
 	
-  /**
-   * Override the updateUI function to follow changes to the theme
-   */
-  @Override
-  public void updateUI() {
-    colorBorder = UIManager.getColor("MenuBar.borderColor");  //"MenuBar.foreground"
-    colorBackground = UIManager.getColor("Button.background");
-  }
-
 	/**
    * addButton.
    *
@@ -75,8 +62,6 @@ public class QuickAccessBar extends JPanel {
    */
 	public void addButton(JButton button) {
     if (button.getIcon() != null) {
-//      FlatSVGIcon icon = (FlatSVGIcon)button.getIcon();
-//      button.setIcon(icon.derive(BUTTON_SIZE,BUTTON_SIZE));
       button.setIcon(Util.scaleIcon(button.getIcon(), DisplayState.QUICK));
       button.setBorderPainted(false);
       button.addMouseListener(new MouseAdapter() {
@@ -90,225 +75,101 @@ public class QuickAccessBar extends JPanel {
           button.setBorderPainted(false);
         }
       });
-
     }
-    this.add(Box.createRigidArea(new Dimension(2,0)));
-    this.add(button);
-    //setComponentZOrder(minimizeButton, getComponentCount()-1);
+    toolbar.add(button);
 	}
 
+	public JToolBar get() {
+	  return toolbar;
+	}
+	
   /**
    * Add default separator
    * @see RibbonSeparator
    */
   public void addSeparator() {
-    this.add(Box.createRigidArea(new Dimension(2,0)));
-    RibbonSeparator separator = new RibbonSeparator();
-    separator.setForeground(UIManager.getColor("ToolBar.separatorColor"));
-    this.add(separator);
-    //setComponentZOrder(minimizeButton, getComponentCount()-1);
+    JToolBar.Separator separator = new JToolBar.Separator();
+    toolbar.add(separator);
   }
 
-  /**
-   * Add custom separator
-   * @param separator
-   * @see RibbonSeparator
-   */
-  public void addSeparator(RibbonSeparator separator) {
-    this.add(Box.createRigidArea(new Dimension(2,0)));
-    this.add(separator);
-    //setComponentZOrder(minimizeButton, getComponentCount()-1);
+  public class BackgroundBar extends JToolBar
+  {
+      private static final long serialVersionUID = 1L;
+      
+      private Color colorBackground;
+
+      public BackgroundBar(int horizontal) {
+        super(horizontal);
+      }
+
+      /**
+       * Override the updateUI function to follow changes to the theme
+       */
+      @Override
+      public void updateUI() {
+        colorBackground = UIManager.getColor("Button.background");
+      }
+
+      @Override
+      protected void paintComponent(Graphics g)
+      {
+          super.paintComponent(g);
+          Graphics2D g2d = (Graphics2D) g.create();
+          g2d.setColor(colorBackground);
+          g2d.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+
+          g2d.dispose();
+
+      }
   }
-	
 	/**
 	 * paintChildren
 	 *
 	 * @see javax.swing.JComponent#paintChildren(java.awt.Graphics)
 	 */
+/*
 	@Override
 	public void paintChildren(Graphics g) {
-
+    super.paintChildren(g);
+    
     Graphics2D g2d = (Graphics2D) g.create();
     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    double height = (double)RibbonBar.quickbarHeight - 1.0f;
+    double height = (double)RibbonBar.quickbarHeight - (double)vGap;
     int minX = 0;
-    Dimension size = lm.preferredLayoutSize(this);
-    int maxX = size.width;
+    int maxX = nLayoutWidth;
+        //(nButtons * (25 + vGap)) + (nSeparators * (2 + vGap))+ vGap;
  
-    float radius = (float) height / 2.0f;
-
+    float radius = ((float) height / 2.0f);
+    
     GeneralPath outline = new GeneralPath();
 
     // top left corner
-    outline.moveTo(minX - 1, 0);
+    outline.moveTo(minX+1, vGap);
     // top right corner
-    outline.lineTo(maxX, 0);
+    outline.lineTo(maxX, vGap);
+
+//    outline.lineTo(maxX, height);
+
     // right arc
-    outline.append(new Arc2D.Double(maxX - radius, 0, height,
+    outline.append(new Arc2D.Double(maxX-radius, vGap, height,
         height, 90, -180, Arc2D.OPEN), true);
     // bottom left corner
-    outline.lineTo(minX - 1, height);
-    outline.lineTo(minX - 1, 0);
+    outline.lineTo(minX + 1, height);
+    outline.lineTo(minX + 1, vGap);
 
+    System.out.println(String.format("vGap: %d minX: %d maxX:%d height:%.2f radius: %.2f",
+        vGap,minX,maxX,height,radius));
     Shape contour = outline;
     if (contour != null) {
       g2d.setColor(colorBackground);
       g2d.fill(contour);
-      super.paintChildren(g2d);
-      g2d.setColor(colorBorder);
+//      g2d.setColor(colorBorder);
+      g2d.setColor(Color.BLACK);
       g2d.draw(contour);
     }
     g2d.dispose();
- }
-
-  /**
-   * The Class QuickBarLayout.
-   */
-  private class QuickBarLayout implements LayoutManager2, PropertyChangeListener, UIResource {
-
-    /**
-     * Instantiates a new quick bar layout.
-     */
-    QuickBarLayout() {
-      lm = new BoxLayout(QuickAccessBar.this, BoxLayout.LINE_AXIS);
-    }
-
-    /**
-     * addLayoutComponent
-     *
-     * @see java.awt.LayoutManager#addLayoutComponent(java.lang.String, java.awt.Component)
-     */
-    @Override
-    public void addLayoutComponent(String name, Component comp) {
-      lm.addLayoutComponent(name, comp);
-    }
-
-    /**
-     * removeLayoutComponent
-     *
-     * @see java.awt.LayoutManager#removeLayoutComponent(java.awt.Component)
-     */
-    @Override
-    public void removeLayoutComponent(Component comp) {
-      lm.removeLayoutComponent(comp);
-    }
-
-    /**
-     * preferredLayoutSize
-     *
-     * @see java.awt.LayoutManager#preferredLayoutSize(java.awt.Container)
-     */
-    @Override
-    public Dimension preferredLayoutSize(Container parent) {
-      return lm.preferredLayoutSize(parent);
-    }
-
-    /**
-     * minimumLayoutSize
-     *
-     * @see java.awt.LayoutManager#minimumLayoutSize(java.awt.Container)
-     */
-    @Override
-    public Dimension minimumLayoutSize(Container parent) {
-      return lm.minimumLayoutSize(parent);
-    }
-
-    /**
-     * layoutContainer
-     *
-     * @see java.awt.LayoutManager#layoutContainer(java.awt.Container)
-     */
-    @Override
-    public void layoutContainer(Container parent) {
-      lm.layoutContainer(parent);
-    }
-
-    /**
-     * propertyChange
-     *
-     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-     */
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-      // TODO Auto-generated method stub
-      
-    }
-
-    /**
-     * addLayoutComponent
-     *
-     * @see java.awt.LayoutManager2#addLayoutComponent(java.awt.Component, java.lang.Object)
-     */
-    @Override
-    public void addLayoutComponent(Component comp, Object constraints) {
-      lm.addLayoutComponent(comp, constraints);
-    }
-
-    /**
-     * maximumLayoutSize
-     *
-     * @see java.awt.LayoutManager2#maximumLayoutSize(java.awt.Container)
-     */
-    @Override
-    public Dimension maximumLayoutSize(Container target) {
-      return lm.maximumLayoutSize(target);
-    }
-
-    /**
-     * getLayoutAlignmentX
-     *
-     * @see java.awt.LayoutManager2#getLayoutAlignmentX(java.awt.Container)
-     */
-    @Override
-    public float getLayoutAlignmentX(Container target) {
-      return lm.getLayoutAlignmentX(target);
-    }
-
-    /**
-     * getLayoutAlignmentY
-     *
-     * @see java.awt.LayoutManager2#getLayoutAlignmentY(java.awt.Container)
-     */
-    @Override
-    public float getLayoutAlignmentY(Container target) {
-      return lm.getLayoutAlignmentY(target);
-    }
-
-    /**
-     * invalidateLayout
-     *
-     * @see java.awt.LayoutManager2#invalidateLayout(java.awt.Container)
-     */
-    @Override
-    public void invalidateLayout(Container target) {
-      lm.invalidateLayout(target);
-    }
-  }
-
-
-  /**
-   * setLayout
-   *
-   * @see java.awt.Container#setLayout(java.awt.LayoutManager)
-   */
-  public void setLayout(LayoutManager mgr) {
-    LayoutManager oldMgr = getLayout();
-    if (oldMgr instanceof PropertyChangeListener) {
-      removePropertyChangeListener((PropertyChangeListener)oldMgr);
-    }
-    super.setLayout(mgr);
-  }
-
-
-  class MinimizeButton extends JButton {
-
-    private static final long serialVersionUID = 1L;
-
-    public MinimizeButton() {
-
-    }
-
 
   }
-
+*/
+  
 }

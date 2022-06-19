@@ -1,9 +1,13 @@
 package com.pckcs.RibbonMenu;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Office styled RibbonBar main component.
@@ -32,14 +36,9 @@ public class RibbonBar extends JPanel {
   private static RibbonBar instance = null;
 
   /**
-   * The size button width.
+   * The slim button size.
    */
-  public static int SIZE_BUTTON_WIDTH = 75;
-
-  /**
-   * The size button height.
-   */
-  private static int SIZE_BUTTON_HEIGHT = 75;
+  public static int SLIMBUTTON_IMAGE_SIZE = 16;
 
   /**
    * The quick button image size.
@@ -51,86 +50,20 @@ public class RibbonBar extends JPanel {
    */
   public static int BUTTON_IMAGE_SIZE = 24;
 
-
   /**
-   * The quickbar width.
+   * The button image size.
    */
-  static int quickbarWidth = 0;
-
-  /**
-   * The quickbar height.
-   */
-  static int quickbarHeight = 0;
-
-  /**
-   * The tab layout west east margin.
-   */
-  static int tabLayoutWestEastMargin = 8;
+  public static int LARGEBUTTON_IMAGE_SIZE = 42;
 
   /**
    * The ribbon tab height.
    */
-  static int ribbonTabHeight = 28;
-
-  /**
-   * The strip height.
-   */
-  static int stripHeight = 0;
-
-  /**
-   * The east west tab inset.
-   */
-  static int eastWestTabInset = 20;
-
-  /**
-   * The north tab inset.
-   */
-  static int northTabInset = 0;
-
-  /**
-   * The button left right margin.
-   */
-  static int buttonLeftRightMargin = 6;
-
-  /**
-   * The ribbon button top base.
-   */
-  static int ribbonButtonTopBase = ribbonTabHeight + 4;
-
-  /**
-   * The button width.
-   */
-  static int buttonWidth = SIZE_BUTTON_WIDTH;
-
-  /**
-   * The button height.
-   */
-  static int buttonHeight = SIZE_BUTTON_HEIGHT;
-
-  /**
-   * The button partial height.
-   */
-  static int buttonPartialHeight = 35;
-
-  /**
-   * The slim button height.
-   */
-  static int slimButtonHeight = 25;
-
-  /**
-   * The separator width.
-   */
-  static int separatorWidth = 7;
-
-  /**
-   * The separator height.
-   */
-  static int separatorHeight = 88;
+  static int ribbonTabHeight = 29;
 
   /**
    * The shadow height.
    */
-  static int shadowHeight = 10;
+  static int shadowHeight = 8;
 
   /**
    * The ribbon height.
@@ -138,25 +71,35 @@ public class RibbonBar extends JPanel {
   static int ribbonHeight = 145 + shadowHeight;
 
   /**
-   * The font.
+   * The quickbar height.
    */
-  protected Font font = null;
+  static int quickbarHeight = 36;
 
   /**
    * The quickbar.
    */
-  protected static QuickAccessBar QUICKBAR = null;
+  static QuickAccessBar QUICKBAR = null;
 
   /**
    * tabbed panel that shows our tabs
    */
-  JTabbedPane ribbonTabPanel;
+  static JTabbedPane ribbonTabPanel;
 
-  /**
-   *
-   */
-  JSplitPane ribbonPane;
+  /** our size of the tab pane */
+  static Dimension ribbonTabPanelDim;
+  
+  // our ribbonTabPanel size when minimized */
+  static Dimension minimizedDim;
+  
+  /** The split ribbonPane */
+  static JSplitPane ribbonPane = null;
 
+  /** The minimized flag. */
+  static boolean bMinimized = false;
+  
+  /** list of tabs - needed for when we rebuild tab panel after minimize */
+  static List<RibbonTab> tabs = new ArrayList<RibbonTab>();
+  
   /**
    * RibbonBar Factory to create our Singleton Object.
    *
@@ -182,26 +125,19 @@ public class RibbonBar extends JPanel {
     QUICKBAR = quickbar;
     ribbonTabPanel = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     ribbonTabPanel.addChangeListener(a->{ repaint(); });
+    minimizedDim = new Dimension(getWidth(), ribbonTabHeight+shadowHeight);
+
     if (quickbar == null) {
-      //   ribbonTabPanel.setMinimumSize(new Dimension(0, ribbonHeight));
-      //  ribbonTabPanel.setPreferredSize(new Dimension(width, ribbonHeight));
       add(ribbonTabPanel, BorderLayout.CENTER);
     } else {
-      quickbarHeight = QUICKBUTTON_IMAGE_SIZE + buttonLeftRightMargin;
       ribbonPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
               QUICKBAR,
               ribbonTabPanel);
-      ribbonPane.setDividerLocation(quickbarHeight);
-      //    ribbonPane.setMinimumSize(new Dimension(0, quickbarHeight+ribbonHeight));
-      //ribbonPane.setPreferredSize(new Dimension(width, quickbarHeight+ribbonHeight));
-//      ribbonPane.setOneTouchExpandable(true);
       ribbonPane.setDividerLocation(quickbarHeight);
       ribbonPane.setDividerSize(0);
       add(ribbonPane, BorderLayout.CENTER);
     }
   }
-
-
 
   /**
    * addTab
@@ -210,8 +146,44 @@ public class RibbonBar extends JPanel {
    */
   public void addTab(RibbonTab tab) {
     ribbonTabPanel.addTab(tab.getTitle(), tab);
+    tabs.add(tab);
   }
 
+  private static void rebuildTabPanel() {
+    ribbonTabPanel = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    ribbonTabPanel.setPreferredSize(ribbonTabPanelDim);
+    for (RibbonTab tab : tabs) {
+      ribbonTabPanel.addTab(tab.getTitle(), tab);
+    }
+    ribbonTabPanel.addChangeListener(a->{ instance.repaint(); });
+  }
+  
+  public static void minimizeTabPanel() 
+  {
+    if(!bMinimized && ribbonPane != null)
+    {
+      ribbonTabPanelDim = ribbonTabPanel.getSize();
+      ribbonTabPanel.setPreferredSize(minimizedDim);
+      ribbonPane.setDividerSize(0);
+      bMinimized = true;
+    }
+    ribbonPane.resetToPreferredSizes();
+    SwingUtilities.updateComponentTreeUI(instance);
+  }
+  
+  public static void restoreTabPanel() 
+  {
+    if(bMinimized && ribbonPane != null) {
+      rebuildTabPanel();
+      ribbonPane.setBottomComponent(ribbonTabPanel);
+      ribbonPane.setDividerSize(0);
+      bMinimized = false;
+    }
+
+    ribbonPane.resetToPreferredSizes();
+    SwingUtilities.updateComponentTreeUI(instance);
+  }
+  
   /**
    * paintChildren
    *
@@ -220,7 +192,6 @@ public class RibbonBar extends JPanel {
   @Override
   public void paintChildren(Graphics g) {
     super.paintChildren(g);
-
     Graphics2D g2d = (Graphics2D) g.create();
     Color colorShadowDark = UIManager.getColor("InternalFrame.borderDarkShadow");
     Color colorShadow = UIManager.getColor("InternalFrame.borderShadow");
@@ -231,6 +202,7 @@ public class RibbonBar extends JPanel {
       g2d.fill(new Rectangle2D.Double(0, getHeight() - shadowHeight, getWidth(), getHeight()));
     }
     g2d.dispose();
-
   }
+
 }
+

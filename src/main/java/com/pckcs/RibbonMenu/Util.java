@@ -124,16 +124,16 @@ public class Util {
 	}
 	
   public static ImageIcon scaleIcon(Icon icon, DisplayState state) {
-    int size = 24;
+    int size = RibbonBar.BUTTON_IMAGE_SIZE;
     switch (state) {
       case SLIM:
-        size = 16;
+        size = RibbonBar.SLIMBUTTON_IMAGE_SIZE;
         break;
       case LARGE:
-        size = 42;
+        size = RibbonBar.LARGEBUTTON_IMAGE_SIZE;
         break;
       case QUICK:
-        size = 22;
+        size = RibbonBar.QUICKBUTTON_IMAGE_SIZE;
         break;
       default:
         break;

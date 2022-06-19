@@ -67,74 +67,87 @@ public class MainWindow extends JFrame implements ActionListener {
    * Create the frame.
    */
   public MainWindow() {
+    this.setTitle("JRibbonMenu Example");
     double version = Double.parseDouble(System.getProperty("java.specification.version"));
     String osName = System.getProperty("os.name").toLowerCase();
     System.out.println("Java ver: " + version + " osys: " + osName);
     loadThemes();
     initGUI();
-    buildSampleMenu();
+    initRibbonTabs();
     addEvents();
     SwingUtilities.invokeLater(() -> {
       cbThemeSelector.setSelectedIndex(5);
     });
   }
 
-
-  public void buildSampleMenu() {
-    // Create quick access bar
-
+  /**
+   * Initializes the GUI.
+   */
+  public void initGUI() {
     {
-      //Add some buttons
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      setSize(1000, 600);
+      setLayout(new BorderLayout());
+    }
+    this.quickbar = QuickAccessBar.create();
+    initQuickAccessUI();
+    this.ribbonBar = RibbonBar.create(this.quickbar);
+    add(this.ribbonBar, BorderLayout.NORTH);
+    {
+      JPanel pnlBase = new JPanel();
+      pnlBase.setLayout(new BorderLayout());
+      add(pnlBase, BorderLayout.CENTER);
       {
-        JButton qOpen = new JButton();
-        qOpen.setIcon(new FlatSVGIcon("images/open.svg"));
-        qOpen.setToolTipText("Open File");
-        qOpen.setActionCommand("open");
-        qOpen.addActionListener(this);
-        quickbar.addButton(qOpen);
-      }
-      quickbar.addSeparator();
-      {
-        JButton qSave = new JButton();
-        qSave.setIcon(Util.accessImageFile("dist/Save24.png"));
-        qSave.setToolTipText("Save File");
-        qSave.setActionCommand("save");
-        qSave.addActionListener(this);
-        quickbar.addButton(qSave);
-      }
-      {
-        JButton qFavourite = new JButton();
-        qFavourite.setIcon(new FlatSVGIcon("images/svg/favourite.svg"));
-        qFavourite.setToolTipText("User");
-        qFavourite.setActionCommand("user");
-        qFavourite.addActionListener(this);
-        quickbar.addButton(qFavourite);
+        JPanel pnlTop = new JPanel();
+        pnlTop.setLayout(new GridBagLayout());
+        pnlBase.add(pnlTop, BorderLayout.NORTH);
+        {
+          cbThemeSelector = new JComboBox<ThemeInfo>(new Vector<ThemeInfo>(themes));
+          //cbThemeSelector.setPrototypeDisplayValue(((ThemeInfo)cbThemeSelector.getSelectedItem()).getShortName());
+        //  pnlTop.add(cbThemeSelector, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
+        }
       }
       {
-        JButton qUser = new JButton();
-        qUser.setIcon(new FlatSVGIcon("images/user.svg"));
-        qUser.setToolTipText("Favourite");
-        qUser.setActionCommand("favourite");
-        qUser.addActionListener(this);
-        quickbar.addButton(qUser);
+        pnlContent = new JPanel();
+        pnlContent.setLayout(new GridBagLayout());
+        pnlBase.add(pnlContent, BorderLayout.CENTER);
       }
-      {
-        JButton qExit = new JButton();
-        qExit.setIcon(Util.accessImageFile("dist/Stop24.png"));
-        qExit.setToolTipText("Exit Application");
-        qExit.setActionCommand("exit");
-        qExit.addActionListener(this);
-        quickbar.addButton(qExit);
+
+      { // IconUp example
+        JButton btnUp = new JButton();
+        btnUp.setIcon(new IconUp(24, 24));
+        btnUp.addActionListener(new ActionListener() {
+          @Override public void actionPerformed(ActionEvent e) {
+            RibbonBar.minimizeTabPanel();
+          }
+        });
+        pnlContent.add(btnUp, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+      }
+      { // IconDown example
+        JButton btnDown = new JButton();
+        btnDown.setIcon(new IconDown(24, 24));
+        btnDown.addActionListener(new ActionListener() {
+          @Override public void actionPerformed(ActionEvent e) {
+            RibbonBar.restoreTabPanel();
+          }
+        });
+        pnlContent.add(btnDown, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
+      }
+      { // IconPinned example
+        JButton btnPinned = new JButton();
+        btnPinned.setIcon(new IconPinned(24, 24));
+        pnlContent.add(btnPinned, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
       }
     }
+  } // initGUI
 
+  public void initRibbonTabs() {
 
     //Create a first tab
     RibbonTab tbHome = new RibbonTab("Home");
     ribbonBar.addTab(tbHome);
     {
       RibbonGroup rgBase = new RibbonGroup("Base");
-//      RibbonGroup rgBase = new RibbonGroup();
       tbHome.addGroup(rgBase);
       //Add some button
       {
@@ -185,8 +198,6 @@ public class MainWindow extends JFrame implements ActionListener {
       }
       {
         JButton btnSettings = new JButton("<html><body align=\"center\">Settings<br>Configurations</body></html>");
-
-//                btnSettings.setIcon(Util.accessImageFile("dist/settings.png"));
         btnSettings.setIcon(new FlatSVGIcon("images/svg/settings.svg"));
 
         btnSettings.setToolTipText("Customize your settings.");
@@ -197,12 +208,9 @@ public class MainWindow extends JFrame implements ActionListener {
 
       }
       {
-//        RibbonSeparator rs = new RibbonSeparator();
-
         rgBase.addSeparator();
       }
       RibbonGroup rgClipboard = new RibbonGroup("Clipboard");
-//      RibbonGroup rgClipboard = new RibbonGroup();
       tbHome.addGroup(rgClipboard);
       {
         JButton btnCopy = new JButton("Copy");
@@ -235,8 +243,6 @@ public class MainWindow extends JFrame implements ActionListener {
       rgTestControl.addComponent(cbThemeSelector, DisplayState.SLIM);
       cbThemeSelector.setToolTipText("Select your favourite theme");
 
-
-//      RibbonGroup rgClipboard = new RibbonGroup();
       JComboBox<String> cmbDevelopers = new JComboBox<>();
       cmbDevelopers.setToolTipText("Please choose a developer.");
       cmbDevelopers.addItem("Developers");
@@ -246,7 +252,6 @@ public class MainWindow extends JFrame implements ActionListener {
       rgTestControl.addSeparator();
 
       RibbonGroup rgContacts = new RibbonGroup("Contacts");
-//      RibbonGroup rgContacts = new RibbonGroup();
       tbHome.addGroup(rgContacts);
       {
         JButton btnLetter = new JButton("Send email");
@@ -293,64 +298,63 @@ public class MainWindow extends JFrame implements ActionListener {
       rgClipboard.addComponent(btnFingerPrint, DisplayState.LARGE);
     }
 
-  } // buildSampleMenu
+  } // initRibbonUI
 
+  public void initQuickAccessUI() {
+    // Create quick access bar
+    {
+      //Add some buttons
+      {
+        JButton qOpen = new JButton();
+        qOpen.setIcon(new FlatSVGIcon("images/open.svg"));
+        qOpen.setToolTipText("Open File");
+        qOpen.setActionCommand("open");
+        qOpen.addActionListener(this);
+        quickbar.addButton(qOpen);
+      }
+      {
+        JButton qSave = new JButton();
+        qSave.setIcon(Util.accessImageFile("dist/Save24.png"));
+        qSave.setToolTipText("Save File");
+        qSave.setActionCommand("save");
+        qSave.addActionListener(this);
+        quickbar.addButton(qSave);
+      }
+      quickbar.addSeparator();
+      {
+        JButton qFavourite = new JButton();
+        qFavourite.setIcon(new FlatSVGIcon("images/svg/favourite.svg"));
+        qFavourite.setToolTipText("User");
+        qFavourite.setActionCommand("user");
+        qFavourite.addActionListener(this);
+        quickbar.addButton(qFavourite);
+      }
+      {
+        JButton qUser = new JButton();
+        qUser.setIcon(new FlatSVGIcon("images/user.svg"));
+        qUser.setToolTipText("Favourite");
+        qUser.setActionCommand("favourite");
+        qUser.addActionListener(this);
+        quickbar.addButton(qUser);
+      }
+      quickbar.addSeparator();
+      {
+        JButton qExit = new JButton();
+        qExit.setIcon(Util.accessImageFile("dist/Stop24.png"));
+        qExit.setToolTipText("Exit Application");
+        qExit.setActionCommand("exit");
+        qExit.addActionListener(this);
+        quickbar.addButton(qExit);
+      }
+    }
+    
+  } // initQuickAccessUI
+  
   public void addEvents() {
     cbThemeSelector.addActionListener(a -> {
       setLookAndFeel((ThemeInfo) cbThemeSelector.getSelectedItem());
     });
   } // addEvents
-
-
-  /**
-   * Initializes the GUI.
-   */
-  public void initGUI() {
-    {
-      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      setSize(1000, 600);
-      setLayout(new BorderLayout());
-    }
-    this.quickbar = QuickAccessBar.create();
-    this.ribbonBar = RibbonBar.create(this.quickbar);
-    add(this.ribbonBar, BorderLayout.NORTH);
-    {
-      JPanel pnlBase = new JPanel();
-      pnlBase.setLayout(new BorderLayout());
-      add(pnlBase, BorderLayout.CENTER);
-      {
-        JPanel pnlTop = new JPanel();
-        pnlTop.setLayout(new GridBagLayout());
-        pnlBase.add(pnlTop, BorderLayout.NORTH);
-        {
-          cbThemeSelector = new JComboBox<ThemeInfo>(new Vector<ThemeInfo>(themes));
-          //cbThemeSelector.setPrototypeDisplayValue(((ThemeInfo)cbThemeSelector.getSelectedItem()).getShortName());
-        //  pnlTop.add(cbThemeSelector, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
-        }
-      }
-      {
-        pnlContent = new JPanel();
-        pnlContent.setLayout(new GridBagLayout());
-        pnlBase.add(pnlContent, BorderLayout.CENTER);
-      }
-
-      { // IconUp example
-        JButton btnUp = new JButton();
-        btnUp.setIcon(new IconUp(24, 24));
-        pnlContent.add(btnUp, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-      }
-      { // IconDown example
-        JButton btnDown = new JButton();
-        btnDown.setIcon(new IconDown(24, 24));
-        pnlContent.add(btnDown, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-      }
-      { // IconPinned example
-        JButton btnPinned = new JButton();
-        btnPinned.setIcon(new IconPinned(24, 24));
-        pnlContent.add(btnPinned, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-      }
-    }
-  } // initGUI
 
 
   /**
