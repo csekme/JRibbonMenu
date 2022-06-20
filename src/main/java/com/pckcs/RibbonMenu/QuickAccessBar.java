@@ -5,11 +5,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.*;
-import javax.swing.plaf.UIResource;
 
 /**
  * The Class QuickAccessBar.
@@ -64,6 +61,7 @@ public class QuickAccessBar extends JPanel {
     if (button.getIcon() != null) {
       button.setIcon(Util.scaleIcon(button.getIcon(), DisplayState.QUICK));
       button.setBorderPainted(false);
+
       button.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseEntered(MouseEvent e) {
@@ -75,6 +73,7 @@ public class QuickAccessBar extends JPanel {
           button.setBorderPainted(false);
         }
       });
+
     }
     toolbar.add(button);
 	}
@@ -97,6 +96,7 @@ public class QuickAccessBar extends JPanel {
       private static final long serialVersionUID = 1L;
       
       private Color colorBackground;
+      private Color colorBorder;
 
       public BackgroundBar(int horizontal) {
         super(horizontal);
@@ -108,6 +108,7 @@ public class QuickAccessBar extends JPanel {
       @Override
       public void updateUI() {
         colorBackground = UIManager.getColor("Button.background");
+        colorBorder = UIManager.getColor("MenuBar.borderColor");
       }
 
       @Override
@@ -115,61 +116,38 @@ public class QuickAccessBar extends JPanel {
       {
           super.paintComponent(g);
           Graphics2D g2d = (Graphics2D) g.create();
-          g2d.setColor(colorBackground);
-          g2d.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+          
+          g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+          double height = (double)getHeight() - 1.0f;
+          int minX = 0;
+          int maxX = getWidth() - 15;
 
+          float radius = (float) height / 2.0f;
+
+          GeneralPath outline = new GeneralPath();
+
+          // top left corner
+            outline.moveTo(minX - 1, 0);
+          // top right corner
+          outline.lineTo(maxX, 0);
+          // right arc
+          outline.append(new Arc2D.Double(maxX - radius, 0, height,
+              height, 90, -180, Arc2D.OPEN), true);
+          // bottom left corner
+          outline.lineTo(minX - 1, height);
+          outline.lineTo(minX - 1, 0);
+
+          g2d.setColor(colorBackground);
+          g2d.fillRect(0, 0, getWidth()-1, getHeight()-1);
+
+          Shape contour = outline;
+          if (contour != null) {
+            g2d.setColor(colorBorder);
+            g2d.draw(contour);
+          }
           g2d.dispose();
 
       }
   }
-	/**
-	 * paintChildren
-	 *
-	 * @see javax.swing.JComponent#paintChildren(java.awt.Graphics)
-	 */
-/*
-	@Override
-	public void paintChildren(Graphics g) {
-    super.paintChildren(g);
-    
-    Graphics2D g2d = (Graphics2D) g.create();
-    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    double height = (double)RibbonBar.quickbarHeight - (double)vGap;
-    int minX = 0;
-    int maxX = nLayoutWidth;
-        //(nButtons * (25 + vGap)) + (nSeparators * (2 + vGap))+ vGap;
- 
-    float radius = ((float) height / 2.0f);
-    
-    GeneralPath outline = new GeneralPath();
-
-    // top left corner
-    outline.moveTo(minX+1, vGap);
-    // top right corner
-    outline.lineTo(maxX, vGap);
-
-//    outline.lineTo(maxX, height);
-
-    // right arc
-    outline.append(new Arc2D.Double(maxX-radius, vGap, height,
-        height, 90, -180, Arc2D.OPEN), true);
-    // bottom left corner
-    outline.lineTo(minX + 1, height);
-    outline.lineTo(minX + 1, vGap);
-
-    System.out.println(String.format("vGap: %d minX: %d maxX:%d height:%.2f radius: %.2f",
-        vGap,minX,maxX,height,radius));
-    Shape contour = outline;
-    if (contour != null) {
-      g2d.setColor(colorBackground);
-      g2d.fill(contour);
-//      g2d.setColor(colorBorder);
-      g2d.setColor(Color.BLACK);
-      g2d.draw(contour);
-    }
-    g2d.dispose();
-
-  }
-*/
   
 }
