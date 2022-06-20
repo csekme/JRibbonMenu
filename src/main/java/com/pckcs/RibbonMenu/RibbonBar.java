@@ -2,7 +2,12 @@ package com.pckcs.RibbonMenu;
 
 import javax.swing.*;
 
+import com.pckcs.RibbonMenu.Icons.IconDown;
+import com.pckcs.RibbonMenu.Icons.IconUp;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +86,8 @@ public class RibbonBar extends JPanel {
   /**
    * tabbed panel that shows our tabs
    */
-  static JTabbedPane ribbonTabPanel;
+//  static JTabbedPane ribbonTabPanel;
+  static RibbonTabbedPane ribbonTabPanel;
 
   /** our size of the tab pane */
   static Dimension ribbonDimension;
@@ -128,7 +134,9 @@ public class RibbonBar extends JPanel {
   public RibbonBar(QuickAccessBar quickbar) {
     setLayout(new BorderLayout());
     QUICKBAR = quickbar;
-    ribbonTabPanel = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+//    ribbonTabPanel = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    ribbonTabPanel = new RibbonTabbedPane();
+    addButtons();
     ribbonTabPanel.addChangeListener(a->{ repaint(); });
     minimizedDim = new Dimension(getWidth(), ribbonTabHeight+shadowHeight);
 
@@ -150,17 +158,42 @@ public class RibbonBar extends JPanel {
    * @param tab is a top level menu for the top of ribbon.
    */
   public void addTab(RibbonTab tab) {
-    ribbonTabPanel.addTab(tab.getTitle(), tab);
+//    ribbonTabPanel.addTab(tab.getTitle(), tab);
+    ribbonTabPanel.addTab(tab);
     tabs.add(tab);
   }
 
   private static void rebuildTabPanel() {
-    ribbonTabPanel = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+//    ribbonTabPanel = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    ribbonTabPanel = new RibbonTabbedPane();
     ribbonTabPanel.setPreferredSize(ribbonDimension);
     for (RibbonTab tab : tabs) {
-      ribbonTabPanel.addTab(tab.getTitle(), tab);
+//      ribbonTabPanel.addTab(tab.getTitle(), tab);
+      ribbonTabPanel.addTab(tab);
     }
+    addButtons();
     ribbonTabPanel.addChangeListener(a->{ instance.repaint(); });
+  }
+  
+  private static void addButtons() {
+    // IconUp 
+    JButton btnUp = new JButton();
+    btnUp.setIcon(new IconUp(16,16));
+    btnUp.addActionListener(new ActionListener() {
+      @Override public void actionPerformed(ActionEvent e) {
+        minimizeTabPanel();
+      }
+    });
+    ribbonTabPanel.addButton(btnUp);
+    // IconDown 
+    JButton btnDown = new JButton();
+    btnDown.setIcon(new IconDown(16,16));
+    btnDown.addActionListener(new ActionListener() {
+      @Override public void actionPerformed(ActionEvent e) {
+        RibbonBar.restoreTabPanel();
+      }
+    });
+    ribbonTabPanel.addButton(btnDown);
   }
   
   /**
