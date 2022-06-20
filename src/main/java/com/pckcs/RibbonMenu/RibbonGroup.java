@@ -28,7 +28,6 @@ public class RibbonGroup extends JPanel {
   private int nStacked = 0;
 
   GridBagLayout layout;
-//  FlowLayout layout;
 
   GroupName lblTitle = null;
   
@@ -43,7 +42,6 @@ public class RibbonGroup extends JPanel {
   public RibbonGroup() {
     this.displayState = new ArrayList<>();
     layout = new GridBagLayout();
-//    layout = new FlowLayout();
     this.setLayout(layout);
   }
 
@@ -58,8 +56,15 @@ public class RibbonGroup extends JPanel {
     lblTitle.setHorizontalAlignment(JLabel.CENTER);
     lblTitle.setVerticalTextPosition(JLabel.BOTTOM);
     layout = new GridBagLayout();
-//    layout=new FlowLayout();
     this.setLayout(layout);
+    GridBagConstraints c = new GridBagConstraints();
+    c.weightx = 1;
+    c.weighty = 1;
+    c.anchor = GridBagConstraints.SOUTH;
+    c.gridwidth = nColumns;
+    c.gridx = 0;
+    c.gridy = 3;
+    this.add(lblTitle, c);
   }
 
   /**
@@ -170,19 +175,6 @@ public class RibbonGroup extends JPanel {
    */
   public void addSeparator() {
     addComponent(new RibbonSeparator(), DisplayState.SEPARATOR);
-
-    if (lblTitle != null) {
-      GridBagConstraints c = new GridBagConstraints();
-      c.weightx = 1;
-      c.weighty = 1;
-      c.anchor = GridBagConstraints.SOUTH;
-//      c.fill = GridBagConstraints.BOTH;
-      c.gridwidth = nColumns;
-      c.gridx = 0;
-      c.gridy = 3;
-      this.add(lblTitle, c);
-    }
-
   }
 
 }
