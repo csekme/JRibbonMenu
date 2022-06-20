@@ -112,7 +112,7 @@ public class MainWindow extends JFrame implements ActionListener {
         pnlContent.setLayout(new GridBagLayout());
         pnlBase.add(pnlContent, BorderLayout.CENTER);
       }
-
+/*
       { // IconUp example
         JButton btnUp = new JButton();
         btnUp.setIcon(new IconUp(24, 24));
@@ -133,6 +133,7 @@ public class MainWindow extends JFrame implements ActionListener {
         });
         pnlContent.add(btnDown, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
       }
+*/
       { // IconPinned example
         JButton btnPinned = new JButton();
         btnPinned.setIcon(new IconPinned(24, 24));
