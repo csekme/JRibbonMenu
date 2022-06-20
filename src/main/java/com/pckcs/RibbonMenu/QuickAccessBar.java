@@ -96,7 +96,7 @@ public class QuickAccessBar extends JPanel {
       private static final long serialVersionUID = 1L;
       
       private Color colorBackground;
-      private Color colorBorder;
+//      private Color colorBorder;
 
       public BackgroundBar(int horizontal) {
         super(horizontal);
@@ -108,7 +108,7 @@ public class QuickAccessBar extends JPanel {
       @Override
       public void updateUI() {
         colorBackground = UIManager.getColor("Button.background");
-        colorBorder = UIManager.getColor("MenuBar.borderColor");
+//        colorBorder = UIManager.getColor("MenuBar.borderColor");
       }
 
       @Override
@@ -137,15 +137,15 @@ public class QuickAccessBar extends JPanel {
           outline.lineTo(minX - 1, height);
           outline.lineTo(minX - 1, 0);
 
-          g2d.setColor(colorBackground);
-          g2d.fillRect(0, 0, getWidth()-1, getHeight()-1);
-
           Shape contour = outline;
-          if (contour != null) {
-            g2d.setColor(colorBorder);
-            g2d.draw(contour);
-          }
-          g2d.dispose();
+          g2d.setColor(colorBackground);
+          g2d.fill(contour);
+//            g2d.setColor(colorBorder);
+//            g2d.draw(contour);
+//            g2d.setColor(colorBackground);
+//            g2d.fillRect(0, 0, getWidth()-1, getHeight()-1);
+
+            g2d.dispose();
 
       }
   }
