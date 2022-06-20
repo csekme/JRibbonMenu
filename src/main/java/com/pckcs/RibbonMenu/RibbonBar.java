@@ -1,8 +1,6 @@
 package com.pckcs.RibbonMenu;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -86,7 +84,7 @@ public class RibbonBar extends JPanel {
   static JTabbedPane ribbonTabPanel;
 
   /** our size of the tab pane */
-  static Dimension ribbonTabPanelDim;
+  static Dimension ribbonDimension;
   
   // our ribbonTabPanel size when minimized */
   static Dimension minimizedDim;
@@ -116,8 +114,15 @@ public class RibbonBar extends JPanel {
 
   /**
    * Constructor.
+   * Used when no quickbar is needed
+   */
+  public RibbonBar() {
+    this(null);
+  }
+  
+  /**
+   * Constructor.
    *
-   * @param width    the of our container
    * @param quickbar any quickbar
    */
   public RibbonBar(QuickAccessBar quickbar) {
@@ -151,37 +156,52 @@ public class RibbonBar extends JPanel {
 
   private static void rebuildTabPanel() {
     ribbonTabPanel = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-    ribbonTabPanel.setPreferredSize(ribbonTabPanelDim);
+    ribbonTabPanel.setPreferredSize(ribbonDimension);
     for (RibbonTab tab : tabs) {
       ribbonTabPanel.addTab(tab.getTitle(), tab);
     }
     ribbonTabPanel.addChangeListener(a->{ instance.repaint(); });
   }
   
+  /**
+   * Minimize our ribbon until just the quickbar and tabs show.
+   */
   public static void minimizeTabPanel() 
   {
-    if(!bMinimized && ribbonPane != null)
+    if(!bMinimized)
     {
-      ribbonTabPanelDim = ribbonTabPanel.getSize();
-      ribbonTabPanel.setPreferredSize(minimizedDim);
-      ribbonPane.setDividerSize(0);
+      if (ribbonPane != null) {
+        ribbonDimension = ribbonTabPanel.getSize();
+        ribbonTabPanel.setPreferredSize(minimizedDim);
+        ribbonPane.setDividerSize(0);
+        ribbonPane.resetToPreferredSizes();
+      } else {
+        ribbonDimension = ribbonTabPanel.getSize();
+        ribbonTabPanel.setPreferredSize(minimizedDim);
+      }
       bMinimized = true;
+      SwingUtilities.updateComponentTreeUI(instance);
     }
-    ribbonPane.resetToPreferredSizes();
-    SwingUtilities.updateComponentTreeUI(instance);
   }
   
+  /**
+   * Restores our Tab Panel to full size
+   */
   public static void restoreTabPanel() 
   {
-    if(bMinimized && ribbonPane != null) {
-      rebuildTabPanel();
-      ribbonPane.setBottomComponent(ribbonTabPanel);
-      ribbonPane.setDividerSize(0);
+    if(bMinimized)
+    {
+      if (ribbonPane != null) {
+        rebuildTabPanel();
+        ribbonPane.setBottomComponent(ribbonTabPanel);
+        ribbonPane.setDividerSize(0);
+        ribbonPane.resetToPreferredSizes();
+      } else {
+        ribbonTabPanel.setPreferredSize(ribbonDimension);
+      }
       bMinimized = false;
+      SwingUtilities.updateComponentTreeUI(instance);
     }
-
-    ribbonPane.resetToPreferredSizes();
-    SwingUtilities.updateComponentTreeUI(instance);
   }
   
   /**

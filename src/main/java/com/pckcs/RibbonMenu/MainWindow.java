@@ -45,7 +45,7 @@ public class MainWindow extends JFrame implements ActionListener {
    * The ribbon bar.
    */
   RibbonBar ribbonBar;
-  QuickAccessBar quickbar;
+  QuickAccessBar quickbar = null;
   /**
    * sample paste button
    */

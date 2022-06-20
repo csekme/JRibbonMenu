@@ -1,15 +1,9 @@
 package com.pckcs.RibbonMenu;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -34,6 +28,7 @@ public class RibbonGroup extends JPanel {
   private int nStacked = 0;
 
   GridBagLayout layout;
+//  FlowLayout layout;
 
   GroupName lblTitle = null;
   
@@ -48,6 +43,7 @@ public class RibbonGroup extends JPanel {
   public RibbonGroup() {
     this.displayState = new ArrayList<>();
     layout = new GridBagLayout();
+//    layout = new FlowLayout();
     this.setLayout(layout);
   }
 
@@ -62,6 +58,7 @@ public class RibbonGroup extends JPanel {
     lblTitle.setHorizontalAlignment(JLabel.CENTER);
     lblTitle.setVerticalTextPosition(JLabel.BOTTOM);
     layout = new GridBagLayout();
+//    layout=new FlowLayout();
     this.setLayout(layout);
   }
 
@@ -114,6 +111,7 @@ public class RibbonGroup extends JPanel {
         }
       });
     }
+
     GridBagConstraints c = new GridBagConstraints();
     c.weightx = 1.0;
     c.weighty = 1.0;
@@ -162,6 +160,7 @@ public class RibbonGroup extends JPanel {
       c.gridy = 0;
       this.add(comp, c);
     }
+
   }
 
   /**
@@ -171,6 +170,7 @@ public class RibbonGroup extends JPanel {
    */
   public void addSeparator() {
     addComponent(new RibbonSeparator(), DisplayState.SEPARATOR);
+
     if (lblTitle != null) {
       GridBagConstraints c = new GridBagConstraints();
       c.weightx = 1;
