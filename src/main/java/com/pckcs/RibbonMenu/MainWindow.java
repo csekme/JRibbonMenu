@@ -18,10 +18,8 @@ package com.pckcs.RibbonMenu;
 import com.formdev.flatlaf.*;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.intellijthemes.FlatAllIJThemes;
-import com.pckcs.RibbonMenu.Icons.IconDown;
 import com.pckcs.RibbonMenu.Icons.IconPinned;
-import com.pckcs.RibbonMenu.Icons.IconUp;
-
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +28,6 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import javax.swing.*;
 
 /**
  * The Class MainWindow.
