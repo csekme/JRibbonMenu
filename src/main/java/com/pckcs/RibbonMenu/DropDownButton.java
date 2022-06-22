@@ -1,9 +1,13 @@
 package com.pckcs.RibbonMenu;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Dropdown button that allow to use submenu
@@ -13,13 +17,14 @@ import java.awt.event.ActionListener;
  * @see #addSubMenu(JMenuItem)
  */
 public class DropDownButton extends JButton implements ActionListener {
-  
+
   private static final long serialVersionUID = 1L;
-  
+
   // label name template
   private static final String TEMPLATE = "<html><body align=\"center\">%s<br>&ensp;</body></html>";
   // container for submenu
   private JPopupMenu popupMenu;
+
 
   public DropDownButton() {
     addActionListener(this);
@@ -105,5 +110,9 @@ public class DropDownButton extends JButton implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     popupMenu.show(DropDownButton.this, 0, DropDownButton.this.getHeight());
+  }
+
+  public JPopupMenu getPopupMenu() {
+    return popupMenu;
   }
 }

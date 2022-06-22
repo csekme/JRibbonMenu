@@ -64,6 +64,9 @@ public class MainWindow extends JFrame implements ActionListener {
    * Create the frame.
    */
   public MainWindow() {
+
+
+
     this.setTitle("JRibbonMenu Example");
     double version = Double.parseDouble(System.getProperty("java.specification.version"));
     String osName = System.getProperty("os.name").toLowerCase();
@@ -133,6 +136,9 @@ public class MainWindow extends JFrame implements ActionListener {
 */
       { // IconPinned example
         JButton btnPinned = new JButton();
+        btnPinned.addActionListener(a->{
+          RibbonBar.shrinkToSimpleView();
+        });
         btnPinned.setIcon(new IconPinned(24, 24));
         pnlContent.add(btnPinned, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
       }

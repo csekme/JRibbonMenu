@@ -2,6 +2,7 @@ package com.pckcs.RibbonMenu;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import javax.swing.*;
  *
  * @author Paul Conti
  */
-public class RibbonTab extends JPanel {
+public class RibbonTab extends JPanel implements Iterable<RibbonGroup> {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -72,7 +73,7 @@ public class RibbonTab extends JPanel {
    * @param comp
    *          the comp
    */
-	public void addGroup(RibbonGroup comp) {
+  public void addGroup(RibbonGroup comp) {
     GridBagConstraints c = new GridBagConstraints();
     c.gridx = this.container.getComponentCount();
     c.gridy = 0;
@@ -80,12 +81,13 @@ public class RibbonTab extends JPanel {
     c.gridheight = 2;
     c.weighty = 1;
     c.anchor = GridBagConstraints.CENTER;
-    c.insets = new Insets(0,0,RibbonBar.shadowHeight,0);
-    c.ipadx=0;
-    c.ipady=0;
+    c.insets = new Insets(0, 0, RibbonBar.isDrawShadow() ? RibbonBar.getShadowHeight() : 0, 0);
+    c.ipadx = 0;
+    c.ipady = 0;
     c.fill = GridBagConstraints.VERTICAL;
-		this.container.add(comp, c);
-	}
+    this.groups.add(comp);
+    this.container.add(comp, c);
+  }
 
   @Override
   @Deprecated
@@ -93,4 +95,13 @@ public class RibbonTab extends JPanel {
     throw new RuntimeException("Do not use this method. Use instead addGroup");
   }
 
+  /**
+   * Returns an iterator over elements of type {@code T}.
+   *
+   * @return an Iterator.
+   */
+  @Override
+  public Iterator<RibbonGroup> iterator() {
+    return groups.iterator();
+  }
 }

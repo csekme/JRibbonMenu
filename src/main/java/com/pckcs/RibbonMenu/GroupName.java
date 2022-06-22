@@ -1,6 +1,7 @@
 package com.pckcs.RibbonMenu;
 
 import javax.swing.JLabel;
+import java.awt.*;
 
 public class GroupName extends JLabel {
 
@@ -9,5 +10,7 @@ public class GroupName extends JLabel {
   public GroupName(String text) {
     super(text);
     this.setHorizontalTextPosition(JLabel.CENTER);
+    this.setVerticalTextPosition(JLabel.BOTTOM);
+    this.setHorizontalAlignment(JLabel.CENTER);
   }
 }

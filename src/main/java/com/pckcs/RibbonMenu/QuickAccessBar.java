@@ -114,8 +114,16 @@ public class QuickAccessBar extends JPanel {
      */
     @Override
     public void updateUI() {
-      colorBackground = UIManager.getColor("Button.background");
-      colorBorder = UIManager.getColor("MenuBar.borderColor");
+      try {
+        colorBackground = UIManager.getColor("Button.background");
+      } catch (NullPointerException e) {
+        colorBackground = UIManager.getDefaults().getColor("Button.background");
+      }
+      try {
+        colorBorder = UIManager.getColor("MenuBar.borderColor");
+      } catch (NullPointerException e) {
+        colorBorder = UIManager.getDefaults().getColor("Label.foreground");
+      }
     }
 
     @Override

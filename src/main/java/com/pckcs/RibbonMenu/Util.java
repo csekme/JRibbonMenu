@@ -26,8 +26,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
@@ -124,16 +123,16 @@ public class Util {
 	}
 	
   public static ImageIcon scaleIcon(Icon icon, DisplayState state) {
-    int size = RibbonBar.BUTTON_IMAGE_SIZE;
+    int size = RibbonBarConstants.BUTTON_IMAGE_SIZE;
     switch (state) {
       case SLIM:
-        size = RibbonBar.SLIMBUTTON_IMAGE_SIZE;
+        size = RibbonBarConstants.SLIM_BUTTON_IMAGE_SIZE;
         break;
       case LARGE:
-        size = RibbonBar.LARGEBUTTON_IMAGE_SIZE;
+        size = RibbonBarConstants.LARGE_BUTTON_IMAGE_SIZE;
         break;
       case QUICK:
-        size = RibbonBar.QUICKBUTTON_IMAGE_SIZE;
+        size = RibbonBarConstants.QUICK_BUTTON_IMAGE_SIZE;
         break;
       default:
         break;
@@ -174,5 +173,33 @@ public class Util {
        g.dispose();
        return image;
     }
+  }
+
+  /**
+   * is a dark theme in use
+   * @return true if yes
+   */
+  public static boolean isFlatDark() {
+    try {
+      return UIManager.getBoolean("laf.dark");
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  /**
+   * Enable feature previews
+   * It will put system property <code>feature.preview=true</code>
+   */
+  public static void enableFeatures() {
+    System.setProperty("feature.preview", Boolean.toString( true ));
+  }
+
+  /**
+   * is features enabled
+   * @return true if enabled otherwise false
+   */
+  public static boolean isFeaturesEnabled() {
+    return Boolean.valueOf(System.setProperty("feature.preview",Boolean.toString(false )));
   }
 }

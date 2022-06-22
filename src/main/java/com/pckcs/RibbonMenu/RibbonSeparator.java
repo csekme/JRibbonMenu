@@ -43,9 +43,13 @@ public class RibbonSeparator extends JComponent {
    */
   @Override
   public void updateUI() {
-    color = UIManager.getColor("ToolBar.separatorColor");
-    if (UIManager.getBoolean("laf.dark")) {
-      color = color.brighter();
+    try {
+      color = UIManager.getColor("ToolBar.separatorColor");
+      if (UIManager.getBoolean("laf.dark")) {
+        color = color.brighter();
+      }
+    } catch (NullPointerException err) {
+      color = Color.GRAY;
     }
   }
 

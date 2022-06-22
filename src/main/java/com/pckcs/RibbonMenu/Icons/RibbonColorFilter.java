@@ -22,26 +22,32 @@ public class RibbonColorFilter extends FlatSVGIcon.ColorFilter implements Functi
    */
   @Override
   public Color apply(Color color) {
-    if (UIManager.getColor("ToolBar.separatorColor") == null) {
-      UIManager.put("ToolBar.separatorColor", new JSeparator().getForeground());
-    }
-    if (color.getRGB() == new Color(90, 90, 90).getRGB()) {
-      if (UIManager.getBoolean("laf.dark")) {
-        lastColor = UIManager.getColor("ToolBar.separatorColor").brighter().brighter();
-      } else {
-        lastColor = UIManager.getColor("ToolBar.separatorColor").darker();
+    try {
+      if (UIManager.getColor("ToolBar.separatorColor") == null) {
+        UIManager.put("ToolBar.separatorColor", new JSeparator().getForeground());
       }
-      return lastColor;
-    }
-    if (lastColor != null && lastColor.getRGB() == color.getRGB()) {
-      if (UIManager.getBoolean("laf.dark")) {
-        lastColor = UIManager.getColor("ToolBar.separatorColor").brighter().brighter();
-      } else {
-        lastColor = UIManager.getColor("ToolBar.separatorColor").darker();
+      if (color.getRGB() == new Color(90, 90, 90).getRGB()) {
+        if (UIManager.getBoolean("laf.dark")) {
+          lastColor = UIManager.getColor("ToolBar.separatorColor").brighter().brighter();
+        } else {
+          lastColor = UIManager.getColor("ToolBar.separatorColor").darker();
+        }
+        return lastColor;
       }
-      return lastColor;
-    } else {
+      if (lastColor != null && lastColor.getRGB() == color.getRGB()) {
+        if (UIManager.getBoolean("laf.dark")) {
+          lastColor = UIManager.getColor("ToolBar.separatorColor").brighter().brighter();
+        } else {
+          lastColor = UIManager.getColor("ToolBar.separatorColor").darker();
+        }
+        return lastColor;
+      } else {
+        return color;
+      }
+
+    } catch (NullPointerException err) {
       return color;
     }
   }
+
 }
